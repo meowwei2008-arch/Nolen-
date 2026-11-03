@@ -331,12 +331,28 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .hat-detail-manage{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
 @media(max-width:800px){.word-row{grid-template-columns:22px minmax(0,1fr) auto;gap:7px;padding:11px 9px}.word-actions{grid-column:auto;justify-content:flex-end;margin-top:0;gap:2px}.word-actions button{min-width:29px;min-height:34px;padding:3px 4px!important;font-size:17px!important}.word-actions .bookmark{font-size:20px!important;padding:2px 3px!important}.word-english{font-size:16px}.word-chinese{font-size:12px}}
 @media(max-width:385px){.word-row{grid-template-columns:19px minmax(0,1fr) auto;gap:5px;padding:9px 7px}.word-actions{gap:1px}.word-actions button{min-width:27px;padding:3px!important;font-size:16px!important}.word-actions .bookmark{font-size:19px!important}}
+
+/* v1.6.4：獨立例句測驗的題數選擇視窗 */
+.quiz-count-dialog{width:min(450px,calc(100vw - 26px))}
+.quiz-count-form{padding:24px}
+.quiz-count-form h2{margin-bottom:8px}
+.quiz-count-form>p{margin:0 0 17px}
+.quiz-count-options{display:grid;gap:8px}
+.quiz-count-option{display:flex;align-items:center;gap:12px;padding:12px 13px;min-height:48px;border:1px solid #455572;border-radius:12px;background:#111b30;color:#e8ecff;font-size:14px;cursor:pointer}
+.quiz-count-option:has(input:checked){background:#292d53;border-color:#a39cff}
+.quiz-count-option input[type="radio"]{width:19px;height:19px;flex-shrink:0;accent-color:#9d98ff}
+.quiz-count-custom{min-width:0}
+.quiz-count-custom input{width:100%;max-width:130px;min-height:41px;margin:3px 0 0;padding:8px 10px;border:1px solid #58698c;border-radius:9px;background:#111c30;color:#f5f7ff;font-size:15px}
+.quiz-count-custom input:disabled{opacity:.43}
+.quiz-count-summary{margin:14px 0 10px;padding:12px 13px;background:#202f4b;border:1px solid #415b84;border-radius:11px;color:#e3e9ff;font-size:13px;line-height:1.6}
+.quiz-count-form .dialog-actions{margin-top:17px}
+@media(max-width:410px){.quiz-count-form{padding:17px}.quiz-count-option{padding:10px 12px}.quiz-count-form .dialog-actions button{flex:1}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.3 · 批鬥帽子升級</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.4 · 自選測驗題數</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -426,6 +442,21 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       </div>
       <p id="reviewChoiceHelp" class="mode-choice-help"></p>
     </div>
+  </dialog>
+  <dialog class="dialog quiz-count-dialog" id="exampleCountDialog" aria-labelledby="exampleCountHeading">
+    <form id="exampleCountForm" class="quiz-count-form">
+      <h2 id="exampleCountHeading">選擇本次測驗題數</h2>
+      <p>從已匯入例句隨機抽題，同一輪不重複。預設 20 題；題庫不足時自動使用全部現有題目。</p>
+      <div class="quiz-count-options" role="radiogroup" aria-label="本次測驗題數">
+        <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="10"><span>10 題 · 小考</span></label>
+        <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="20" checked><span>20 題 · 一般練習（預設）</span></label>
+        <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="40"><span>40 題 · 模擬測驗</span></label>
+        <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="custom" id="exampleCountCustomRadio"><span class="quiz-count-custom">自訂題數 <input id="exampleCustomCount" type="number" inputmode="numeric" min="1" step="1" value="30" disabled aria-label="自訂測驗題數"></span></label>
+        <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="all"><span>全部題目 · 自願接受酷刑</span></label>
+      </div>
+      <div id="exampleCountPreview" class="quiz-count-summary" role="status" aria-live="polite">本次隨機抽 20 題</div>
+      <div class="dialog-actions"><button id="exampleCountCancel" type="button" class="quiet-button">取消</button><button id="exampleCountConfirm" type="submit" class="primary-button">開始測驗</button></div>
+    </form>
   </dialog>
   <dialog class="dialog search-dialog" id="searchDialog" aria-labelledby="searchDialogHeading">
     <div class="search-dialog-content"><div class="search-dialog-heading"><h2 id="searchDialogHeading">全域搜尋</h2><button id="searchCloseButton" type="button" class="quiet-button small-button" aria-label="關閉搜尋">✕</button></div>
@@ -1599,12 +1630,47 @@ function renderExampleHub() {
   }
   renderExampleQuiz();
 }
-function startExampleQuiz() {
+function requestedExampleCount() {
+  const chosen = document.querySelector('input[name="exampleExamCount"]:checked')?.value || '20';
+  if (chosen === 'all') return (state.examples || []).length;
+  if (chosen === 'custom') {
+    const input = $('exampleCustomCount');
+    const n = Number(input.value);
+    return input.value.trim() !== '' && Number.isSafeInteger(n) && n >= 1 ? n : 0;
+  }
+  return Number(chosen);
+}
+function updateExampleCountPreview() {
+  const total = (state.examples || []).length;
+  const customOn = document.querySelector('input[name="exampleExamCount"]:checked')?.value === 'custom';
+  $('exampleCustomCount').disabled = !customOn;
+  const requested = requestedExampleCount();
+  const valid = Number.isSafeInteger(requested) && requested >= 1 && total > 0;
+  const actual = valid ? Math.min(total, requested) : 0;
+  $('exampleCountPreview').textContent = !valid ? '請輸入至少 1 題的有效整數。' :
+    `本次隨機抽 ${actual} / ${total} 題${requested > total ? '（題庫不足，改為全部題目）' : ''}，不重複出題。`;
+  $('exampleCountConfirm').disabled = !valid;
+  return valid;
+}
+function openExampleCountDialog() {
+  const all = state.examples || [];
+  if (!all.length) return message('請先匯入例句 TXT',true);
+  if (exampleAnswerPool(state).length < 4) return message('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗',true);
+  const defaultOption = document.querySelector('input[name="exampleExamCount"][value="20"]');
+  defaultOption.checked = true;
+  $('exampleCustomCount').value = String(Math.min(30,all.length));
+  updateExampleCountPreview();
+  $('exampleCountDialog').showModal();
+}
+function startExampleQuiz(requestedCount) {
   try {
-    const questions = shuffleArray(state.examples || []);
+    const all = state.examples || [];
     const pool = exampleAnswerPool(state);
-    if (!questions.length) throw new Error('請先匯入例句 TXT');
+    if (!all.length) throw new Error('請先匯入例句 TXT');
     if (pool.length < 4) throw new Error('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗');
+    if (!Number.isSafeInteger(requestedCount) || requestedCount < 1) throw new Error('請選擇有效的測驗題數');
+    // 不放回抽取；不足指定題數時只出目前題庫總數。
+    const questions = shuffleArray(all).slice(0,Math.min(requestedCount,all.length));
     exampleSession = {questions, pool, index:0, answered:null, correct:0};
     exampleViewOpen = true;
     render();
@@ -1626,7 +1692,7 @@ function renderExampleQuiz() {
     $('exampleQuestion').textContent = `完成！本次答對 ${session.correct} / ${total} 題（${Math.round(session.correct/total*100)}%）。`;
     $('exampleFeedback').textContent = '例句測驗不影響單字卡熟練度及帽子。';
     $('exampleFeedback').className='example-feedback';
-    $('exampleNextButton').textContent='重新測驗';
+    $('exampleNextButton').textContent='重新選題測驗';
     $('exampleNextButton').disabled=false;
     return;
   }
@@ -1778,11 +1844,22 @@ $('exampleClearButton').addEventListener('click', () => {
   exampleSession=null;
   runChange(() => ({...state,examples:[]}), '例句題庫已清空');
 });
-$('exampleStartButton').addEventListener('click', startExampleQuiz);
+$('exampleStartButton').addEventListener('click', openExampleCountDialog);
+$('exampleCountCancel').addEventListener('click', () => $('exampleCountDialog').close());
+$('exampleCountForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (!updateExampleCountPreview()) return;
+  const count = requestedExampleCount();
+  $('exampleCountDialog').close();
+  startExampleQuiz(count);
+});
+document.querySelectorAll('input[name="exampleExamCount"]').forEach(radio => radio.addEventListener('change', updateExampleCountPreview));
+$('exampleCustomCount').addEventListener('input', updateExampleCountPreview);
+$('exampleCustomCount').addEventListener('focus', () => { $('exampleCountCustomRadio').checked = true; updateExampleCountPreview(); });
 $('exampleQuitButton').addEventListener('click', () => { exampleSession=null; exampleViewOpen=false; render(); });
 $('exampleNextButton').addEventListener('click', () => {
   if (!exampleSession) return;
-  if (exampleSession.index >= exampleSession.questions.length) { startExampleQuiz(); return; }
+  if (exampleSession.index >= exampleSession.questions.length) { openExampleCountDialog(); return; }
   if (!exampleSession.answered) return;
   exampleSession.index++;
   exampleSession.answered=null;
@@ -1858,7 +1935,7 @@ $('startReviewButton').addEventListener('click', () => {
 });
 $('reviewChoiceClose').addEventListener('click', () => $('reviewChoiceDialog').close());
 $('reviewChoiceCard').addEventListener('click', () => { $('reviewChoiceDialog').close(); startSession($('reviewModeSelect').value); });
-$('reviewChoiceQuiz').addEventListener('click', () => { $('reviewChoiceDialog').close(); startExampleQuiz(); });
+$('reviewChoiceQuiz').addEventListener('click', () => { $('reviewChoiceDialog').close(); openExampleCountDialog(); });
 $('openSearchButton').addEventListener('click', () => { $('searchDialog').showModal(); $('searchInput').focus(); });
 $('searchCloseButton').addEventListener('click', () => $('searchDialog').close());
 $('reviewExitButton').addEventListener('click', abandonSession);
