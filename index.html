@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <title>英中單字卡 | v1.5 離線版</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <style>:root{color-scheme:dark;--bg:#0b1020;--panel:#151c30;--panel-hover:#202b42;--field:#10172a;--border:#2a354d;--text:#f1f5ff;--muted:#a6b4ce;--primary:#a6a1ff;--primary-deep:#615bf0;--good:#55c9ad;--danger:#ff97a4;--yellow:#f9c76b;--red:#ee6d80;--blue:#61a7ff;font-family:Inter,"Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#1a2445 0,transparent 39%),var(--bg);color:var(--text);min-height:100vh;font-size:15px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.36;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.container{max-width:1180px;margin:auto;padding:0 22px}.topbar{border-bottom:1px solid var(--border);background:#0e1526c9;backdrop-filter:blur(16px)}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:82px}.brand{display:flex;align-items:center;gap:14px}.brand-mark{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#a7a2ff,#655ef1);display:grid;place-items:center;color:#101528;font-weight:900;font-size:24px;box-shadow:0 9px 30px #5f59e84d}.brand h1{font-size:20px;letter-spacing:.02em;margin:0}.brand p{font-size:12px;color:var(--muted);margin:4px 0 0}.top-actions{display:flex;align-items:center;gap:16px}.status{font-size:12px;color:var(--muted);white-space:nowrap}.pill{font-size:12px;border:1px solid #6664b0;background:#2d2a51;color:#d4cfff;border-radius:999px;padding:5px 9px;white-space:nowrap}
+.main{padding-top:30px;padding-bottom:70px}.intro{margin:0 0 22px}.intro h2{font-size:28px;margin:0 0 7px;letter-spacing:-.035em}.intro p{color:var(--muted);margin:0;line-height:1.6}.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}.panel{background:#151c30e8;border:1px solid var(--border);border-radius:20px;min-width:0;box-shadow:0 10px 35px #00000015}.side{padding:20px}.side-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.side h3{font-size:16px;margin:0}.section-hint{font-size:12px;color:var(--muted);margin:10px 0 18px}.unit-list{display:flex;flex-direction:column;gap:9px}.unit-item{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;background:transparent;color:inherit;border:1px solid var(--border);border-radius:14px;padding:14px 12px;transition:.15s}.unit-item:hover{background:var(--panel-hover)}.unit-item.active{background:#302c59;border-color:#817ae4;box-shadow:inset 3px 0 #a9a3ff}.unit-primary{display:flex;flex-direction:column;gap:5px;min-width:0}.unit-name{font-weight:700;overflow-wrap:anywhere}.unit-meta{font-size:12px;color:var(--muted)}.unit-percent{font-size:14px;font-weight:700;color:#b0f0db;white-space:nowrap}.side-bottom{border-top:1px solid var(--border);padding-top:17px;margin-top:22px;color:var(--muted);font-size:13px}.side-bottom strong{color:var(--text)}
+.workspace{min-height:380px;padding:26px}.workspace-head{display:flex;justify-content:space-between;align-items:start;gap:16px;flex-wrap:wrap}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--primary);font-weight:800}.workspace h2{font-size:25px;margin:8px 0;overflow-wrap:anywhere}.head-sub{font-size:13px;color:var(--muted);margin:0}.head-buttons{display:flex;gap:8px;flex-wrap:wrap}.secondary-button,.quiet-button,.icon-button,.danger-quiet,.primary-button{border:1px solid var(--border);border-radius:10px;min-height:40px;background:#222b42;color:var(--text);padding:9px 13px;font-weight:650}.secondary-button:hover,.quiet-button:hover,.icon-button:hover{background:#303b56}.primary-button{background:var(--primary-deep);color:white;border-color:#7771f9}.primary-button:hover{background:#716afa}.danger-quiet{color:var(--danger)}.danger-quiet:hover{background:#442837;border-color:#6d3945}.small-button{min-height:34px;padding:7px 9px;font-size:13px}.stage-note{background:#202345;border:1px solid #44477d;color:#d9ddff;border-radius:14px;padding:14px 17px;font-size:13px;line-height:1.65;margin:23px 0}.stage-note strong{color:white}.toolbar{margin-top:17px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.toolbar h3{margin:0;font-size:16px}.toolbar small{font-size:12px;color:var(--muted);font-weight:400}.selection-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px;background:#253252;padding:12px;border:1px solid #455979;border-radius:12px}.selection-bar[hidden]{display:none}.selection-bar span{color:#d7e8ff;font-weight:650;font-size:13px}.checkbox-line{display:flex;gap:7px;align-items:center;color:var(--muted);font-size:13px}.checkbox-line input{width:17px;height:17px;accent-color:#aaa3ff}.word-list{margin-top:15px;display:flex;flex-direction:column;gap:10px}.word-row{display:grid;grid-template-columns:23px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--border);border-radius:14px;padding:14px;background:#111a2e}.word-row.selected{border-color:#8881ee;background:#242447}.word-select input{width:19px;height:19px;accent-color:#a59bff}.word-content{min-width:0}.word-english-line{display:flex;align-items:center;gap:9px}.word-english{font-size:17px;font-weight:750;overflow-wrap:anywhere}.word-chinese{color:var(--muted);font-size:13px;margin:6px 0 0 18px;overflow-wrap:anywhere}.proficiency-dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}.proficiency-dot.red{background:var(--red)}.proficiency-dot.yellow{background:var(--yellow)}.proficiency-dot.blue{background:var(--blue)}.word-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end}.word-actions button{min-height:35px;padding:7px 9px;font-size:12px}.word-actions .bookmark{font-size:22px;padding:3px 9px;color:#a5b2c8}.word-actions .bookmark.on{color:var(--yellow)}.word-actions .icon-button:not(.bookmark){font-size:18px;padding:4px 11px}
+.empty-state{text-align:center;padding:42px 15px}.empty-illustration{width:84px;height:84px;display:grid;place-items:center;margin:0 auto 20px;border-radius:24px;background:linear-gradient(135deg,#39345f,#252c4d);color:#c1baff;font-size:33px;font-weight:800}.empty-state h3{font-size:20px;margin:0 0 8px}.empty-state p{color:var(--muted);line-height:1.7;margin:0 auto 20px;max-width:360px}.welcome{max-width:550px;margin:40px auto;text-align:center}.welcome h2{font-size:26px}.welcome p{color:var(--muted);line-height:1.8}.welcome .primary-button{margin-top:12px}.footnote{margin-top:22px;color:var(--muted);font-size:12px;line-height:1.7}
+.dialog{border:1px solid #495675;background:#19233a;color:var(--text);border-radius:20px;padding:0;width:min(440px,calc(100vw - 30px));box-shadow:0 25px 90px #0009}.dialog::backdrop{background:#030713b8;backdrop-filter:blur(5px)}.dialog form{padding:24px}.dialog h2{font-size:21px;margin:0 0 8px}.dialog p{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 21px}.field{display:block;font-size:13px;font-weight:700;margin-bottom:17px}.field input,.field select,.field textarea{margin-top:8px;width:100%;min-height:46px;border:1px solid #45516b;background:#0d1629;color:var(--text);border-radius:10px;padding:11px 12px}.dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);padding:13px 18px;border-radius:13px;background:#314768;border:1px solid #5b769c;color:white;opacity:0;pointer-events:none;transition:.2s;z-index:999;box-shadow:0 10px 30px #0005;max-width:min(560px,calc(100vw - 30px));text-align:center}.toast.visible{transform:translate(-50%,0);opacity:1}.toast.error{background:#643145;border-color:#b65b77}
+@media(max-width:800px){.container{padding:0 14px}.layout{grid-template-columns:minmax(0,1fr)}.side{padding:16px}.unit-list{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;padding-bottom:6px}.unit-item{flex:0 0 175px;scroll-snap-align:start}.side-bottom{margin-top:14px;padding-top:12px}.workspace{padding:18px}.main{padding-top:22px}.intro h2{font-size:24px}.word-row{grid-template-columns:22px minmax(0,1fr);gap:8px}.word-actions{grid-column:2;justify-content:flex-start;margin-top:3px}.word-actions button{min-height:40px}.status{display:none}.topbar-inner{min-height:72px}.brand h1{font-size:17px}.brand-mark{width:39px;height:39px;font-size:21px}.top-actions{gap:9px}.pill{display:none}}@media(max-width:385px){.brand p{font-size:10px}.topbar .secondary-button{padding:8px;font-size:12px}.word-actions{gap:3px}.word-actions button{padding:6px}}
+
+/* ─── 階段二：複習卡片與成績 ─── */
+[hidden]{display:none!important}
+.review-launch{display:flex;gap:20px;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#262852,#192b4d 78%);border:1px solid #4d528c;border-radius:18px;padding:20px;margin:25px 0 12px}
+.review-launch-copy{flex:1;min-width:0}
+.review-launch h3{font-size:20px;letter-spacing:-.02em;margin:7px 0 8px}
+.review-launch p{color:#cbd4ee;font-size:13px;line-height:1.65;margin:0}
+.legend{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;margin-left:6px;color:#c4cae4}
+.legend .proficiency-dot{display:inline-block}
+.review-controls{display:flex;flex-direction:column;gap:9px;width:196px;flex-shrink:0}
+.review-controls label{font-size:12px;font-weight:650;color:#e3e4fc}
+.review-controls select{display:block;width:100%;margin-top:7px;background:#131a34;color:#f2f4ff;border:1px solid #636b9a;border-radius:11px;min-height:44px;padding:10px}
+.review-controls button{min-height:48px;white-space:nowrap}
+.review-screen{max-width:730px;margin:auto;padding:3px 0 18px}
+.review-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.review-unit-label{color:var(--muted);font-size:12px;max-width:55%;overflow-wrap:anywhere;text-align:right}
+.review-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-top:29px}
+.review-heading h2{margin:5px 0 0;font-size:28px}
+.review-counter{font-size:13px;color:#e0dfff;font-weight:700;background:#313358;border:1px solid #4b4c83;padding:9px 12px;border-radius:12px;white-space:nowrap}
+.progress-track{width:100%;height:8px;background:#2a334d;border-radius:20px;margin-top:17px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#827cf5,#5bdfcc);border-radius:20px;transition:width .18s ease}
+.review-statusline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin-top:9px}
+.study-card-wrap{margin:29px auto 15px;max-width:610px;perspective:1000px}
+.study-card{display:flex;width:100%;min-height:272px;flex-direction:column;align-items:center;justify-content:space-between;gap:26px;padding:30px 18px;border-radius:23px;border:1px solid #7774be;background:radial-gradient(ellipse at top,#363865 0,#212c52 65%,#1b2543);color:var(--text);box-shadow:0 18px 42px #0003;transition:transform .18s,border-color .18s}
+.study-card:active{transform:scale(.99)}
+.study-card.is-flipped{background:radial-gradient(ellipse at top,#204e51 0,#1e3649 66%,#1b2543);border-color:#4d999c}
+.study-face{font-size:11px;letter-spacing:.18em;font-weight:800;color:#c7c9ff}
+.study-card.is-flipped .study-face{color:#a7eee3}
+.study-word{font-size:clamp(27px,5vw,46px);font-weight:800;line-height:1.35;text-align:center;overflow-wrap:anywhere;white-space:pre-wrap}
+.study-flip-hint{color:#b5bedb;font-size:12px}
+.study-word-meta{display:flex;justify-content:center;align-items:center;gap:9px;font-size:12px;color:var(--muted);margin:10px 0 21px;flex-wrap:wrap}
+.meta-separator{color:#627190}
+.answer-buttons{display:grid;grid-template-columns:1fr 1fr;gap:11px;max-width:610px;margin:auto}
+.answer-buttons button{border-radius:13px;min-height:59px;font-size:17px;font-weight:800;border:1px solid}
+.forget-button{color:#ffbec7;background:#552a3d;border-color:#83465e!important}
+.forget-button:hover{background:#693247}
+.remember-button{color:#d3fff0;background:#20554c;border-color:#338c77!important}
+.remember-button:hover{background:#2d6b5e}
+.review-navigation{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:610px;margin:21px auto 0}
+.review-nav-note{font-size:11px;text-align:center;color:#a5b2ce;line-height:1.45}
+.result-screen{max-width:650px;margin:0 auto;padding:17px 0;text-align:center}
+.result-medal{background:#255c53;color:#a8ffde;border:2px solid #3c9b80;border-radius:50%;width:64px;height:64px;display:grid;place-items:center;font-size:32px;font-weight:900;margin:5px auto 21px}
+.result-screen h2{font-size:27px;margin:11px 0 4px}
+.result-subheading{color:var(--muted);font-size:13px;margin:4px 0 22px;overflow-wrap:anywhere}
+.result-percentage{display:flex;align-items:center;flex-direction:column;gap:1px;margin:19px auto 25px}
+.result-percentage strong{font-size:clamp(56px,13vw,80px);font-weight:850;line-height:1.15;letter-spacing:-.07em;color:#b8ffe2}
+.result-percentage span{color:var(--muted);font-size:13px}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.result-stats div{display:flex;flex-direction:column;gap:9px;background:#101a2f;border:1px solid var(--border);border-radius:13px;padding:14px 8px}
+.result-stats span{font-size:12px;color:var(--muted)}
+.result-stats strong{font-size:25px}
+.result-stats strong.good{color:var(--good)}
+.result-stats strong.bad{color:#ff9fac}
+.forgotten-summary{text-align:left;margin:25px 0 0;padding:15px;background:#221e30;border:1px solid #50394f;border-radius:14px}
+.forgotten-summary h3{font-size:14px;margin:0 0 10px}
+.forgotten-words{display:flex;flex-wrap:wrap;gap:7px}
+.forgotten-chip{border:1px solid #784d61;background:#392a3f;border-radius:999px;padding:6px 10px;font-size:12px;overflow-wrap:anywhere}
+.result-note{color:var(--muted);font-size:12px;line-height:1.6;margin:25px 0 18px}
+.result-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:9px}
+.result-buttons button{min-height:46px}
+@media(max-width:800px){
+ .topbar-inner{flex-wrap:wrap;justify-content:center;padding-top:12px;padding-bottom:12px;gap:10px}
+ .top-actions{width:100%;justify-content:flex-end}
+ .top-actions .secondary-button{padding:8px 10px;font-size:12px;min-height:35px}
+ .review-launch{flex-direction:column;align-items:stretch;padding:17px;margin:17px 0 12px}
+ .review-controls{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end}
+ .review-controls button{min-height:44px}
+ .review-heading{margin-top:20px}
+ .review-heading h2{font-size:24px}
+ .study-card-wrap{margin-top:23px}
+ .study-card{min-height:260px;padding:25px 14px;gap:23px}
+ .review-navigation .quiet-button{padding:9px;white-space:nowrap}
+ .review-nav-note{font-size:10px}
+ .result-buttons{flex-direction:column}
+ .result-buttons button{width:100%}
+}
+@media(max-width:390px){
+ .review-controls{grid-template-columns:1fr}
+ .review-statusline{flex-wrap:wrap}
+ .study-card{min-height:235px}
+ .study-word{font-size:29px}
+}
+
+/* ─── 階段三：46 級帽子 ─── */
+.hat-row-label{display:inline-flex;max-width:100%;margin:8px 0 0 18px;padding:5px 9px;border:1px solid #73536e;background:#33263b;border-radius:9px;color:#ffd0df;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.word-actions .hat-detail-button{background:#3b2a45;border:1px solid #79576e;color:#f3ceda;border-radius:10px;font-size:12px;font-weight:750;padding:7px 10px;min-height:35px}
+.word-actions .hat-detail-button:hover{background:#4d3553}
+.hat-leaderboard{border:1px solid #5b415d;background:linear-gradient(135deg,#2c243d,#201f33);border-radius:14px;padding:15px;margin:18px 0 22px}
+.hat-board-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.hat-board-heading h3{margin:5px 0 0;font-size:16px}
+.hat-board-heading .section-hint{margin:0}
+.hat-board-list{display:flex;flex-direction:column;gap:7px}
+.hat-board-entry{display:grid;grid-template-columns:30px minmax(0,1fr) minmax(75px,auto) auto;align-items:center;gap:9px;text-align:left;background:#211c2e;border:1px solid #4c3b54;border-radius:11px;color:var(--text);padding:9px 10px;min-width:0}
+.hat-board-entry:hover{background:#32243a}
+.hat-board-rank{display:grid;place-items:center;border-radius:9px;width:26px;height:26px;background:#4c3648;color:#ffb9cb;font-size:13px;font-weight:800}
+.hat-board-word{font-weight:750;overflow-wrap:anywhere}
+.hat-board-title{color:#ffb5cd;font-size:12px;overflow-wrap:anywhere}
+.hat-board-times{font-size:12px;color:#d4c5db;white-space:nowrap}
+.study-hat-line{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:-9px auto 20px;max-width:610px}
+.hat-badge{font-size:13px;font-weight:750;border-radius:999px;padding:6px 12px;border:1px solid}
+.hat-badge.none{background:#24293d;color:#9facbf;border-color:#3b4762}
+.hat-badge.active{background:#4e2939;color:#ffccdb;border-color:#8d4b65}
+.hat-counter{font-size:12px;color:var(--muted)}
+.hat-dialog{width:min(520px,calc(100vw - 24px));max-height:min(88vh,840px);overflow-y:auto}
+.hat-detail{padding:24px}
+.hat-dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.hat-detail h2{overflow-wrap:anywhere;margin:0 0 4px;font-size:27px}
+.hat-detail p{margin:0}
+.hat-detail .hat-translation{font-size:14px;color:var(--muted);margin-bottom:17px;overflow-wrap:anywhere}
+.hat-stats{display:grid;grid-template-columns:1.4fr 1fr;gap:9px;margin-bottom:19px}
+.hat-stats div{background:#251e35;border:1px solid #62465d;border-radius:13px;display:flex;flex-direction:column;gap:8px;padding:16px 13px;min-width:0}
+.hat-stats span{font-size:12px;color:#cab7ca}
+.hat-stats strong{font-size:21px;color:#ffbbd1;overflow-wrap:anywhere}
+.hat-progress-label{display:flex;justify-content:space-between;gap:9px;font-size:13px;color:var(--muted);margin-bottom:8px}
+.hat-progress-label strong{color:#fbc5d6}
+.hat-progress .progress-fill{background:linear-gradient(90deg,#9c617f,#f29bb6)}
+.hat-detail .hat-next{font-size:13px;color:#f4ceda;line-height:1.6;margin-top:13px}
+.hat-detail .hat-word-meta{font-size:12px;color:var(--muted);line-height:1.6;margin-top:13px}
+.hat-all-titles{border-top:1px solid #47516a;margin-top:18px;padding-top:16px}
+.hat-all-titles summary{cursor:pointer;color:#ded2ff;font-weight:700;font-size:13px}
+.hat-all-titles ol{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;padding-left:24px;margin:14px 0 0;color:var(--muted);font-size:12px;line-height:1.7}
+.hat-all-titles li{padding:3px 5px;border-radius:6px;overflow-wrap:anywhere}
+.hat-all-titles li.past-hat{color:#d4b6c9}
+.hat-all-titles li.current-hat{background:#6c3552;color:#fff;font-weight:800}
+.hat-list-marker{font-size:10px;margin-left:6px;color:#ffdee8}
+@media(max-width:800px){
+ .word-actions .hat-detail-button{min-height:40px}
+ .hat-detail{padding:18px}
+}
+@media(max-width:390px){
+ .hat-board-entry{grid-template-columns:26px minmax(0,1fr) auto;gap:7px}
+ .hat-board-title{grid-column:2;grid-row:2}
+ .hat-board-times{grid-column:3;grid-row:1 / 3}
+ .hat-all-titles ol{gap:4px 6px}
+}
+
+/* ─── 第四階段：搜尋、檔案工具、語音、批次管理 ─── */
+textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
+.tools-panel{background:#182139;border:1px solid #34415e;border-radius:19px;padding:18px 20px;margin:0 0 22px;box-shadow:0 8px 30px #00000012}
+.tools-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px;flex-wrap:wrap}
+.tools-header h3{font-size:16px;margin:0}
+.tools-header .section-hint{margin:0}
+.tools-panel .search-field{max-width:850px;margin:0;color:#d2daec}
+.tools-panel input[type="search"]{width:100%;min-height:46px;border:1px solid #51607f;background:#0e182c;border-radius:11px;color:var(--text);padding:12px 14px}
+.tools-panel input[type="search"]::placeholder{color:#778cae}
+.tools-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:14px 0 0}
+.voice-control{display:flex;align-items:center;gap:9px;color:#c2cdeb;font-size:12px;font-weight:700;margin-left:auto}
+.voice-control select,.sort-control select{background:#101c33;border:1px solid #526280;color:#e7ecff;min-height:41px;border-radius:10px;padding:8px 11px;font-size:13px;min-width:0}
+.search-results-panel{border-top:1px solid #384767;margin-top:15px;padding-top:12px}
+.search-heading{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:9px;font-size:13px}
+.search-result-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:8px;max-height:290px;overflow-y:auto;padding:2px}
+.search-result-entry{display:flex;justify-content:space-between;align-items:center;text-align:left;gap:10px;color:var(--text);background:#101b30;border:1px solid #394965;border-radius:11px;padding:11px;min-width:0}
+.search-result-entry:hover{background:#263353;border-color:#8b85ea}
+.search-entry-main{display:flex;flex-direction:column;min-width:0;gap:5px;font-size:13px;overflow-wrap:anywhere}
+.search-entry-main strong{font-size:15px}
+.search-entry-main span{color:var(--muted)}
+.search-entry-unit{color:#d6cfff;font-size:11px;border:1px solid #575382;border-radius:7px;padding:5px 7px;max-width:130px;overflow-wrap:anywhere}
+.search-empty{font-size:13px;color:var(--muted);margin:6px 0}
+.search-highlight{border-color:#d9b976!important;box-shadow:0 0 0 2px #e6c16355}
+.unit-select-row{display:flex;align-items:center;gap:10px;min-width:0}
+.unit-select-row input{width:18px;height:18px;flex:0 0 18px;accent-color:#aaa3ff;cursor:pointer}
+.unit-select-row .unit-item{flex:1;min-width:0}
+.multiunit-box{background:#202942;border:1px solid #3c4b69;border-radius:13px;padding:13px;margin-top:18px}
+.multiunit-title{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}
+.multiunit-box p{font-size:12px;color:var(--muted);line-height:1.6;margin:7px 0 10px}
+.multiunit-box .secondary-button{width:100%;padding:9px 7px;font-size:12px}
+.word-toolbar-actions{display:flex;align-items:end;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.sort-control{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;font-weight:700}
+.sort-control select{max-width:220px}
+.dictionary-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #4d6384;border-radius:10px;background:#172844;color:#c8deff;padding:8px 11px;min-height:35px;font-size:12px;font-weight:700;text-decoration:none}
+.dictionary-link:hover{background:#2c4264;color:#fff}
+.word-dictionary{min-height:35px;font-size:12px}
+.study-audio-actions,.hat-tools{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 0 16px}
+.hat-tools{justify-content:flex-start;margin:13px 0 0}
+#bulkDialog{width:min(560px,calc(100vw - 28px));max-height:90vh;overflow:auto}
+#bulkTextInput{font-size:15px;line-height:1.55;min-height:220px}
+@media(max-width:800px){
+  .tools-panel{padding:15px;margin-bottom:14px}
+  .voice-control{margin-left:0;width:100%;justify-content:space-between}
+  .voice-control select{flex:1;max-width:250px}
+  .unit-list{align-items:stretch}
+  .unit-select-row{flex:0 0 205px;min-width:205px}
+  .unit-select-row .unit-item{flex:1;min-width:0}
+  .phase4-toolbar{align-items:flex-start;gap:12px}
+  .word-toolbar-actions{width:100%;justify-content:flex-start}
+  .sort-control{width:100%;justify-content:space-between}
+  .sort-control select{flex:1;max-width:350px}
+  .tools-actions{gap:7px}
+  .tools-actions > button{flex:1;min-width:145px}
+  .search-result-list{grid-template-columns:1fr;max-height:260px}
+}
+@media(max-width:385px){
+  .word-toolbar-actions > button{flex:1}
+  .tools-actions > button{font-size:12px;min-width:0}
+  .voice-control select{max-width:235px}
+}
+@media(max-width:800px){.unit-list{scroll-snap-type:none}.unit-item{scroll-snap-align:none}}
+
+/* 階段五：安裝及離線狀態 */
+.offline-note{background:#3b2d24;color:#ffe2c5;border:1px solid #9b7042;border-radius:12px;padding:13px 16px;margin:16px 0;font-size:13px;line-height:1.55}
+#installationHelpButton{min-height:41px}
+#installAppButton{border-color:#6c82ad}
+</style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.5 · 階段 5/5</span></h1><p>離線背單字 · 帽子 · 搜尋 · 備份</p></div></div>
+    <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button">↓ JSON 備份</button></div>
+  </div></header>
+  <main class="container main">
+    <section class="intro"><h2>你的單字基地</h2><p>第五階段：固定美式語音設定、手機離線使用、備份保護。若安裝成 PWA，首次開啟並載入完成後，即使斷網仍可繼續使用基本功能。</p></section>
+    <section class="tools-panel" aria-label="全域搜尋與資料工具">
+      <div class="tools-header"><h3>全域搜尋與資料工具</h3><span class="section-hint">不需登入，資料留在本機</span></div>
+      <label class="field search-field" for="searchInput">搜尋所有單元的英文或中文
+        <input id="searchInput" type="search" placeholder="例如：crane、社會學…" autocomplete="off">
+      </label>
+      <div id="searchResultsPanel" class="search-results-panel" hidden><div class="search-heading"><strong id="searchCount">0 筆結果</strong><button id="clearSearchButton" class="quiet-button small-button">清除搜尋</button></div><div id="searchResults" class="search-result-list"></div></div>
+      <div class="tools-actions">
+        <button id="installAppButton" class="secondary-button" type="button" hidden>＋ 安裝到桌面</button>
+        <button id="installationHelpButton" class="quiet-button" type="button">如何離線安裝？</button>
+        <button id="mergeButton" class="secondary-button">＋ JSON 合併匯入</button><input id="mergeFileInput" type="file" accept=".json,application/json" hidden>
+        <button id="txtButton" class="secondary-button">↓ TXT 匯出</button>
+      </div>
+    </section>
+    <div class="layout">
+      <aside class="panel side" aria-label="單元管理">
+        <div class="side-top"><h3>單元列表 <span class="section-hint">(<span id="unitCount">0</span>)</span></h3><button class="primary-button small-button" id="newUnitButton">＋ 新增</button></div>
+        <p class="section-hint">點選單元，即可管理其中的單字。</p>
+        <nav id="unitList" class="unit-list" aria-label="切換單元"></nav>
+        <div class="multiunit-box"><div class="multiunit-title"><strong>多單元書籤複製</strong><button id="clearUnitsButton" class="quiet-button small-button">清除</button></div><p>勾選單元，再把其中所有已加入書籤的單字複製成一個新單元。原字不變。</p><button id="copyBookmarksButton" class="secondary-button" disabled>複製所選單元書籤（<span id="selectedUnitCount">0</span>）</button></div>
+        <div class="side-bottom">所有單元合計：<strong id="totalWords">0</strong> 個單字</div>
+      </aside>
+      <section class="panel workspace" aria-live="polite">
+        <div id="welcomePanel" class="welcome"><div class="empty-illustration">Aa</div><h2>先建立第一個單元吧</h2><p>可以依照課本章節、主題，或你想要的方式分類。新單字預設紅色熟練度，資料會保存在這台裝置上。</p><button class="primary-button" id="welcomeAddUnit">＋ 建立單元</button></div>
+        <div id="unitPanel" hidden>
+          <div class="workspace-head">
+            <div><span class="eyebrow">目前單元</span><h2 id="unitTitle"></h2><p class="head-sub">單元最近五輪熟練度：<strong id="unitPercent">0%</strong></p></div>
+            <div class="head-buttons"><button id="renameUnitButton" class="quiet-button">重新命名</button><button id="deleteUnitButton" class="danger-quiet">刪除單元</button></div>
+          </div>
+          <section class="review-launch" aria-label="複習選項">
+            <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
+            <div class="review-controls"><label for="reviewModeSelect">本輪題目<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><button id="startReviewButton" class="primary-button">開始複習 <span id="reviewEligibleCount"></span></button></div>
+          </section>
+          <div class="stage-note"><strong>第四階段：管理工具開放。</strong> 搜尋可跨單元；熟練度排序只在按下時執行；書籤複製產生獨立單字（保留書籤，熟練度重新從紅色開始，忘記次數歸零）。</div>
+          <section class="hat-leaderboard" id="hatLeaderboard" hidden aria-label="本單元批鬥排行榜"><div class="hat-board-heading"><div><span class="eyebrow">批鬥公告欄</span><h3>本單元的重點關照對象</h3></div><span class="section-hint">依忘記次數排名</span></div><div id="hatLeaders" class="hat-board-list"></div></section>
+          <div class="toolbar phase4-toolbar"><h3>單字清單 <small>共 <span id="wordCount">0</span> 個</small></h3><div class="word-toolbar-actions"><label for="sortSelect" class="sort-control">排序
+            <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級隨機）</option></select>
+          </label><button id="bulkImportButton" class="secondary-button">批次貼上匯入</button><button id="addWordButton" class="primary-button">＋ 新增單字</button></div></div>
+          <label class="checkbox-line" style="margin-top:14px"><input id="selectAll" type="checkbox"> 全選本單元</label><div class="selection-bar" id="selectionToolbar" hidden><span>已選取 <span id="selectedCount">0</span> 個</span><button id="moveButton" class="secondary-button small-button">移動到其他單元</button><button id="clearSelectionButton" class="quiet-button small-button">取消選取</button></div>
+          <div id="wordList" class="word-list"></div>
+        </div>
+        <section id="reviewPanel" class="review-screen" hidden aria-label="複習單字卡">
+          <div class="review-top"><button id="reviewExitButton" class="quiet-button">← 返回單元</button><span id="reviewUnitLabel" class="review-unit-label"></span></div>
+          <div class="review-heading"><div><div class="eyebrow">FLASHCARDS</div><h2>單字複習</h2></div><div class="review-counter" id="reviewProgress">第 1 / 1 張</div></div>
+          <div class="progress-track"><div id="reviewProgressFill" class="progress-fill"></div></div>
+          <div class="review-statusline"><span id="reviewAnswered">已回答 0 / 0</span><span id="reviewModeLabel"></span></div>
+          <div class="study-card-wrap"><button id="reviewCard" type="button" class="study-card" aria-label="翻轉單字卡"><span id="cardFaceLabel" class="study-face">ENGLISH</span><span id="cardText" class="study-word"></span><span class="study-flip-hint">↻ 點一下翻面</span></button></div>
+          <div class="study-audio-actions"><button id="reviewSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="reviewCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
+          <div class="study-word-meta"><span id="studyProficiency" class="proficiency-dot red"></span><span id="studyProficiencyText">紅色熟練度</span><span class="meta-separator">·</span><span id="studyAnswerState">尚未作答</span></div><div class="study-hat-line"><span id="studyHatBadge" class="hat-badge none">尚無帽子</span><span id="studyForgetCount" class="hat-counter">累積不記得 0 次</span></div>
+          <div class="answer-buttons"><button id="forgetButton" class="forget-button">✕ 不記得</button><button id="rememberButton" class="remember-button">✓ 記得</button></div>
+          <div class="review-navigation"><button id="reviewPrevButton" class="quiet-button">← 上一張</button><span class="review-nav-note">已回答的單字不能重複計分</span><button id="reviewNextButton" class="quiet-button">下一張 →</button></div>
+        </section>
+        <section id="resultsPanel" class="result-screen" hidden aria-label="複習結果">
+          <div class="result-medal">✓</div><div class="eyebrow">ROUND COMPLETED</div><h2>這輪複習完成！</h2><p id="resultUnitName" class="result-subheading"></p>
+          <div class="result-percentage"><strong id="resultPercentage">0%</strong><span>記得率</span></div>
+          <div class="result-stats"><div><span>總題數</span><strong id="resultTotal">0</strong></div><div><span>記得</span><strong class="good" id="resultRemembered">0</strong></div><div><span>不記得</span><strong class="bad" id="resultForgotten">0</strong></div></div>
+          <div id="forgottenSummary" class="forgotten-summary" hidden><h3>本輪批鬥名單（單字 · 現任稱號）</h3><div id="forgottenWords" class="forgotten-words"></div></div>
+          <p class="result-note">這輪已計入單元最近五次複習成績；重複點擊不會增加分數。</p>
+          <div class="result-buttons"><button id="reviewForgottenButton" class="secondary-button">再複習不記得的單字</button><button id="reviewRestartButton" class="primary-button">重新開始本模式</button><button id="resultExitButton" class="quiet-button">返回單元</button></div>
+        </section>
+      </section>
+    </div>
+    <div id="offlineNote" class="offline-note" role="status" aria-live="polite" hidden>目前沒有網路：本機單字、複習和資料管理仍可使用；線上字典及部分語音可能無法使用。</div>
+    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用右上角「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」不覆蓋、不去重、重新產生單字與單元 ID。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音固定 en-US，實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
+  </main>
+  <dialog class="dialog" id="unitDialog"><form id="unitForm"><h2 id="unitDialogHeading">新增單元</h2><p>為單元取一個方便辨認的名字。</p><label class="field" for="unitNameInput">單元名稱<input id="unitNameInput" maxlength="80" autocomplete="off" required placeholder="例如：Day 1 或 社會學單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="unitDialog">取消</button><button type="submit" class="primary-button">儲存</button></div></form></dialog>
+  <dialog class="dialog" id="wordDialog"><form id="wordForm"><h2 id="wordDialogHeading">新增單字</h2><p>單字與中文解釋都可以日後修改。</p><label class="field" for="englishInput">英文<input id="englishInput" maxlength="200" autocomplete="off" required placeholder="例如：sociology"></label><label class="field" for="chineseInput">中文意思<input id="chineseInput" maxlength="300" autocomplete="off" required placeholder="例如：社會學"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="wordDialog">取消</button><button type="submit" class="primary-button">儲存</button></div></form></dialog>
+  <dialog class="dialog hat-dialog" id="hatDialog" aria-labelledby="hatDialogHeading"><div class="hat-detail">
+    <div class="hat-dialog-top"><span class="eyebrow">單字批鬥檔案</span><button id="hatDialogClose" type="button" class="quiet-button small-button" aria-label="關閉單字詳情">✕ 關閉</button></div>
+    <h2 id="hatDialogHeading"></h2><p id="hatWordTranslation" class="hat-translation"></p>
+    <div class="hat-stats"><div><span>現任稱號</span><strong id="hatCurrentTitle">尚未戴帽</strong></div><div><span>累積「不記得」</span><strong id="hatForgetTotal">0 次</strong></div></div>
+    <div class="hat-progress"><div class="hat-progress-label"><span>稱號進度</span><strong id="hatRankLabel">0 / 46</strong></div><div class="progress-track"><div id="hatProgressFill" class="progress-fill"></div></div></div>
+    <p id="hatNextMessage" class="hat-next"></p>
+    <p id="hatWordMeta" class="hat-word-meta"></p><div class="hat-tools"><button id="hatSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="hatCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
+    <details class="hat-all-titles"><summary>展開查看完整 46 級稱號表</summary><ol id="hatTitleList"></ol></details>
+  </div></dialog>
+  <dialog class="dialog" id="copyDialog"><form id="copyForm"><h2>複製書籤到新單元</h2><p id="copySummary">已選來源單元中的書籤單字，會複製為獨立副本。熟練度重設紅色、忘記次數歸零、書籤保留。</p><label class="field" for="copyNameInput">新單元名稱<input id="copyNameInput" maxlength="80" required placeholder="例如：本週重要單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="copyDialog">取消</button><button class="primary-button" type="submit">確認複製</button></div></form></dialog>
+  <dialog class="dialog" id="bulkDialog"><form id="bulkForm"><h2>批次貼上單字</h2><p>每行一組：「英文,中文」或用 TAB 分隔；逗號後面的中文會保留。格式有誤時會顯示行號，整批都不會加入。</p><label class="field" for="bulkTextInput">貼上單字<textarea id="bulkTextInput" rows="9" placeholder="crane,鶴；起重機
+alphabet,字母表
+condition	條件"></textarea></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="bulkDialog">取消</button><button class="primary-button" type="submit">全部匯入目前單元</button></div></form></dialog>
+  <dialog class="dialog" id="moveDialog"><form id="moveForm"><h2>移動單字</h2><p>將所選 <strong id="moveQuantity">0</strong> 個單字移到另一個單元。原本的熟練度、書籤和忘記次數會保留，目標單元熟練度不變。</p><label class="field" for="targetUnitSelect">目標單元<select id="targetUnitSelect" required></select></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="moveDialog">取消</button><button type="submit" class="primary-button">確認移動</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>/* 延續第一、二階段的資料模型；第三階段以 forgetCount 推導帽子，不新增資料欄位，舊備份可直接使用。 */
+const SCHEMA_VERSION = 1;
+const PROFICIENCY = ['red', 'yellow', 'blue'];
+
+/** 累計忘記第 N 次所取得的帽子；順序是使用者指定的 46 個稱號。 */
+const HAT_TITLES = Object.freeze([
+  '叛徒', '特務', '大軍閥', '反黨', '野心家', '走私派', '投降派', '修正主義', '大惡霸', '不革命',
+  '黑秀才', '黑手', '黑幫', '經驗主義', '民族派', '中庸之道', '變色龍', '絆腳石', '牆頭草', '老好人',
+  '小修苗', '造謠公司', '傳話筒', '逆流', '邪風', '小爬蟲', '保皇派', '地下司令部', '洋奴哲學', '爬行主義',
+  '唯生產力論', '活字典', '獨立王國', '白專典型', '名位思想', '多頭蛇', '鐵桿分子', '毒草', '舊勢力的代言人', '清談家',
+  '風派人物', '折衷主義', '攔路虎', '假洋鬼子', '和平演變的推手', '社會渣滓'
+]);
+/** 無任何帽子時為 null；超過 46 次仍固定最後稱號。 */
+function hatTitle(forgetCount) {
+  if (!Number.isSafeInteger(forgetCount) || forgetCount < 0) throw new Error('忘記次數必須是非負整數');
+  return forgetCount === 0 ? null : HAT_TITLES[Math.min(forgetCount, HAT_TITLES.length) - 1];
+}
+/** 專供畫面顯示下一頂帽子；集滿後為 null。 */
+function nextHatTitle(forgetCount) {
+  if (!Number.isSafeInteger(forgetCount) || forgetCount < 0) throw new Error('忘記次數必須是非負整數');
+  return forgetCount < HAT_TITLES.length ? HAT_TITLES[forgetCount] : null;
+}
+
+function uid() {
+  if (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function') return globalThis.crypto.randomUUID();
+  return `id_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
+}
+function copy(value) { return JSON.parse(JSON.stringify(value)); }
+function checkText(value, label, max = 200) {
+  if (typeof value !== 'string') throw new Error(`${label}必須是文字`);
+  const text = value.trim();
+  if (!text) throw new Error(`請輸入${label}`);
+  if (text.length > max) throw new Error(`${label}不能超過 ${max} 個字元`);
+  return text;
+}
+function findUnit(state, unitId) {
+  const unit = state.units.find(x => x.id === unitId);
+  if (!unit) throw new Error('找不到指定單元');
+  return unit;
+}
+function findWord(state, wordId) {
+  const word = state.words[wordId];
+  if (!word) throw new Error('找不到指定單字');
+  return word;
+}
+function initialState() {
+  return { schemaVersion: SCHEMA_VERSION, units: [], words: {}, reviewHistory: [], settings: { voice: 'en-US' }, createdAt: new Date().toISOString() };
+}
+function validateState(state) {
+  if (!state || state.schemaVersion !== 1 || !Array.isArray(state.units) || !state.words || typeof state.words !== 'object' || Array.isArray(state.words)) return false;
+  if (!Array.isArray(state.reviewHistory) || !state.settings || typeof state.settings !== 'object') return false;
+  const seen = new Set();
+  const unitIds = new Set();
+  for (const unit of state.units) {
+    if (!unit || typeof unit.id !== 'string' || !unit.id || unitIds.has(unit.id) || typeof unit.name !== 'string' || !unit.name.trim() || !Array.isArray(unit.wordIds) || !Array.isArray(unit.reviewSlots) || unit.reviewSlots.length > 5) return false;
+    unitIds.add(unit.id);
+    if (unit.reviewSlots.some(v => typeof v !== 'number' || !Number.isFinite(v) || v < 0 || v > 0.2)) return false;
+    if (unit.originalOrder !== undefined) {
+      if (!Array.isArray(unit.originalOrder) || unit.originalOrder.length !== unit.wordIds.length) return false;
+      const expected = new Set(unit.wordIds);
+      if (new Set(unit.originalOrder).size !== expected.size || unit.originalOrder.some(id => !expected.has(id))) return false;
+    }
+    for (const wordId of unit.wordIds) {
+      if (typeof wordId !== 'string' || seen.has(wordId)) return false;
+      seen.add(wordId);
+      if (!Object.prototype.hasOwnProperty.call(state.words, wordId)) return false;
+      const w = state.words[wordId];
+      if (!w || w.id !== wordId || w.unitId !== unit.id || typeof w.en !== 'string' || !w.en.trim() || typeof w.zh !== 'string' || !w.zh.trim() || !PROFICIENCY.includes(w.proficiency) || typeof w.bookmarked !== 'boolean' || !Number.isSafeInteger(w.forgetCount) || w.forgetCount < 0) return false;
+    }
+  }
+  if (Object.keys(state.words).length !== seen.size) return false;
+  for (const history of state.reviewHistory) {
+    // 階段一的備份為空陣列；階段二只產生下列結構。
+    if (!history || typeof history.unitId !== 'string' || !unitIds.has(history.unitId) || !Number.isSafeInteger(history.total) || history.total < 1 || !Number.isSafeInteger(history.remembered) || history.remembered < 0 || history.remembered > history.total || !Number.isSafeInteger(history.forgotten) || history.forgotten !== history.total - history.remembered || typeof history.completedAt !== 'string') return false;
+  }
+  return true;
+}
+/** 保留最初加入目前單元的順序；第一～三階段資料以升級時的順序作基準。 */
+function originalOrder(unit) {
+  if (!Array.isArray(unit.originalOrder)) unit.originalOrder = [...unit.wordIds];
+  return unit.originalOrder;
+}
+function listWords(state, unitId) { return findUnit(state, unitId).wordIds.map(id => findWord(state, id)); }
+function addUnit(state, name) {
+  const next = copy(state);
+  next.units.push({ id: uid(), name: checkText(name, '單元名稱', 80), wordIds: [], reviewSlots: [], createdAt: new Date().toISOString() });
+  return next;
+}
+function renameUnit(state, unitId, name) {
+  const next = copy(state);
+  findUnit(next, unitId).name = checkText(name, '單元名稱', 80);
+  return next;
+}
+function deleteUnit(state, unitId) {
+  const next = copy(state);
+  const unit = findUnit(next, unitId);
+  unit.wordIds.forEach(id => { delete next.words[id]; });
+  next.units = next.units.filter(x => x.id !== unitId);
+  // 第二階段新增的複習紀錄也必須隨單元刪除。
+  next.reviewHistory = (next.reviewHistory || []).filter(x => x.unitId !== unitId);
+  return next;
+}
+function addWord(state, unitId, en, zh) {
+  const next = copy(state);
+  const unit = findUnit(next, unitId);
+  const id = uid();
+  next.words[id] = { id, unitId, en: checkText(en, '英文', 200), zh: checkText(zh, '中文', 300), proficiency: 'red', bookmarked: false, forgetCount: 0, createdAt: new Date().toISOString() };
+  originalOrder(unit).push(id);
+  unit.wordIds.push(id);
+  return next;
+}
+function editWord(state, wordId, en, zh) {
+  const next = copy(state);
+  const word = findWord(next, wordId);
+  word.en = checkText(en, '英文', 200);
+  word.zh = checkText(zh, '中文', 300);
+  return next;
+}
+function deleteWord(state, wordId) {
+  const next = copy(state);
+  const word = findWord(next, wordId);
+  const unit = findUnit(next, word.unitId);
+  originalOrder(unit);
+  unit.wordIds = unit.wordIds.filter(id => id !== wordId);
+  unit.originalOrder = unit.originalOrder.filter(id => id !== wordId);
+  delete next.words[wordId];
+  return next;
+}
+function toggleBookmark(state, wordId) {
+  const next = copy(state);
+  const word = findWord(next, wordId);
+  word.bookmarked = !word.bookmarked;
+  return next;
+}
+function moveWords(state, wordIds, targetUnitId) {
+  const next = copy(state);
+  const target = findUnit(next, targetUnitId);
+  const selected = new Set(wordIds);
+  if (!selected.size) throw new Error('請先選取要移動的單字');
+  // 依照來源單元目前儲存的排序移動，避免勾選順序影響結果。
+  const ordered = [];
+  for (const unit of next.units) {
+    const ids = unit.wordIds.filter(id => selected.has(id));
+    if (unit.id === targetUnitId && ids.length) throw new Error('無法移動到原本的單元');
+    ordered.push(...ids);
+  }
+  if (ordered.length !== selected.size) throw new Error('有單字不存在，請重新選取');
+  for (const unit of next.units) {
+    originalOrder(unit);
+    unit.wordIds = unit.wordIds.filter(id => !selected.has(id));
+    unit.originalOrder = unit.originalOrder.filter(id => !selected.has(id));
+  }
+  for (const id of ordered) {
+    next.words[id].unitId = target.id;
+    target.wordIds.push(id);
+    target.originalOrder.push(id);
+  }
+  return next;
+}
+function reorderWord(state, wordId, offset) {
+  if (offset !== -1 && offset !== 1) throw new Error('不支援的排序方向');
+  const next = copy(state);
+  const word = findWord(next, wordId);
+  const unit = findUnit(next, word.unitId);
+  originalOrder(unit);
+  const ids = unit.wordIds;
+  const current = ids.indexOf(wordId);
+  const target = current + offset;
+  if (target >= 0 && target < ids.length) [ids[current], ids[target]] = [ids[target], ids[current]];
+  return next;
+}
+function unitPercent(unit) { return Math.round((unit.reviewSlots || []).reduce((a, b) => a + b, 0) * 1000) / 10; }
+function serializeBackup(state) {
+  if (!validateState(state)) throw new Error('無法備份：資料格式異常');
+  return JSON.stringify({ format: 'vocab-app-backup', exportedAt: new Date().toISOString(),
+    unitProficiencySnapshot: state.units.map(unit => ({unitId:unit.id, percent:unitPercent(unit)})), data: state }, null, 2);
+}
+
+
+/* 複習模式都只看目前單元的獨立單字副本，不會改變儲存排序。 */
+const REVIEW_MODES = Object.freeze({ all: '全部單字', bookmarked: '僅書籤', red: '僅紅色', 'bookmarked-red': '書籤且紅色' });
+function filteredWordIds(state, unitId, mode = 'all') {
+  if (!Object.prototype.hasOwnProperty.call(REVIEW_MODES, mode)) throw new Error('不支援的複習模式');
+  const words = listWords(state, unitId);
+  return words.filter(word => (mode !== 'bookmarked' && mode !== 'bookmarked-red' || word.bookmarked)
+    && (mode !== 'red' && mode !== 'bookmarked-red' || word.proficiency === 'red')).map(word => word.id);
+}
+function startReview(state, unitId, mode = 'all', specificIds = null) {
+  findUnit(state, unitId);
+  let ids = filteredWordIds(state, unitId, mode);
+  if (specificIds !== null) {
+    if (!Array.isArray(specificIds) || specificIds.some(id => typeof id !== 'string')) throw new Error('複習單字清單格式錯誤');
+    // 僅包含目前仍在此單元的指定副本；確保題目不重複。
+    const requested = new Set(specificIds);
+    ids = findUnit(state, unitId).wordIds.filter(id => requested.has(id));
+  }
+  if (ids.length === 0) throw new Error('此模式沒有可複習的單字，請調整篩選或新增單字');
+  return { unitId, mode, wordIds: ids, index: 0, flipped: false, answers: ids.map(() => null), complete: false, startedAt: new Date().toISOString() };
+}
+function reviewStats(session) {
+  const total = session.wordIds.length;
+  const remembered = session.answers.filter(a => a === true).length;
+  const forgotten = session.answers.filter(a => a === false).length;
+  return { total, remembered, forgotten, answered: remembered + forgotten, percentage: total ? Math.round(remembered * 1000 / total) / 10 : 0 };
+}
+function reviewNavigate(session, amount) {
+  if (session.complete) return session;
+  const next = copy(session);
+  next.index = (next.index + amount % next.wordIds.length + next.wordIds.length) % next.wordIds.length;
+  next.flipped = false;
+  return next;
+}
+function reviewFlip(session) {
+  if (session.complete) return session;
+  return { ...session, flipped: !session.flipped };
+}
+function gradeReview(state, session, remembered) {
+  if (typeof remembered !== 'boolean') throw new Error('答案必須是記得或不記得');
+  if (session.complete || session.answers[session.index] !== null) return { state, session, applied: false };
+  const wordId = session.wordIds[session.index];
+  const nextState = copy(state);
+  const word = findWord(nextState, wordId);
+  if (word.unitId !== session.unitId) throw new Error('單字已移到其他單元，請重新開始複習');
+  const nextSession = copy(session);
+  const level = PROFICIENCY.indexOf(word.proficiency);
+  word.proficiency = PROFICIENCY[Math.max(0, Math.min(PROFICIENCY.length - 1, level + (remembered ? 1 : -1)))];
+  if (!remembered) word.forgetCount += 1;
+  nextSession.answers[session.index] = remembered;
+  nextSession.flipped = false;
+  const stats = reviewStats(nextSession);
+  if (stats.answered === stats.total) {
+    nextSession.complete = true;
+    const unit = findUnit(nextState, session.unitId);
+    const slotValue = Math.round(0.2 * (stats.remembered / stats.total) * 1e12) / 1e12;
+    unit.reviewSlots = [...unit.reviewSlots, slotValue].slice(-5);
+    nextState.reviewHistory.push({
+      id: uid(), unitId: session.unitId, mode: session.mode, total: stats.total,
+      remembered: stats.remembered, forgotten: stats.forgotten,
+      percentage: stats.percentage, completedAt: new Date().toISOString()
+    });
+  } else {
+    // 跳過已回答的題目，找下一張未回答的卡片；允許上一張／下一張自由瀏覽。
+    for (let i = 1; i <= nextSession.wordIds.length; i++) {
+      const nextIndex = (session.index + i) % nextSession.wordIds.length;
+      if (nextSession.answers[nextIndex] === null) { nextSession.index = nextIndex; break; }
+    }
+  }
+  return { state: nextState, session: nextSession, applied: true };
+}
+
+/* 階段二補上保守的完整還原；第四階段另做不覆蓋原資料的合併匯入。 */
+function parseBackupForRestore(text) {
+  if (typeof text !== 'string' || text.length > 20 * 1024 * 1024) throw new Error('備份檔案過大或格式錯誤');
+  let backup;
+  try { backup = JSON.parse(text); } catch { throw new Error('JSON 內容無法解析'); }
+  if (!backup || backup.format !== 'vocab-app-backup' || !validateState(backup.data)) throw new Error('備份內容不符合單字卡格式，未更動現有資料');
+  return copy(backup.data);
+}
+
+
+/* ─── 第四階段：新增搜尋、排序、批次匯入、跨單元書籤複製、合併式 JSON 匯入 ─── */
+function searchWords(state, query) {
+  const needle = String(query ?? '').trim().toLocaleLowerCase();
+  if (!needle) return [];
+  const matches = [];
+  for (const unit of state.units) {
+    for (const id of unit.wordIds) {
+      const word = state.words[id];
+      if (word.en.toLocaleLowerCase().includes(needle) || word.zh.toLocaleLowerCase().includes(needle)) {
+        matches.push({ ...word, unitName: unit.name });
+      }
+    }
+  }
+  return matches;
+}
+/** 排序是一次性操作；同級單字每次觸發時才洗牌。 */
+function sortUnitWords(state, unitId, method, random = Math.random) {
+  if (!['input', 'proficiency'].includes(method)) throw new Error('不支援的排序方式');
+  const next = copy(state);
+  const unit = findUnit(next, unitId);
+  const original = originalOrder(unit);
+  if (method === 'input') {
+    unit.wordIds = [...original];
+  } else {
+    const ranks = {blue: 0, yellow: 1, red: 2};
+    // Fisher–Yates 先洗牌，再穩定依熟練度排序，僅同級相對順序隨機。
+    const shuffled = [...unit.wordIds];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const r = random();
+      if (!Number.isFinite(r) || r < 0 || r >= 1) throw new Error('排序亂數來源無效');
+      const j = Math.floor(r * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    unit.wordIds = shuffled.sort((a, b) => ranks[next.words[a].proficiency] - ranks[next.words[b].proficiency]);
+  }
+  return next;
+}
+/** 中文意義可以包含英文逗號。支援 TAB 及標準雙引號 CSV 欄位。 */
+function splitCSVPair(line) {
+  const fields = [];
+  let value = '';
+  let quoted = false;
+  let usedQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (quoted && line[i+1] === '"') { value += '"'; i++; }
+      else if (quoted) quoted = false;
+      else if (!value.trim()) { quoted = true; usedQuote = true; }
+      else { throw new Error('引號格式錯誤'); }
+    } else if (c === ',' && !quoted) {
+      fields.push(value.trim()); value = '';
+    } else if (!quoted && usedQuote && !/\s/.test(c)) {
+      throw new Error('引號結尾格式錯誤');
+    } else value += c;
+    if (c === ',' && !quoted) usedQuote = false;
+  }
+  if (quoted) throw new Error('引號未正確結束');
+  fields.push(value.trim());
+  if (fields.length < 2) throw new Error('缺少英文或中文的分隔符號（逗號或 TAB）');
+  return [fields[0], fields.slice(1).join(',')];
+}
+function parseBulkWords(text) {
+  if (typeof text !== 'string' || text.length > 2_000_000) throw new Error('文字過長，請分批匯入');
+  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/);
+  if (lines.length > 10000) throw new Error('一次最多匯入 10,000 行');
+  const pairs = [];
+  lines.forEach((raw, index) => {
+    if (!raw.trim()) return;
+    try {
+      const separator = raw.includes('\t') ? 'tab' : 'comma';
+      const pair = separator === 'tab'
+        ? [raw.slice(0, raw.indexOf('\t')), raw.slice(raw.indexOf('\t') + 1)]
+        : splitCSVPair(raw);
+      pairs.push([checkText(pair[0], '英文', 200), checkText(pair[1], '中文', 300)]);
+    } catch (error) { throw new Error(`第 ${index + 1} 行：${error.message}`); }
+  });
+  if (!pairs.length) throw new Error('沒有可匯入的單字');
+  return pairs;
+}
+function addWordsBatch(state, unitId, pairs) {
+  if (!Array.isArray(pairs) || !pairs.length) throw new Error('沒有單字可加入');
+  const next = copy(state);
+  const unit = findUnit(next, unitId);
+  const original = originalOrder(unit);
+  for (const pair of pairs) {
+    if (!Array.isArray(pair) || pair.length !== 2) throw new Error('單字格式錯誤');
+    const en = checkText(pair[0], '英文', 200);
+    const zh = checkText(pair[1], '中文', 300);
+    const id = uid();
+    next.words[id] = { id, unitId: unit.id, en, zh, proficiency:'red', bookmarked:false,
+      forgetCount:0, createdAt:new Date().toISOString() };
+    unit.wordIds.push(id);
+    original.push(id);
+  }
+  return next;
+}
+function copyBookmarkedToNewUnit(state, selectedUnitIds, newName) {
+  const next = copy(state);
+  const selected = new Set(selectedUnitIds);
+  if (!selected.size) throw new Error('請先勾選來源單元');
+  if (selected.size !== selectedUnitIds.length || selected.size > next.units.length || [...selected].some(id => !next.units.some(u => u.id === id))) throw new Error('來源單元有誤');
+  const name = checkText(newName, '新單元名稱', 80);
+  const sourceWords = next.units.filter(unit => selected.has(unit.id))
+    .flatMap(unit => unit.wordIds.map(id => next.words[id]).filter(word => word.bookmarked));
+  if (!sourceWords.length) throw new Error('選取的單元中沒有已加入書籤的單字');
+  const targetId = uid();
+  const wordIds = [];
+  for (const word of sourceWords) {
+    const id = uid();
+    // 新副本的書籤維持已勾選，熟練度、帽子與忘記次數自成一套從新字開始。
+    next.words[id] = { id, unitId:targetId, en:word.en, zh:word.zh, proficiency:'red',
+      bookmarked:true, forgetCount:0, createdAt:new Date().toISOString() };
+    wordIds.push(id);
+  }
+  next.units.push({ id:targetId, name, wordIds, originalOrder:[...wordIds], reviewSlots:[], createdAt:new Date().toISOString() });
+  return next;
+}
+function quotedTXT(text) {
+  // RFC4180 常見 CSV 引號規則；每列仍為 英文,中文。換行改為空白避免額外列。
+  const val = String(text).replace(/[\r\n]+/g, ' ');
+  return /[,"\r\n]/.test(val) ? `"${val.replace(/"/g, '""')}"` : val;
+}
+function exportTXT(state) {
+  if (!validateState(state)) throw new Error('資料異常，無法匯出');
+  return state.units.flatMap(unit => unit.wordIds.map(id => {
+    const word = state.words[id];
+    return `${quotedTXT(word.en)},${quotedTXT(word.zh)}`;
+  })).join('\n');
+}
+/** 合併匯入會完整保留既有資料；所有匯入單元/單字/紀錄都建立全新 ID。 */
+function mergeBackup(state, backupText) {
+  if (!validateState(state)) throw new Error('現有資料異常，無法合併');
+  const imported = parseBackupForRestore(backupText);
+  const next = copy(state);
+  const unitIds = new Map();
+  const wordIds = new Map();
+  const occupied = new Set([...next.units.map(u => u.id), ...Object.keys(next.words), ...next.reviewHistory.map(h => h.id)].filter(Boolean));
+  const freshId = () => { let id; do { id = uid(); } while(occupied.has(id)); occupied.add(id); return id; };
+  for (const unit of imported.units) {
+    const newid = freshId();
+    unitIds.set(unit.id, newid);
+    next.units.push({ ...copy(unit), id:newid, wordIds:[], originalOrder:[] });
+  }
+  for (const unit of imported.units) {
+    const destination = next.units.find(u => u.id === unitIds.get(unit.id));
+    for (const oldId of unit.wordIds) {
+      const newId = freshId();
+      wordIds.set(oldId, newId);
+      const oldWord = imported.words[oldId];
+      next.words[newId] = {...copy(oldWord), id:newId, unitId:destination.id};
+      destination.wordIds.push(newId);
+    }
+    const oldOrder = unit.originalOrder || unit.wordIds;
+    destination.originalOrder = oldOrder.map(oldId => wordIds.get(oldId));
+  }
+  for (const record of imported.reviewHistory) {
+    next.reviewHistory.push({ ...copy(record), id:freshId(), unitId:unitIds.get(record.unitId) });
+  }
+  // 合併不更動目前偏好設定，避免其他備份覆蓋使用者自己的英美發音選擇。
+  if (!validateState(next)) throw new Error('合併後資料驗證失敗，沒有變更現有資料');
+  return next;
+}
+
+
+/* 主要使用 IndexedDB，部分 file:// 環境改用 localStorage。 */
+function createStorage() {
+  let mode = 'memory';
+  let db = null;
+  let cache = null;
+  function localGet() {
+    const raw = localStorage.getItem('vocab_app_phase1_state_v1');
+    return raw ? JSON.parse(raw) : null;
+  }
+  function localSet(value) { localStorage.setItem('vocab_app_phase1_state_v1', JSON.stringify(value)); }
+  function idbOpen() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('vocab_app_local_v1', 1);
+      request.onupgradeneeded = () => {
+        const database = request.result;
+        if (!database.objectStoreNames.contains('documents')) database.createObjectStore('documents');
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('資料庫開啟失敗'));
+      request.onblocked = () => reject(new Error('資料庫被其他分頁佔用'));
+    });
+  }
+  function idbGet() {
+    return new Promise((resolve, reject) => {
+      const req = db.transaction('documents', 'readonly').objectStore('documents').get('state');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  function idbSet(data) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('documents', 'readwrite');
+      tx.objectStore('documents').put(data, 'state');
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error || new Error('寫入失敗'));
+      tx.onabort = () => reject(tx.error || new Error('寫入已中止'));
+    });
+  }
+  return {
+    get mode() { return mode; },
+    async init() {
+      if (globalThis.indexedDB && typeof globalThis.indexedDB.open === 'function') {
+        try {
+          db = await idbOpen();
+          mode = 'indexedDB';
+          cache = await idbGet();
+          return cache;
+        } catch (error) { console.warn('IndexedDB 不可用，嘗試 localStorage', error); }
+      }
+      try {
+        localStorage.setItem('vocab_app_storage_test', 'ok');
+        localStorage.removeItem('vocab_app_storage_test');
+        mode = 'localStorage';
+        cache = localGet();
+        return cache;
+      } catch (error) {
+        console.warn('持久儲存不可用', error);
+        mode = 'memory';
+        return null;
+      }
+    },
+    async save(value) {
+      cache = value;
+      if (mode === 'indexedDB') return idbSet(value);
+      if (mode === 'localStorage') return localSet(value);
+      throw new Error('目前只能暫存於記憶體，請匯出 JSON 備份');
+    }
+  };
+}
+
+
+
+
+const $ = id => document.getElementById(id);
+const storage = createStorage();
+let deferredInstallPrompt = null;
+let state = initialState();
+let selectedUnitId = null;
+let selectedWordIds = new Set();
+let selectedUnitIds = new Set();
+let detailWordId = null;
+let editingUnitId = null;
+let editingWordId = null;
+let saveSerial = 0;
+let lastToastTimer = null;
+let reviewSession = null;
+
+function el(tag, className = '', text = null) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== null) node.textContent = String(text);
+  return node;
+}
+function button(text, className, handler, ariaLabel = '') {
+  const b = el('button', className, text);
+  b.type = 'button';
+  if (ariaLabel) b.setAttribute('aria-label', ariaLabel);
+  b.addEventListener('click', handler);
+  return b;
+}
+function message(text, bad = false) {
+  const node = $('toast');
+  node.textContent = text;
+  node.className = `toast visible ${bad ? 'error' : ''}`;
+  if (lastToastTimer) clearTimeout(lastToastTimer);
+  lastToastTimer = setTimeout(() => { node.className = 'toast'; }, 3500);
+}
+function currentUnit() { return state.units.find(u => u.id === selectedUnitId) || null; }
+function runChange(action, success = '已更新') {
+  try {
+    const changed = action();
+    if (!validateState(changed)) throw new Error('操作後的資料檢查失敗，變更已取消');
+    state = changed;
+    render();
+    const thisSave = ++saveSerial;
+    $('saveStatus').textContent = '儲存中…';
+    // 保證寫入順序；最後完成的操作不會被較早完成的操作覆蓋。
+    saving = saving.catch(() => {}).then(() => storage.save(changed));
+    saving.then(() => {
+      if (thisSave === saveSerial) $('saveStatus').textContent = '已儲存';
+    }).catch(err => {
+      $('saveStatus').textContent = '儲存失敗';
+      message(`資料儲存失敗：${err.message}。請立即匯出備份。`, true);
+    });
+    if (success) message(success);
+    return true;
+  } catch (err) {
+    message(err.message, true);
+    return false;
+  }
+}
+let saving = Promise.resolve();
+function selectUnit(unitId) {
+  if (reviewSession && !reviewSession.complete && reviewStats(reviewSession).answered > 0 &&
+    !confirm('這輪還沒結束。已作答單字的熟練度會保留，但本輪不會計入單元分數。確定離開？')) return;
+  reviewSession = null;
+  selectedUnitId = unitId;
+  selectedWordIds.clear();
+  render();
+}
+
+function renderUnits() {
+  selectedUnitIds = new Set([...selectedUnitIds].filter(id => state.units.some(u => u.id === id)));
+  $('selectedUnitCount').textContent = selectedUnitIds.size;
+  $('copyBookmarksButton').disabled = selectedUnitIds.size === 0;
+  $('clearUnitsButton').disabled = selectedUnitIds.size === 0;
+  const list = $('unitList');
+  list.replaceChildren();
+  $('unitCount').textContent = state.units.length;
+  $('totalWords').textContent = Object.keys(state.words).length;
+  for (const unit of state.units) {
+    const active = unit.id === selectedUnitId;
+    const item = button('', `unit-item ${active ? 'active' : ''}`, () => selectUnit(unit.id), `開啟${unit.name}單元`);
+    const inner = el('span', 'unit-primary');
+    inner.append(el('span', 'unit-name', unit.name), el('span', 'unit-meta', `${unit.wordIds.length} 個單字`));
+    const percent = el('span', 'unit-percent', `${unitPercent(unit)}%`);
+    item.append(inner, percent);
+    const wrapper = el('div', 'unit-select-row');
+    const checkbox = el('input');
+    checkbox.type = 'checkbox'; checkbox.checked = selectedUnitIds.has(unit.id);
+    checkbox.setAttribute('aria-label', `選取來源單元 ${unit.name}`);
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) selectedUnitIds.add(unit.id); else selectedUnitIds.delete(unit.id);
+      renderUnits();
+    });
+    wrapper.append(checkbox, item);
+    list.append(wrapper);
+  }
+}
+function wordHatLabel(word) {
+  return hatTitle(word.forgetCount) || '尚無帽子';
+}
+function renderHatBoard(unit) {
+  const words = listWords(state, unit.id).filter(w => w.forgetCount > 0);
+  const board = $('hatLeaderboard');
+  board.hidden = words.length === 0;
+  const list = $('hatLeaders');
+  list.replaceChildren();
+  words.sort((a, b) => b.forgetCount - a.forgetCount); // 相同次數維持單元原本排序
+  words.slice(0, 3).forEach((word, index) => {
+    const item = button('', 'hat-board-entry', () => openHatDetails(word.id), `查看 ${word.en} 的批鬥檔案`);
+    item.append(el('span', 'hat-board-rank', String(index + 1)), el('span', 'hat-board-word', word.en),
+      el('span', 'hat-board-title', wordHatLabel(word)), el('span', 'hat-board-times', `${word.forgetCount} 次`));
+    list.append(item);
+  });
+}
+function openHatDetails(wordId) {
+  const word = state.words[wordId];
+  if (!word) return message('找不到指定單字', true);
+  const unit = state.units.find(u => u.id === word.unitId);
+  detailWordId = wordId;
+  $('hatCambridgeLink').href = cambridgeURL(word.en);
+  const current = hatTitle(word.forgetCount);
+  const next = nextHatTitle(word.forgetCount);
+  $('hatDialogHeading').textContent = word.en;
+  $('hatWordTranslation').textContent = word.zh;
+  $('hatCurrentTitle').textContent = current || '尚未戴帽';
+  $('hatForgetTotal').textContent = `${word.forgetCount} 次`;
+  $('hatRankLabel').textContent = `${Math.min(word.forgetCount, HAT_TITLES.length)} / ${HAT_TITLES.length}`;
+  $('hatProgressFill').style.width = `${Math.min(word.forgetCount, HAT_TITLES.length) / HAT_TITLES.length * 100}%`;
+  $('hatNextMessage').textContent = next
+    ? `再忘記 1 次，將獲得下一個稱號：「${next}」。`
+    : '已達最後稱號「社會渣滓」；繼續忘記仍會累積次數，但不再升級。';
+  $('hatWordMeta').textContent = `所在單元：${unit?.name || '未知'} · 熟練度：${{red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]} · ${word.bookmarked ? '已加書籤' : '未加書籤'}`;
+  const list = $('hatTitleList');
+  list.replaceChildren();
+  HAT_TITLES.forEach((title, i) => {
+    const li = el('li', i + 1 === Math.min(word.forgetCount, HAT_TITLES.length) ? 'current-hat' : (i < word.forgetCount ? 'past-hat' : ''), title);
+    if (i + 1 === Math.min(word.forgetCount, HAT_TITLES.length) && word.forgetCount) li.append(el('span', 'hat-list-marker', '現任'));
+    list.append(li);
+  });
+  $('hatDialog').querySelector('details').open = false;
+  openDialog($('hatDialog'));
+}
+function renderWords(unit) {
+  const list = $('wordList');
+  list.replaceChildren();
+  const words = listWords(state, unit.id);
+  $('wordCount').textContent = words.length;
+  $('selectedCount').textContent = selectedWordIds.size;
+  $('selectionToolbar').hidden = selectedWordIds.size === 0;
+  $('selectAll').checked = words.length > 0 && selectedWordIds.size === words.length;
+  $('selectAll').disabled = words.length === 0;
+  $('addWordButton').disabled = false;
+  if (!words.length) {
+    const blank = el('div', 'empty-state');
+    blank.append(el('div', 'empty-illustration', 'Aa'), el('h3', '', '這個單元還沒有單字'), el('p', '', '按「新增單字」開始建立你的單字庫。'));
+    blank.append(button('＋ 新增第一個單字', 'primary-button', openAddWord));
+    list.append(blank);
+    return;
+  }
+  words.forEach((word, i) => {
+    const row = el('article', `word-row ${selectedWordIds.has(word.id) ? 'selected' : ''}`);
+    row.dataset.wordId = word.id;
+    const checkWrapper = el('label', 'word-select');
+    const input = el('input');
+    input.type = 'checkbox';
+    input.checked = selectedWordIds.has(word.id);
+    input.setAttribute('aria-label', `選取 ${word.en}`);
+    input.addEventListener('change', () => {
+      if (input.checked) selectedWordIds.add(word.id);
+      else selectedWordIds.delete(word.id);
+      render();
+    });
+    checkWrapper.append(input);
+    const detail = el('div', 'word-content');
+    const english = el('span', 'word-english', word.en);
+    const dot = el('span', `proficiency-dot ${word.proficiency}`);
+    dot.setAttribute('title', `熟練度：${{red:'紅', yellow:'黃', blue:'藍'}[word.proficiency]}`);
+    const englishLine = el('div', 'word-english-line');
+    englishLine.append(dot, english);
+    detail.append(englishLine, el('div', 'word-chinese', word.zh));
+    if (word.forgetCount > 0) {
+      detail.append(el('div', 'hat-row-label', `批鬥稱號：${wordHatLabel(word)} · 累計 ${word.forgetCount} 次`));
+    }
+    const commands = el('div', 'word-actions');
+    const upButton = button('↑', 'icon-button', () => runChange(() => reorderWord(state, word.id, -1), null), `將 ${word.en} 上移`);
+    const downButton = button('↓', 'icon-button', () => runChange(() => reorderWord(state, word.id, 1), null), `將 ${word.en} 下移`);
+    upButton.disabled = i === 0;
+    downButton.disabled = i === words.length - 1;
+    const cambridge = el('a', 'dictionary-link word-dictionary', '字典 ↗');
+    cambridge.href = cambridgeURL(word.en);
+    cambridge.target = '_blank'; cambridge.rel = 'noopener noreferrer';
+    cambridge.setAttribute('aria-label', `在 Cambridge 字典查 ${word.en}`);
+    commands.append(
+      button(word.bookmarked ? '★' : '☆', `icon-button bookmark ${word.bookmarked ? 'on' : ''}`, () => runChange(() => toggleBookmark(state, word.id), word.bookmarked ? '已取消書籤' : '已加入書籤'), `${word.bookmarked ? '取消' : '加入'} ${word.en} 書籤`),
+      button('詳情', 'hat-detail-button', () => openHatDetails(word.id), `查看 ${word.en} 的稱號與忘記次數`),
+      button('編輯', 'quiet-button', () => openEditWord(word.id), `編輯 ${word.en}`),
+      button('▶', 'icon-button speak', () => pronounce(word.en), `朗讀 ${word.en}`),
+      cambridge,
+      upButton,
+      downButton,
+      button('刪除', 'danger-quiet', () => {
+        if (!confirm(`確定刪除「${word.en}」嗎？此操作無法復原。`)) return;
+        selectedWordIds.delete(word.id);
+        runChange(() => deleteWord(state, word.id), '單字已刪除');
+      }, `刪除 ${word.en}`)
+    );
+    row.append(checkWrapper, detail, commands);
+    list.append(row);
+  });
+}
+function render() {
+  renderUnits();
+  renderSearchResults();
+  const unit = currentUnit();
+  $('welcomePanel').hidden = !!unit;
+  $('unitPanel').hidden = !unit || !!reviewSession;
+  $('reviewPanel').hidden = !reviewSession || reviewSession.complete;
+  $('resultsPanel').hidden = !reviewSession || !reviewSession.complete;
+  if (!unit) return;
+  if (reviewSession) {
+    if (reviewSession.complete) renderResults();
+    else renderReview();
+    return;
+  }
+  $('unitTitle').textContent = unit.name;
+  $('unitPercent').textContent = `${unitPercent(unit)}%`;
+  renderWords(unit);
+  renderHatBoard(unit);
+  refreshReviewEligibility();
+}
+function refreshReviewEligibility() {
+  if (!currentUnit()) return;
+  const count = filteredWordIds(state, selectedUnitId, $('reviewModeSelect').value).length;
+  $('reviewEligibleCount').textContent = `(${count} 題)`;
+  $('startReviewButton').disabled = count === 0;
+}
+function startSession(mode, specificIds = null) {
+  try {
+    reviewSession = startReview(state, selectedUnitId, mode, specificIds);
+    render();
+  } catch (error) { message(error.message, true); }
+}
+function abandonSession() {
+  if (!reviewSession) return;
+  const stats = reviewStats(reviewSession);
+  if (!reviewSession.complete && stats.answered > 0 &&
+      !confirm('這輪還沒結束。已作答單字的熟練度會保留，但本輪不會計入單元分數。確定離開？')) return;
+  reviewSession = null;
+  render();
+}
+function renderReview() {
+  const session = reviewSession;
+  const word = state.words[session.wordIds[session.index]];
+  const stats = reviewStats(session);
+  const answered = session.answers[session.index];
+  $('reviewUnitLabel').textContent = currentUnit().name;
+  $('reviewProgress').textContent = `第 ${session.index + 1} / ${stats.total} 張`;
+  $('reviewAnswered').textContent = `已回答 ${stats.answered} / ${stats.total}`;
+  $('reviewModeLabel').textContent = REVIEW_MODES[session.mode];
+  $('reviewProgressFill').style.width = `${100 * stats.answered / stats.total}%`;
+  $('cardFaceLabel').textContent = session.flipped ? '中文意思' : 'ENGLISH';
+  $('cardText').textContent = session.flipped ? word.zh : word.en;
+  $('reviewCard').classList.toggle('is-flipped', session.flipped);
+  $('reviewCard').setAttribute('aria-label', session.flipped ? '翻回英文' : '翻到中文意思');
+  $('studyProficiency').className = `proficiency-dot ${word.proficiency}`;
+  $('studyProficiencyText').textContent = ({red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]) + '熟練度';
+  $('studyAnswerState').textContent = answered === null ? '尚未作答' : (answered ? '本輪已選「記得」' : '本輪已選「不記得」');
+  $('studyHatBadge').textContent = wordHatLabel(word);
+  $('studyHatBadge').className = `hat-badge ${word.forgetCount ? 'active' : 'none'}`;
+  $('studyForgetCount').textContent = `累積不記得 ${word.forgetCount} 次`;
+  $('reviewCambridgeLink').href = cambridgeURL(word.en);
+  $('rememberButton').disabled = answered !== null;
+  $('forgetButton').disabled = answered !== null;
+  $('reviewPrevButton').disabled = stats.total === 1;
+  $('reviewNextButton').disabled = stats.total === 1;
+}
+function renderResults() {
+  const session = reviewSession;
+  const stats = reviewStats(session);
+  $('resultUnitName').textContent = `${currentUnit().name} · ${REVIEW_MODES[session.mode]}`;
+  $('resultPercentage').textContent = `${stats.percentage}%`;
+  $('resultTotal').textContent = stats.total;
+  $('resultRemembered').textContent = stats.remembered;
+  $('resultForgotten').textContent = stats.forgotten;
+  const forgotten = session.wordIds.filter((_, i) => session.answers[i] === false).map(id => state.words[id]).filter(Boolean);
+  $('forgottenSummary').hidden = forgotten.length === 0;
+  $('forgottenWords').replaceChildren();
+  forgotten.slice(0, 30).forEach(word => $('forgottenWords').append(el('span', 'forgotten-chip', `${word.en} · ${wordHatLabel(word)}（${word.forgetCount}）`)));
+  if (forgotten.length > 30) $('forgottenWords').append(el('span', 'forgotten-chip', `還有 ${forgotten.length - 30} 個`));
+  $('reviewForgottenButton').disabled = forgotten.length === 0;
+}
+function chooseAnswer(remembered) {
+  if (!reviewSession || reviewSession.complete) return;
+  try {
+    const originalWord = state.words[reviewSession.wordIds[reviewSession.index]];
+    const originalHat = originalWord ? hatTitle(originalWord.forgetCount) : null;
+    const result = gradeReview(state, reviewSession, remembered);
+    if (!result.applied) return;
+    const before = reviewSession;
+    reviewSession = result.session;
+    if (!runChange(() => result.state, null)) { reviewSession = before; render(); }
+    else if (!remembered && originalWord) {
+      const updated = state.words[originalWord.id];
+      const newHat = hatTitle(updated.forgetCount);
+      message(originalHat === newHat
+        ? `「${updated.en}」累計忘記 ${updated.forgetCount} 次；仍是「${newHat}」。`
+        : `「${updated.en}」累計忘記 ${updated.forgetCount} 次，戴上「${newHat}」！`);
+    }
+  } catch (error) { message(error.message, true); }
+}
+function navigateReview(direction) {
+  if (!reviewSession || reviewSession.complete) return;
+  reviewSession = reviewNavigate(reviewSession, direction);
+  render();
+}
+async function restoreJSON(file) {
+  if (!file) return;
+  try {
+    if (file.size > 20 * 1024 * 1024) throw new Error('檔案不可超過 20 MB');
+    const restored = parseBackupForRestore(await readTextFile(file));
+    const unitCount = restored.units.length;
+    const wordCount = Object.keys(restored.words).length;
+    const currentWords = Object.keys(state.words).length;
+    if (!confirm(`確認從 JSON 完整還原？\n\n備份：${unitCount} 個單元、${wordCount} 個單字。\n目前：${state.units.length} 個單元、${currentWords} 個單字。\n\n注意：這是「覆蓋還原」，不是合併匯入。現有資料會被取代。建議先下載目前資料的 JSON 備份。`)) return;
+    const oldSession = reviewSession;
+    reviewSession = null;
+    if (runChange(() => restored, `還原成功：${unitCount} 個單元、${wordCount} 個單字`)) {
+      selectedUnitId = state.units[0]?.id || null;
+      selectedUnitIds.clear(); selectedWordIds.clear();
+      render();
+    } else { reviewSession = oldSession; render(); }
+  } catch (error) { message(`還原失敗：${error.message}`, true); }
+}
+
+function cambridgeURL(english) {
+  return 'https://dictionary.cambridge.org/dictionary/english/' + encodeURIComponent(english.trim().toLowerCase());
+}
+function pronounce(english) {
+  if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+    message('目前裝置或瀏覽器不支援語音朗讀', true); return;
+  }
+  const language = 'en-US'; // 固定美式設定；真正聲音由裝置 TTS 決定。
+  const utterance = new SpeechSynthesisUtterance(english);
+  utterance.lang = language;
+  utterance.rate = 0.86;
+  try {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length) {
+      const matching = voices.find(v => v.lang.toLowerCase() === language.toLowerCase());
+      const fallback = voices.find(v => v.lang.toLowerCase().startsWith('en'));
+      if (matching || fallback) utterance.voice = matching || fallback;
+    }
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  } catch (error) { message('發音失敗：' + error.message, true); }
+}
+function renderSearchResults() {
+  const needle = $('searchInput').value.trim();
+  const panel = $('searchResultsPanel');
+  panel.hidden = !needle;
+  const list = $('searchResults');
+  list.replaceChildren();
+  if (!needle) return;
+  const results = searchWords(state, needle);
+  $('searchCount').textContent = `${results.length} 筆結果`;
+  if (!results.length) {
+    list.append(el('p', 'search-empty', '找不到符合的單字；試試英文片段或中文關鍵字。'));
+    return;
+  }
+  for (const word of results.slice(0, 100)) {
+    const item = button('', 'search-result-entry', () => {
+      selectUnit(word.unitId);
+      if (selectedUnitId === word.unitId) {
+        const node = [...document.querySelectorAll('.word-row')].find(row => row.dataset.wordId === word.id);
+        node?.scrollIntoView({ behavior:'smooth', block:'center' });
+        node?.classList.add('search-highlight');
+      }
+    }, `在 ${word.unitName} 單元開啟 ${word.en}`);
+    const main = el('span', 'search-entry-main');
+    main.append(el('strong', '', word.en), el('span', '', word.zh));
+    item.append(main, el('span', 'search-entry-unit', word.unitName));
+    list.append(item);
+  }
+  if (results.length > 100) list.append(el('p', 'search-empty', `僅顯示前 100 筆；仍有 ${results.length - 100} 筆，請輸入更精確的關鍵字。`));
+}
+async function mergeJSON(file) {
+  if (!file) return;
+  try {
+    if (file.size > 20 * 1024 * 1024) throw new Error('檔案不可超過 20 MB');
+    const text = await readTextFile(file);
+    const incoming = parseBackupForRestore(text);
+    if (!confirm(`確認合併 JSON？\n將新增 ${incoming.units.length} 個單元、${Object.keys(incoming.words).length} 個獨立單字副本。\n即使名稱相同也全部保留，不覆蓋既有資料。\n仍建議先下載一份 JSON 備份。`)) return;
+    if (runChange(() => mergeBackup(state, text), `合併成功：加入 ${incoming.units.length} 個單元、${Object.keys(incoming.words).length} 個單字`)) {
+      selectedUnitIds.clear(); selectedWordIds.clear(); render();
+    }
+  } catch (error) { message('合併失敗：' + error.message, true); }
+}
+function readTextFile(file) {
+  if (typeof file.text === 'function') return file.text();
+  // 部分較舊 Android WebView 不提供 File.text()。
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error || new Error('無法讀取選取的檔案'));
+    reader.readAsText(file, 'utf-8');
+  });
+}
+function downloadFile(content, filename, mime) {
+  // Android 原生包裝器接管匯出：直接開啟「儲存檔案」系統介面。
+  if (window.VocabNative && typeof window.VocabNative.saveFile === 'function') {
+    window.VocabNative.saveFile(filename, mime, content);
+    return;
+  }
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+function openCopyDialog() {
+  if (!selectedUnitIds.size) return message('請先勾選來源單元', true);
+  const count = state.units.filter(u => selectedUnitIds.has(u.id))
+    .reduce((total, u) => total + u.wordIds.filter(id => state.words[id].bookmarked).length, 0);
+  if (!count) return message('選取的單元中沒有任何已書籤單字', true);
+  $('copySummary').textContent = `所選 ${selectedUnitIds.size} 個單元共有 ${count} 個書籤單字（含重複）。複製後原單字不變，新副本保留書籤、熟練度從紅色開始、帽子歸零，新單元熟練度為 0%。`;
+  $('copyNameInput').value = '';
+  openDialog($('copyDialog'));
+  $('copyNameInput').focus();
+}
+function openBulkDialog() {
+  if (!currentUnit()) return message('請先建立單元', true);
+  $('bulkTextInput').value = '';
+  openDialog($('bulkDialog'));
+  $('bulkTextInput').focus();
+}
+function openDialog(dialog) { dialog.showModal(); }
+function openAddUnit() {
+  editingUnitId = null;
+  $('unitDialogHeading').textContent = '新增單元';
+  $('unitNameInput').value = '';
+  openDialog($('unitDialog'));
+  $('unitNameInput').focus();
+}
+function openRenameUnit() {
+  const unit = currentUnit();
+  if (!unit) return;
+  editingUnitId = unit.id;
+  $('unitDialogHeading').textContent = '重新命名單元';
+  $('unitNameInput').value = unit.name;
+  openDialog($('unitDialog'));
+  $('unitNameInput').select();
+}
+function openAddWord() {
+  if (!currentUnit()) return message('請先新增單元', true);
+  editingWordId = null;
+  $('wordDialogHeading').textContent = '新增單字';
+  $('englishInput').value = '';
+  $('chineseInput').value = '';
+  openDialog($('wordDialog'));
+  $('englishInput').focus();
+}
+function openEditWord(wordId) {
+  const word = state.words[wordId];
+  if (!word) return;
+  editingWordId = wordId;
+  $('wordDialogHeading').textContent = '編輯單字';
+  $('englishInput').value = word.en;
+  $('chineseInput').value = word.zh;
+  openDialog($('wordDialog'));
+  $('englishInput').focus();
+}
+function openMoveDialog() {
+  if (!selectedWordIds.size) return message('請先選取單字', true);
+  const current = currentUnit();
+  const others = state.units.filter(u => u.id !== current.id);
+  if (!others.length) return message('請先建立另一個目標單元', true);
+  const select = $('targetUnitSelect');
+  select.replaceChildren();
+  for (const unit of others) {
+    const option = document.createElement('option');
+    option.value = unit.id;
+    option.textContent = unit.name;
+    select.append(option);
+  }
+  $('moveQuantity').textContent = selectedWordIds.size;
+  openDialog($('moveDialog'));
+}
+function exportJSON() {
+  try {
+    downloadFile(serializeBackup(state), `單字卡備份_${new Date().toISOString().slice(0, 10)}.json`, 'application/json;charset=utf-8');
+    message('已送出 JSON 備份；請確認檔案已真正儲存');
+  } catch (error) { message(error.message, true); }
+}
+
+// PWA 只在 HTTPS/localhost 能註冊；單檔 file:// 仍可使用原本的單字功能。
+function installHelp() {
+  if (location.protocol === 'file:') {
+    message('直接開啟 HTML 可以使用，但不能安裝 PWA。請先將 PWA 資料夾放在 HTTPS 網站上，再使用 Chrome 的「加入主畫面」。');
+  } else if (window.matchMedia('(display-mode: standalone)').matches) {
+    message('目前已使用安裝版；可以斷網使用基本複習功能。');
+  } else {
+    message('Android Chrome：右上角 ⋮ →「安裝應用程式」或「加到主畫面」。需 HTTPS 網址並先載入完成。');
+  }
+}
+function updateOfflineNote() {
+  $('offlineNote').hidden = navigator.onLine;
+}
+$('installationHelpButton').addEventListener('click', installHelp);
+$('installAppButton').addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return installHelp();
+  const prompt = deferredInstallPrompt;
+  deferredInstallPrompt = null;
+  $('installAppButton').hidden = true;
+  try { await prompt.prompt(); } catch (error) { message('安裝提示無法開啟：' + error.message, true); }
+});
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  $('installAppButton').hidden = false;
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  $('installAppButton').hidden = true;
+  message('已安裝到桌面');
+});
+window.addEventListener('online', updateOfflineNote);
+window.addEventListener('offline', updateOfflineNote);
+updateOfflineNote();
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+      .catch(error => console.warn('離線快取註冊失敗：', error));
+  });
+}
+
+$('hatDialogClose').addEventListener('click', () => $('hatDialog').close());
+$('hatSpeakButton').addEventListener('click', () => { if (detailWordId && state.words[detailWordId]) pronounce(state.words[detailWordId].en); });
+$('reviewSpeakButton').addEventListener('click', () => { if (reviewSession && !reviewSession.complete) pronounce(state.words[reviewSession.wordIds[reviewSession.index]].en); });
+$('searchInput').addEventListener('input', renderSearchResults);
+$('clearSearchButton').addEventListener('click', () => { $('searchInput').value=''; renderSearchResults(); $('searchInput').focus(); });
+$('sortSelect').addEventListener('change', event => {
+  const method = event.target.value;
+  if (method && currentUnit()) runChange(() => sortUnitWords(state, selectedUnitId, method), method === 'input' ? '已恢復原始加入順序' : '已依熟練度排序，同級隨機');
+  event.target.value = '';
+});
+$('copyBookmarksButton').addEventListener('click', openCopyDialog);
+$('clearUnitsButton').addEventListener('click', () => {selectedUnitIds.clear(); renderUnits();});
+$('bulkImportButton').addEventListener('click', openBulkDialog);
+$('mergeButton').addEventListener('click', () => $('mergeFileInput').click());
+$('mergeFileInput').addEventListener('change', async event => {
+  await mergeJSON(event.target.files?.[0]); event.target.value='';
+});
+$('txtButton').addEventListener('click', () => {
+  try {
+    downloadFile(exportTXT(state), `單字清單_${new Date().toISOString().slice(0,10)}.txt`, 'text/plain;charset=utf-8');
+    message('已開始下載 TXT，請確認檔案已儲存');
+  } catch (error) { message(error.message, true); }
+});
+$('copyForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const ok = runChange(() => copyBookmarkedToNewUnit(state, [...selectedUnitIds], $('copyNameInput').value), '已建立獨立書籤單元');
+  if (ok) {
+    selectedUnitIds.clear(); $('copyDialog').close();
+    selectUnit(state.units[state.units.length-1].id);
+  }
+});
+$('bulkForm').addEventListener('submit', event => {
+  event.preventDefault();
+  try {
+    const pairs = parseBulkWords($('bulkTextInput').value);
+    const ok = runChange(() => addWordsBatch(state, selectedUnitId, pairs), `成功加入 ${pairs.length} 個單字`);
+    if (ok) $('bulkDialog').close();
+  } catch (error) { message(error.message, true); }
+});
+$('newUnitButton').addEventListener('click', openAddUnit);
+$('welcomeAddUnit').addEventListener('click', openAddUnit);
+$('renameUnitButton').addEventListener('click', openRenameUnit);
+$('deleteUnitButton').addEventListener('click', () => {
+  const unit = currentUnit();
+  if (!unit || !confirm(`確定刪除單元「${unit.name}」和其中 ${unit.wordIds.length} 個單字嗎？\n\n此操作無法復原。`)) return;
+  const removedId = unit.id;
+  const ok = runChange(() => deleteUnit(state, removedId), '單元已刪除');
+  if (ok) selectedUnitIds.delete(removedId);
+  if (ok) selectUnit(state.units[0]?.id || null);
+});
+$('addWordButton').addEventListener('click', openAddWord);
+$('moveButton').addEventListener('click', openMoveDialog);
+$('selectAll').addEventListener('change', event => {
+  const unit = currentUnit();
+  selectedWordIds = event.target.checked ? new Set(unit.wordIds) : new Set();
+  render();
+});
+$('clearSelectionButton').addEventListener('click', () => { selectedWordIds.clear(); render(); });
+$('backupButton').addEventListener('click', exportJSON);
+$('restoreButton').addEventListener('click', () => $('restoreFileInput').click());
+$('restoreFileInput').addEventListener('change', async event => {
+  const file = event.target.files?.[0];
+  await restoreJSON(file);
+  event.target.value = '';
+});
+$('reviewModeSelect').addEventListener('change', refreshReviewEligibility);
+$('startReviewButton').addEventListener('click', () => startSession($('reviewModeSelect').value));
+$('reviewExitButton').addEventListener('click', abandonSession);
+$('resultExitButton').addEventListener('click', abandonSession);
+$('reviewCard').addEventListener('click', () => {
+  if (!reviewSession || reviewSession.complete) return;
+  reviewSession = reviewFlip(reviewSession);
+  render();
+});
+$('rememberButton').addEventListener('click', () => chooseAnswer(true));
+$('forgetButton').addEventListener('click', () => chooseAnswer(false));
+$('reviewPrevButton').addEventListener('click', () => navigateReview(-1));
+$('reviewNextButton').addEventListener('click', () => navigateReview(1));
+$('reviewRestartButton').addEventListener('click', () => {
+  if (reviewSession?.complete) startSession(reviewSession.mode);
+});
+$('reviewForgottenButton').addEventListener('click', () => {
+  if (!reviewSession?.complete) return;
+  const ids = reviewSession.wordIds.filter((_, i) => reviewSession.answers[i] === false);
+  if (ids.length) startSession(reviewSession.mode, ids);
+});
+$('unitForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const text = $('unitNameInput').value;
+  const ok = editingUnitId
+    ? runChange(() => renameUnit(state, editingUnitId, text), '單元已重新命名')
+    : runChange(() => addUnit(state, text), '單元已新增');
+  if (ok) {
+    $('unitDialog').close();
+    if (!editingUnitId) selectUnit(state.units[state.units.length - 1].id);
+  }
+});
+$('wordForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const en = $('englishInput').value;
+  const zh = $('chineseInput').value;
+  const ok = editingWordId
+    ? runChange(() => editWord(state, editingWordId, en, zh), '單字已修改')
+    : runChange(() => addWord(state, selectedUnitId, en, zh), '單字已新增');
+  if (ok) $('wordDialog').close();
+});
+$('moveForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const amount = selectedWordIds.size;
+  const ids = [...selectedWordIds];
+  const ok = runChange(() => moveWords(state, ids, $('targetUnitSelect').value), `已移動 ${amount} 個單字`);
+  if (ok) { selectedWordIds.clear(); $('moveDialog').close(); render(); }
+});
+document.querySelectorAll('[data-close-dialog]').forEach(b => b.addEventListener('click', () => $(b.dataset.closeDialog).close()));
+
+async function boot() {
+  try {
+    const loaded = await storage.init();
+    if (loaded && !validateState(loaded)) throw new Error('發現不相容或損壞的已儲存資料。為避免覆蓋舊資料，已停止操作。');
+    state = loaded || initialState();
+    selectedUnitId = state.units[0]?.id || null;
+    $('saveStatus').textContent = storage.mode === 'memory' ? '無法持久儲存' : `已連線（${storage.mode === 'indexedDB' ? '本機資料庫' : '本機儲存'}）`;
+    if (storage.mode === 'memory') message('瀏覽器拒絕永久儲存資料！請改用一般瀏覽器開啟，或每次匯出備份。', true);
+    render();
+  } catch (error) {
+    $('saveStatus').textContent = '資料載入失敗';
+    message(error.message, true);
+    document.querySelectorAll('button, input').forEach(node => { node.disabled = true; });
+  }
+}
+boot();
+</script>
+</body>
+</html>

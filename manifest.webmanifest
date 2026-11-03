@@ -1,0 +1,16 @@
+{
+  "id": "./index.html",
+  "name": "英中單字卡 — 離線背單字",
+  "short_name": "英中單字卡",
+  "description": "本機英中單字卡、複習、熟練度和 46 級稱號",
+  "lang": "zh-Hant",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
