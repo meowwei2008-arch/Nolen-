@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.5 離線版</title>
+  <title>英中單字卡 | v1.6.2 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -216,42 +216,146 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 }
 @media(max-width:800px){.unit-list{scroll-snap-type:none}.unit-item{scroll-snap-align:none}}
 
+/* 進階設定：保留英美語音切換，預設收合 */
+.advanced-settings{margin-top:14px;border-top:1px solid #384767;padding-top:12px}
+.advanced-settings summary{display:inline-block;cursor:pointer;color:#b7c8e8;font-size:12px;font-weight:700;padding:6px 0;list-style:none}
+.advanced-settings summary::-webkit-details-marker{display:none}
+.advanced-settings summary::before{content:'▸';margin-right:7px}
+.advanced-settings[open] summary::before{content:'▾'}
+.advanced-settings-content{margin-top:9px;padding:12px 14px;background:#101b30;border:1px solid #384767;border-radius:11px}
+.advanced-settings-content .voice-control{margin:0;justify-content:flex-start;flex-wrap:wrap}
+.advanced-settings-content p{margin:9px 0 0;color:#9eafcd;font-size:12px;line-height:1.6}
+@media(max-width:800px){.advanced-settings-content .voice-control{width:100%}.advanced-settings-content .voice-control select{max-width:100%}}
+
 /* 階段五：安裝及離線狀態 */
 .offline-note{background:#3b2d24;color:#ffe2c5;border:1px solid #9b7042;border-radius:12px;padding:13px 16px;margin:16px 0;font-size:13px;line-height:1.55}
 #installationHelpButton{min-height:41px}
 #installAppButton{border-color:#6c82ad}
+
+/* ─── v1.6：離線例句題庫、書籤檢視、收藏帽子 ─── */
+.example-hub{padding:20px 23px;margin:0 0 20px}.example-heading{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}.example-heading h2{font-size:21px;margin:6px 0}.example-heading p{color:var(--muted);font-size:13px;line-height:1.7;margin:0;max-width:620px}.example-heading code{background:#293559;border:1px solid #4c5a7b;border-radius:5px;padding:2px 5px;color:#f6defa}.example-actions{display:flex;flex-wrap:wrap;gap:8px}.example-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#cbd5ed;font-size:13px;margin-top:16px}.example-library{margin-top:14px;border-top:1px solid var(--border);padding-top:13px}.example-library-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.example-row{display:flex;align-items:start;justify-content:space-between;gap:10px;background:#10182c;border:1px solid #36435f;border-radius:11px;padding:10px 12px;margin:7px 0;font-size:13px;line-height:1.6;overflow-wrap:anywhere}.example-row strong{color:#dfd8ff}.example-row button{flex-shrink:0}.example-quiz{margin-top:16px;padding:18px;background:#121e34;border:1px solid #46547e;border-radius:15px}.example-quiz-top,.example-quiz-footer{display:flex;justify-content:space-between;align-items:center;gap:12px}.example-quiz-top{margin-bottom:15px}.example-quiz-footer{margin-top:18px}.example-question{font-size:clamp(18px,3vw,24px);font-weight:650;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:22px 0}.example-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.example-option{width:100%;background:#212e48;border:1px solid #4b5b7e;border-radius:12px;padding:13px;text-align:left;color:white;min-height:52px;overflow-wrap:anywhere}.example-option:not(:disabled):hover{background:#354369}.example-option.correct{border-color:#56ceab;background:#174b43;color:#d0fff0}.example-option.incorrect{border-color:#f08c99;background:#623340}.example-option:disabled{opacity:1}.example-feedback{min-height:25px;margin:14px 0 0;color:#cfd8f1;font-size:14px;line-height:1.65}.example-feedback.good{color:#7ae0bc}.example-feedback.bad{color:#ffb5bd}.detail-navigation{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0 16px}.detail-counter{font-size:12px;color:var(--muted)}.hat-recent-badges{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.hat-recent-badges .hat-badge{display:inline-block;padding:8px 10px}.hat-row-label{line-height:1.6;overflow-wrap:anywhere}.example-library-more{color:var(--muted)}
+@media(max-width:700px){.example-hub{padding:16px}.example-actions{width:100%}.example-actions button{flex:1;min-width:0}.example-options{grid-template-columns:1fr}.example-question{font-size:19px}.example-quiz{padding:14px}}
+
+/* v1.6.2 layout: top-right global-search icon, two-way review chooser and adjacent TXT import. */
+.top-actions{gap:9px}.icon-search-button{width:41px;height:41px;min-width:41px;display:grid;place-items:center;padding:0;border-radius:12px;border:1px solid #4b5979;color:#e1e5ff;background:#222b42}.icon-search-button:hover{background:#354166;border-color:#8883f0}
+.review-controls{width:315px}.review-action-buttons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.review-action-buttons button{min-width:0;font-size:13px;padding:10px 7px;white-space:normal;line-height:1.3}.review-eligible-note{color:#b9c9e8;font-size:11px;line-height:1.4}
+.mode-choice-dialog{width:min(530px,calc(100vw - 26px))}.mode-choice-content{padding:23px}.mode-choice-heading,.search-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.mode-choice-heading h2,.search-dialog-heading h2{margin:0;font-size:21px}.mode-choice-content>p{color:#b7c6e1;font-size:13px;line-height:1.6;margin:12px 0 20px}.mode-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mode-choice-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;min-width:0;min-height:162px;padding:16px 10px;border:1px solid #515d83;border-radius:15px;background:linear-gradient(160deg,#283654,#1a2641);color:#f0f3ff;transition:background .15s,border-color .15s,transform .15s}.mode-choice-tile:not(:disabled):hover{background:#343c71;border-color:#b6acff;transform:translateY(-1px)}.mode-choice-tile strong{font-size:20px}.mode-choice-icon{width:64px;height:52px;display:grid;place-items:center;border-radius:12px;background:#4d487b;color:#efecff;font-size:19px;font-weight:800;letter-spacing:.02em}.mode-choice-tile:last-child .mode-choice-icon{background:#214f60;color:#c9f8ff;font-size:13px;white-space:nowrap}.mode-choice-description{color:#c1cce2;font-size:12px;line-height:1.55;overflow-wrap:anywhere}.mode-choice-tile:disabled{opacity:.42}.mode-choice-content>p.mode-choice-help{margin:14px 0 0;font-size:12px}
+.search-dialog{width:min(620px,calc(100vw - 24px));max-height:min(88vh,820px);overflow-y:auto}.search-dialog-content{padding:22px}.search-dialog .search-field{margin:20px 0 0;color:#d2daec}.search-dialog input[type="search"]{width:100%;min-height:48px;border:1px solid #51607f;background:#0e182c;border-radius:11px;color:var(--text);padding:12px 14px}.search-dialog .search-results-panel{margin-top:16px}.search-dialog .search-result-list{max-height:min(50vh,420px)}
+.example-hub{padding:0;margin:3px 0 15px}.example-quiz{margin-top:20px}
+@media(max-width:800px){.topbar-inner{position:relative}.top-actions{gap:6px}.top-actions .icon-search-button{position:absolute;top:12px;right:14px}.brand{max-width:calc(100% - 48px)}.icon-search-button{width:39px;height:39px;min-width:39px}.review-controls{width:100%}.review-action-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.example-hub{padding:0}.search-dialog-content{padding:16px}}
+@media(max-width:390px){.topbar .top-actions>.secondary-button{padding:7px 5px;font-size:11px}.topbar-inner{gap:8px}.brand{gap:8px}.brand h1{font-size:15px}.brand-mark{width:35px;height:35px;font-size:19px}.brand p{font-size:10px}.mode-choice-content{padding:16px}.mode-choice-grid{gap:8px}.mode-choice-tile{padding:12px 7px;min-height:150px}.mode-choice-tile strong{font-size:17px}.mode-choice-icon{width:56px}}
+
+/* ─── v1.6.2：頂部資料工具與單元抽屜，讓單字清單提前出現 ─── */
+.topbar{position:relative;z-index:10}
+.topbar-inner{justify-content:flex-start;gap:13px}
+.top-actions{margin-left:auto;gap:8px;min-width:0}
+.nav-menu-button{flex:0 0 43px;width:43px;height:43px;display:grid;place-items:center;color:#edeaff;background:#222b42;border:1px solid #536180;border-radius:12px;padding:0}
+.nav-menu-button:hover{background:#353f63;border-color:#a6a1ff}
+.layout{display:block}
+.main{padding-top:14px}
+.workspace{max-width:none;min-height:350px}
+.top-tools-menu{position:relative;flex:0 0 auto}
+.top-tools-menu>summary{display:flex;align-items:center;justify-content:center;list-style:none;cursor:pointer;white-space:nowrap;min-height:40px;user-select:none}
+.top-tools-menu>summary::-webkit-details-marker{display:none}
+.top-tools-menu[open]>summary{border-color:#b0abff;background:#34385c}
+.top-tools-content{position:absolute;z-index:140;right:0;top:calc(100% + 10px);width:min(320px,calc(100vw - 28px));background:#1a2540;border:1px solid #536488;border-radius:16px;padding:14px;box-shadow:0 22px 55px #050915cb;display:flex;flex-direction:column;gap:9px}
+.top-tools-title{font-size:14px;color:#e8ecff;padding:2px 3px}
+.top-tools-content>button{width:100%;text-align:left;min-height:40px}
+.top-tools-content .advanced-settings{margin-top:2px;padding-top:9px}
+.top-tools-content .advanced-settings-content{padding:10px}
+.top-tools-content .advanced-settings-content .voice-control{display:flex;flex-direction:column;align-items:stretch;gap:7px}
+.top-tools-content .advanced-settings-content .voice-control select{width:100%}
+.unit-drawer{margin:0;position:fixed;inset:0 auto 0 0;width:min(375px,calc(100vw - 30px));height:100dvh;max-height:100dvh;max-width:none;padding:18px;border:1px solid #475879;border-left:none;border-radius:0 20px 20px 0;overflow-y:auto;overscroll-behavior:contain;background:#151e35;color:var(--text);box-shadow:20px 0 70px #010511ae}
+.unit-drawer::backdrop{background:#020713b9;backdrop-filter:blur(3px)}
+.unit-drawer .drawer-heading{position:sticky;top:-18px;background:#151e35;z-index:1;padding:6px 0 14px;border-bottom:1px solid var(--border)}
+.unit-drawer h3{font-size:19px;margin:0}
+.drawer-count{font-size:13px;color:var(--muted)}
+.drawer-add{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 0 12px}
+.drawer-add .section-hint{margin:0;line-height:1.5;flex:1}
+.drawer-add button{flex:0 0 auto}
+.unit-drawer .unit-list{display:flex;flex-direction:column;overflow:visible;gap:8px;scroll-snap-type:none;padding:0}
+.unit-drawer .unit-select-row{width:100%;min-width:0;flex:none;gap:9px}
+.unit-drawer .unit-item{flex:1 1 auto;min-width:0;scroll-snap-align:none;padding:12px}
+.unit-drawer .multiunit-box{margin-top:22px}
+.unit-drawer .side-bottom{margin:18px 0 0}
+.word-list-help{margin:22px 0 12px;padding:10px 12px;border:1px solid #34415e;border-radius:12px;color:#bac9e5;font-size:13px}
+.word-list-help summary{cursor:pointer;font-weight:650}
+.word-list-help .stage-note{margin:12px 0 1px}
+.hat-leaderboard{margin-top:16px}
+@media(max-width:800px){
+  .topbar-inner{display:grid;grid-template-columns:43px minmax(0,1fr) 40px;grid-template-rows:44px auto;align-items:center;gap:7px 10px;padding-top:9px;padding-bottom:10px;min-height:0}
+  .brand{grid-column:2;grid-row:1;max-width:100%;min-width:0;gap:8px}
+  .brand-mark{width:36px;height:36px;font-size:19px;flex:0 0 36px;border-radius:12px}
+  .brand h1{font-size:16px;white-space:nowrap}
+  .brand p{font-size:10px}
+  .nav-menu-button{grid-column:1;grid-row:1;width:42px;height:42px}
+  .top-actions{display:flex;grid-column:1/-1;grid-row:2;justify-content:space-between;width:100%;margin:0;gap:7px}
+  .top-actions .icon-search-button{position:absolute;top:11px;right:14px;width:40px;height:40px;min-width:40px}
+  .top-actions>.secondary-button,.top-tools-menu>summary{font-size:12px!important;min-height:38px!important;white-space:nowrap;padding:8px 10px!important}
+  .top-actions>.secondary-button{flex:1 1 0;min-width:0}
+  .top-tools-menu{flex:1 1 0}
+  .top-tools-menu>summary{width:100%}
+  .top-tools-content{right:0;width:min(320px,calc(100vw - 28px))}
+  .main{padding-top:10px}
+  .workspace{padding:16px}
+  .workspace-head h2{font-size:22px}
+  .head-buttons{gap:6px}
+  .head-buttons button{min-height:33px;font-size:12px;padding:6px 8px}
+  .review-launch{gap:11px;padding:13px;margin:13px 0 12px}
+  .review-launch h3{font-size:17px;margin:3px 0 0}
+  .review-launch-copy>p{display:none}
+  .review-controls{gap:8px}
+  .review-controls label{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .review-controls label select{width:min(65%,230px);margin:0}
+  .review-action-buttons button{min-height:40px}
+  .review-eligible-note{display:none}
+  .toolbar{margin-top:11px}
+  .word-toolbar-actions{margin-top:2px}
+}
+@media(max-width:390px){
+  .brand h1{font-size:14px}
+  .brand p{font-size:9px}
+  .top-actions>.secondary-button,.top-tools-menu>summary{font-size:11px!important;padding:7px 5px!important}
+}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.5 · 階段 5/5</span></h1><p>離線背單字 · 帽子 · 搜尋 · 備份</p></div></div>
-    <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button">↓ JSON 備份</button></div>
+    <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.2 · 批鬥帽子升級</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
+      <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
+        <div class="top-tools-content" aria-label="資料工具及進階設定">
+          <strong class="top-tools-title">資料工具</strong>
+          <button id="installAppButton" class="secondary-button" type="button" hidden>＋ 安裝到桌面</button>
+          <button id="installationHelpButton" class="quiet-button" type="button">如何離線安裝？</button>
+          <button id="mergeButton" class="secondary-button" type="button">＋ JSON 合併匯入</button><input id="mergeFileInput" type="file" accept=".json,application/json" hidden>
+          <button id="txtButton" class="secondary-button" type="button">↓ TXT 匯出</button>
+          <details class="advanced-settings" id="advancedSettings">
+            <summary>進階設定</summary>
+            <div class="advanced-settings-content">
+              <label class="voice-control" for="voiceSelect">英語發音口音
+                <select id="voiceSelect" aria-label="英語發音腔調"><option value="en-US">美式 English (US)</option><option value="en-GB">英式 English (UK)</option></select>
+              </label>
+              <p>預設美式。英式發音需要裝置提供相應的英語語音；若未安裝，實際聲音可能仍是美式。</p>
+            </div>
+          </details>
+        </div>
+      </details>
+      <button id="openSearchButton" type="button" class="icon-search-button" aria-label="全域搜尋" title="全域搜尋" aria-haspopup="dialog" aria-controls="searchDialog"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7.5"></circle><path d="m16.5 16.5 4.2 4.2"></path></svg></button>
+    </div>
   </div></header>
+  <dialog class="unit-drawer" id="unitSidebar" aria-labelledby="unitDrawerTitle" aria-modal="true">
+    <div class="side-top drawer-heading"><h3 id="unitDrawerTitle">單元列表 <span class="drawer-count">(<span id="unitCount">0</span>)</span></h3><button id="closeUnitDrawer" type="button" class="quiet-button small-button" aria-label="關閉單元列表">✕</button></div>
+    <div class="drawer-add"><span class="section-hint">點選單元切換，勾選則可批次複製書籤。</span><button class="primary-button small-button" id="newUnitButton" type="button">＋ 新增</button></div>
+    <nav id="unitList" class="unit-list" aria-label="切換單元"></nav>
+    <div class="multiunit-box"><div class="multiunit-title"><strong>多單元書籤複製</strong><button id="clearUnitsButton" class="quiet-button small-button" type="button">清除</button></div><p>勾選單元，把其中已加入書籤的單字複製成新單元。原字不變。</p><button id="copyBookmarksButton" class="secondary-button" type="button" disabled>複製所選單元書籤（<span id="selectedUnitCount">0</span>）</button></div>
+    <div class="side-bottom">所有單元合計：<strong id="totalWords">0</strong> 個單字</div>
+  </dialog>
   <main class="container main">
-    <section class="intro"><h2>你的單字基地</h2><p>第五階段：固定美式語音設定、手機離線使用、備份保護。若安裝成 PWA，首次開啟並載入完成後，即使斷網仍可繼續使用基本功能。</p></section>
-    <section class="tools-panel" aria-label="全域搜尋與資料工具">
-      <div class="tools-header"><h3>全域搜尋與資料工具</h3><span class="section-hint">不需登入，資料留在本機</span></div>
-      <label class="field search-field" for="searchInput">搜尋所有單元的英文或中文
-        <input id="searchInput" type="search" placeholder="例如：crane、社會學…" autocomplete="off">
-      </label>
-      <div id="searchResultsPanel" class="search-results-panel" hidden><div class="search-heading"><strong id="searchCount">0 筆結果</strong><button id="clearSearchButton" class="quiet-button small-button">清除搜尋</button></div><div id="searchResults" class="search-result-list"></div></div>
-      <div class="tools-actions">
-        <button id="installAppButton" class="secondary-button" type="button" hidden>＋ 安裝到桌面</button>
-        <button id="installationHelpButton" class="quiet-button" type="button">如何離線安裝？</button>
-        <button id="mergeButton" class="secondary-button">＋ JSON 合併匯入</button><input id="mergeFileInput" type="file" accept=".json,application/json" hidden>
-        <button id="txtButton" class="secondary-button">↓ TXT 匯出</button>
-      </div>
-    </section>
     <div class="layout">
-      <aside class="panel side" aria-label="單元管理">
-        <div class="side-top"><h3>單元列表 <span class="section-hint">(<span id="unitCount">0</span>)</span></h3><button class="primary-button small-button" id="newUnitButton">＋ 新增</button></div>
-        <p class="section-hint">點選單元，即可管理其中的單字。</p>
-        <nav id="unitList" class="unit-list" aria-label="切換單元"></nav>
-        <div class="multiunit-box"><div class="multiunit-title"><strong>多單元書籤複製</strong><button id="clearUnitsButton" class="quiet-button small-button">清除</button></div><p>勾選單元，再把其中所有已加入書籤的單字複製成一個新單元。原字不變。</p><button id="copyBookmarksButton" class="secondary-button" disabled>複製所選單元書籤（<span id="selectedUnitCount">0</span>）</button></div>
-        <div class="side-bottom">所有單元合計：<strong id="totalWords">0</strong> 個單字</div>
-      </aside>
       <section class="panel workspace" aria-live="polite">
-        <div id="welcomePanel" class="welcome"><div class="empty-illustration">Aa</div><h2>先建立第一個單元吧</h2><p>可以依照課本章節、主題，或你想要的方式分類。新單字預設紅色熟練度，資料會保存在這台裝置上。</p><button class="primary-button" id="welcomeAddUnit">＋ 建立單元</button></div>
+        <div id="welcomePanel" class="welcome"><div class="empty-illustration">Aa</div><h2>先建立第一個單元吧</h2><p>點左上角 ☰ 可隨時開啟單元列表，也可以從這裡建立第一個單元。新單字預設紅色熟練度，資料會保存在這台裝置上。</p><button class="primary-button" id="welcomeAddUnit">＋ 建立單元</button></div>
         <div id="unitPanel" hidden>
           <div class="workspace-head">
             <div><span class="eyebrow">目前單元</span><h2 id="unitTitle"></h2><p class="head-sub">單元最近五輪熟練度：<strong id="unitPercent">0%</strong></p></div>
@@ -259,16 +363,22 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           </div>
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
-            <div class="review-controls"><label for="reviewModeSelect">本輪題目<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><button id="startReviewButton" class="primary-button">開始複習 <span id="reviewEligibleCount"></span></button></div>
+            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
-          <div class="stage-note"><strong>第四階段：管理工具開放。</strong> 搜尋可跨單元；熟練度排序只在按下時執行；書籤複製產生獨立單字（保留書籤，熟練度重新從紅色開始，忘記次數歸零）。</div>
-          <section class="hat-leaderboard" id="hatLeaderboard" hidden aria-label="本單元批鬥排行榜"><div class="hat-board-heading"><div><span class="eyebrow">批鬥公告欄</span><h3>本單元的重點關照對象</h3></div><span class="section-hint">依忘記次數排名</span></div><div id="hatLeaders" class="hat-board-list"></div></section>
           <div class="toolbar phase4-toolbar"><h3>單字清單 <small>共 <span id="wordCount">0</span> 個</small></h3><div class="word-toolbar-actions"><label for="sortSelect" class="sort-control">排序
-            <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級隨機）</option></select>
+            <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級隨機）</option><option value="bookmarked">★ 書籤優先（不更動原順序）</option></select>
           </label><button id="bulkImportButton" class="secondary-button">批次貼上匯入</button><button id="addWordButton" class="primary-button">＋ 新增單字</button></div></div>
           <label class="checkbox-line" style="margin-top:14px"><input id="selectAll" type="checkbox"> 全選本單元</label><div class="selection-bar" id="selectionToolbar" hidden><span>已選取 <span id="selectedCount">0</span> 個</span><button id="moveButton" class="secondary-button small-button">移動到其他單元</button><button id="clearSelectionButton" class="quiet-button small-button">取消選取</button></div>
           <div id="wordList" class="word-list"></div>
+          <details class="word-list-help"><summary>批鬥帽子與排序規則</summary><div class="stage-note"><strong>批鬥帽子：</strong> 每次選「不記得」會隨機抽一頂不重複稱號，最多收藏 46 頂；舊版忘記次數會補抽。書籤優先只是暫時檢視，不會改變單字順序。</div></details>
+          <section class="hat-leaderboard" id="hatLeaderboard" hidden aria-label="本單元批鬥排行榜"><div class="hat-board-heading"><div><span class="eyebrow">批鬥公告欄</span><h3>本單元的重點關照對象</h3></div><span class="section-hint">依忘記次數排名</span></div><div id="hatLeaders" class="hat-board-list"></div></section>
         </div>
+    <section class="example-hub" id="exampleHub" hidden aria-label="例句題庫與選擇題">
+      <div class="example-heading"><div><span class="eyebrow">CLOZE QUIZ · 獨立模式</span><h2>字彙測驗 · 例句填空</h2><p>每行一個英文例句，只用一組 <code>“答案”</code> 標記挖空；TXT 匯入後完全離線，不會影響單字熟練度或批鬥帽子。</p></div><div class="example-actions"><button id="exampleStartButton" type="button" class="secondary-button">↻ 重新開始測驗</button></div></div>
+      <div class="example-summary"><span id="exampleCountLabel">題庫共 0 題</span><button id="exampleManageButton" type="button" class="quiet-button small-button">管理題庫</button></div>
+      <div id="exampleLibrary" class="example-library" hidden><div class="example-library-head"><strong>已匯入的例句</strong><button id="exampleClearButton" type="button" class="danger-quiet small-button">清空題庫</button></div><div id="exampleLibraryItems"></div><p id="exampleLibraryMore" class="section-hint"></p></div>
+      <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
+    </section>
         <section id="reviewPanel" class="review-screen" hidden aria-label="複習單字卡">
           <div class="review-top"><button id="reviewExitButton" class="quiet-button">← 返回單元</button><span id="reviewUnitLabel" class="review-unit-label"></span></div>
           <div class="review-heading"><div><div class="eyebrow">FLASHCARDS</div><h2>單字複習</h2></div><div class="review-counter" id="reviewProgress">第 1 / 1 張</div></div>
@@ -291,18 +401,35 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       </section>
     </div>
     <div id="offlineNote" class="offline-note" role="status" aria-live="polite" hidden>目前沒有網路：本機單字、複習和資料管理仍可使用；線上字典及部分語音可能無法使用。</div>
-    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用右上角「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」不覆蓋、不去重、重新產生單字與單元 ID。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音固定 en-US，實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
+    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用上方「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」不覆蓋、不去重、重新產生單字與單元 ID。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音預設 en-US，可在進階設定選擇 en-GB；實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
   </main>
+  <dialog class="dialog mode-choice-dialog" id="reviewChoiceDialog" aria-labelledby="reviewChoiceHeading">
+    <div class="mode-choice-content"><div class="mode-choice-heading"><h2 id="reviewChoiceHeading">選擇複習方式</h2><button id="reviewChoiceClose" type="button" class="quiet-button small-button" aria-label="關閉複習選單">✕</button></div>
+      <p>左邊是字卡，右邊是例句四選一。兩種模式互不影響成績。</p>
+      <div class="mode-choice-grid">
+        <button id="reviewChoiceCard" type="button" class="mode-choice-tile"><span class="mode-choice-icon" aria-hidden="true">Aa</span><strong>字卡</strong><span id="reviewChoiceCardDetail" class="mode-choice-description">翻面回想中文意思</span></button>
+        <button id="reviewChoiceQuiz" type="button" class="mode-choice-tile"><span class="mode-choice-icon" aria-hidden="true">A B C D</span><strong>字彙測驗</strong><span id="reviewChoiceQuizDetail" class="mode-choice-description">例句挖空 · 四選一</span></button>
+      </div>
+      <p id="reviewChoiceHelp" class="mode-choice-help"></p>
+    </div>
+  </dialog>
+  <dialog class="dialog search-dialog" id="searchDialog" aria-labelledby="searchDialogHeading">
+    <div class="search-dialog-content"><div class="search-dialog-heading"><h2 id="searchDialogHeading">全域搜尋</h2><button id="searchCloseButton" type="button" class="quiet-button small-button" aria-label="關閉搜尋">✕</button></div>
+      <label class="field search-field" for="searchInput">搜尋所有單元的英文或中文<input id="searchInput" type="search" placeholder="例如：crane、社會學…" autocomplete="off"></label>
+      <div id="searchResultsPanel" class="search-results-panel" hidden><div class="search-heading"><strong id="searchCount">0 筆結果</strong><button id="clearSearchButton" class="quiet-button small-button">清除搜尋</button></div><div id="searchResults" class="search-result-list"></div></div>
+    </div>
+  </dialog>
   <dialog class="dialog" id="unitDialog"><form id="unitForm"><h2 id="unitDialogHeading">新增單元</h2><p>為單元取一個方便辨認的名字。</p><label class="field" for="unitNameInput">單元名稱<input id="unitNameInput" maxlength="80" autocomplete="off" required placeholder="例如：Day 1 或 社會學單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="unitDialog">取消</button><button type="submit" class="primary-button">儲存</button></div></form></dialog>
   <dialog class="dialog" id="wordDialog"><form id="wordForm"><h2 id="wordDialogHeading">新增單字</h2><p>單字與中文解釋都可以日後修改。</p><label class="field" for="englishInput">英文<input id="englishInput" maxlength="200" autocomplete="off" required placeholder="例如：sociology"></label><label class="field" for="chineseInput">中文意思<input id="chineseInput" maxlength="300" autocomplete="off" required placeholder="例如：社會學"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="wordDialog">取消</button><button type="submit" class="primary-button">儲存</button></div></form></dialog>
   <dialog class="dialog hat-dialog" id="hatDialog" aria-labelledby="hatDialogHeading"><div class="hat-detail">
     <div class="hat-dialog-top"><span class="eyebrow">單字批鬥檔案</span><button id="hatDialogClose" type="button" class="quiet-button small-button" aria-label="關閉單字詳情">✕ 關閉</button></div>
+    <nav class="detail-navigation" aria-label="單字詳情切換"><button id="hatPrevButton" type="button" class="quiet-button small-button">← 上一張</button><span id="hatDetailPosition" class="detail-counter">1 / 1</span><button id="hatNextButton" type="button" class="quiet-button small-button">下一張 →</button></nav>
     <h2 id="hatDialogHeading"></h2><p id="hatWordTranslation" class="hat-translation"></p>
-    <div class="hat-stats"><div><span>現任稱號</span><strong id="hatCurrentTitle">尚未戴帽</strong></div><div><span>累積「不記得」</span><strong id="hatForgetTotal">0 次</strong></div></div>
+    <div class="hat-stats"><div><span>最新一頂帽子</span><strong id="hatCurrentTitle">尚未戴帽</strong></div><div><span>累積「不記得」</span><strong id="hatForgetTotal">0 次</strong></div></div><div id="hatRecentBadges" class="hat-recent-badges" aria-label="最近取得的三頂帽子"></div>
     <div class="hat-progress"><div class="hat-progress-label"><span>稱號進度</span><strong id="hatRankLabel">0 / 46</strong></div><div class="progress-track"><div id="hatProgressFill" class="progress-fill"></div></div></div>
     <p id="hatNextMessage" class="hat-next"></p>
     <p id="hatWordMeta" class="hat-word-meta"></p><div class="hat-tools"><button id="hatSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="hatCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
-    <details class="hat-all-titles"><summary>展開查看完整 46 級稱號表</summary><ol id="hatTitleList"></ol></details>
+    <details class="hat-all-titles" id="hatHistoryDetails" hidden><summary id="hatHistorySummary">展開查看全部帽子</summary><ol id="hatTitleList"></ol></details>
   </div></dialog>
   <dialog class="dialog" id="copyDialog"><form id="copyForm"><h2>複製書籤到新單元</h2><p id="copySummary">已選來源單元中的書籤單字，會複製為獨立副本。熟練度重設紅色、忘記次數歸零、書籤保留。</p><label class="field" for="copyNameInput">新單元名稱<input id="copyNameInput" maxlength="80" required placeholder="例如：本週重要單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="copyDialog">取消</button><button class="primary-button" type="submit">確認複製</button></div></form></dialog>
   <dialog class="dialog" id="bulkDialog"><form id="bulkForm"><h2>批次貼上單字</h2><p>每行一組：「英文,中文」或用 TAB 分隔；逗號後面的中文會保留。格式有誤時會顯示行號，整批都不會加入。</p><label class="field" for="bulkTextInput">貼上單字<textarea id="bulkTextInput" rows="9" placeholder="crane,鶴；起重機
@@ -310,11 +437,10 @@ alphabet,字母表
 condition	條件"></textarea></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="bulkDialog">取消</button><button class="primary-button" type="submit">全部匯入目前單元</button></div></form></dialog>
   <dialog class="dialog" id="moveDialog"><form id="moveForm"><h2>移動單字</h2><p>將所選 <strong id="moveQuantity">0</strong> 個單字移到另一個單元。原本的熟練度、書籤和忘記次數會保留，目標單元熟練度不變。</p><label class="field" for="targetUnitSelect">目標單元<select id="targetUnitSelect" required></select></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="moveDialog">取消</button><button type="submit" class="primary-button">確認移動</button></div></form></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script>/* 延續第一、二階段的資料模型；第三階段以 forgetCount 推導帽子，不新增資料欄位，舊備份可直接使用。 */
+  <script>/* v1.6: 延續舊版 schemaVersion 1，新增可選 hatHistory / examples 欄位。 */
 const SCHEMA_VERSION = 1;
 const PROFICIENCY = ['red', 'yellow', 'blue'];
 
-/** 累計忘記第 N 次所取得的帽子；順序是使用者指定的 46 個稱號。 */
 const HAT_TITLES = Object.freeze([
   '叛徒', '特務', '大軍閥', '反黨', '野心家', '走私派', '投降派', '修正主義', '大惡霸', '不革命',
   '黑秀才', '黑手', '黑幫', '經驗主義', '民族派', '中庸之道', '變色龍', '絆腳石', '牆頭草', '老好人',
@@ -322,16 +448,28 @@ const HAT_TITLES = Object.freeze([
   '唯生產力論', '活字典', '獨立王國', '白專典型', '名位思想', '多頭蛇', '鐵桿分子', '毒草', '舊勢力的代言人', '清談家',
   '風派人物', '折衷主義', '攔路虎', '假洋鬼子', '和平演變的推手', '社會渣滓'
 ]);
-/** 無任何帽子時為 null；超過 46 次仍固定最後稱號。 */
-function hatTitle(forgetCount) {
-  if (!Number.isSafeInteger(forgetCount) || forgetCount < 0) throw new Error('忘記次數必須是非負整數');
-  return forgetCount === 0 ? null : HAT_TITLES[Math.min(forgetCount, HAT_TITLES.length) - 1];
+function hatTitle(word) { return word?.hatHistory?.at(-1) || null; }
+function drawUniqueHat(word, random = Math.random) {
+  if (!Array.isArray(word.hatHistory)) word.hatHistory = [];
+  const available = HAT_TITLES.filter(title => !word.hatHistory.includes(title));
+  if (!available.length) return null; // 超過 46 次只增加忘記次數，不發重複帽子。
+  const choice = available[Math.floor(random() * available.length)];
+  word.hatHistory.push(choice);
+  return choice;
 }
-/** 專供畫面顯示下一頂帽子；集滿後為 null。 */
-function nextHatTitle(forgetCount) {
-  if (!Number.isSafeInteger(forgetCount) || forgetCount < 0) throw new Error('忘記次數必須是非負整數');
-  return forgetCount < HAT_TITLES.length ? HAT_TITLES[forgetCount] : null;
+/** 舊版僅記錄 forgetCount，首次升級補抽 min(忘記次數,46) 頂並保存；重啟不重抽。 */
+function migrateState(value) {
+  const next = copy(value);
+  if (!Array.isArray(next.examples)) next.examples = [];
+  for (const word of Object.values(next.words)) {
+    if (!Array.isArray(word.hatHistory)) word.hatHistory = [];
+    const target = Math.min(word.forgetCount, HAT_TITLES.length);
+    while (word.hatHistory.length < target) drawUniqueHat(word);
+  }
+  return next;
 }
+function latestHats(word, max = 3) { return (word.hatHistory || []).slice(-max).reverse(); }
+function hatsInline(word) { return latestHats(word).join(' · ') || '尚無帽子'; }
 
 function uid() {
   if (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function') return globalThis.crypto.randomUUID();
@@ -356,11 +494,23 @@ function findWord(state, wordId) {
   return word;
 }
 function initialState() {
-  return { schemaVersion: SCHEMA_VERSION, units: [], words: {}, reviewHistory: [], settings: { voice: 'en-US' }, createdAt: new Date().toISOString() };
+  return { schemaVersion: SCHEMA_VERSION, units: [], words: {}, examples: [], reviewHistory: [], settings: { voice: 'en-US' }, createdAt: new Date().toISOString() };
 }
 function validateState(state) {
   if (!state || state.schemaVersion !== 1 || !Array.isArray(state.units) || !state.words || typeof state.words !== 'object' || Array.isArray(state.words)) return false;
   if (!Array.isArray(state.reviewHistory) || !state.settings || typeof state.settings !== 'object') return false;
+  // 舊版備份可以沒有 examples / hatHistory；不影響驗證或還原。
+  if (state.examples !== undefined) {
+    if (!Array.isArray(state.examples) || state.examples.length > 50000) return false;
+    const exampleIds = new Set();
+    for (const item of state.examples) {
+      if (!item || typeof item.id !== 'string' || !item.id || exampleIds.has(item.id) ||
+          typeof item.sentence !== 'string' || item.sentence.length > 1000 || !item.sentence.trim() ||
+          typeof item.answer !== 'string' || item.answer.length > 200 || !item.answer.trim() ||
+          !item.sentence.includes('______')) return false;
+      exampleIds.add(item.id);
+    }
+  }
   const seen = new Set();
   const unitIds = new Set();
   for (const unit of state.units) {
@@ -378,6 +528,8 @@ function validateState(state) {
       if (!Object.prototype.hasOwnProperty.call(state.words, wordId)) return false;
       const w = state.words[wordId];
       if (!w || w.id !== wordId || w.unitId !== unit.id || typeof w.en !== 'string' || !w.en.trim() || typeof w.zh !== 'string' || !w.zh.trim() || !PROFICIENCY.includes(w.proficiency) || typeof w.bookmarked !== 'boolean' || !Number.isSafeInteger(w.forgetCount) || w.forgetCount < 0) return false;
+      if (w.hatHistory !== undefined && (!Array.isArray(w.hatHistory) || w.hatHistory.length !== Math.min(w.forgetCount, HAT_TITLES.length) ||
+          new Set(w.hatHistory).size !== w.hatHistory.length || w.hatHistory.some(x => !HAT_TITLES.includes(x)))) return false;
     }
   }
   if (Object.keys(state.words).length !== seen.size) return false;
@@ -416,7 +568,7 @@ function addWord(state, unitId, en, zh) {
   const next = copy(state);
   const unit = findUnit(next, unitId);
   const id = uid();
-  next.words[id] = { id, unitId, en: checkText(en, '英文', 200), zh: checkText(zh, '中文', 300), proficiency: 'red', bookmarked: false, forgetCount: 0, createdAt: new Date().toISOString() };
+  next.words[id] = { id, unitId, en: checkText(en, '英文', 200), zh: checkText(zh, '中文', 300), proficiency: 'red', bookmarked: false, forgetCount: 0, hatHistory: [], createdAt: new Date().toISOString() };
   originalOrder(unit).push(id);
   unit.wordIds.push(id);
   return next;
@@ -536,7 +688,7 @@ function gradeReview(state, session, remembered) {
   const nextSession = copy(session);
   const level = PROFICIENCY.indexOf(word.proficiency);
   word.proficiency = PROFICIENCY[Math.max(0, Math.min(PROFICIENCY.length - 1, level + (remembered ? 1 : -1)))];
-  if (!remembered) word.forgetCount += 1;
+  if (!remembered) { word.forgetCount += 1; drawUniqueHat(word); }
   nextSession.answers[session.index] = remembered;
   nextSession.flipped = false;
   const stats = reviewStats(nextSession);
@@ -566,7 +718,7 @@ function parseBackupForRestore(text) {
   let backup;
   try { backup = JSON.parse(text); } catch { throw new Error('JSON 內容無法解析'); }
   if (!backup || backup.format !== 'vocab-app-backup' || !validateState(backup.data)) throw new Error('備份內容不符合單字卡格式，未更動現有資料');
-  return copy(backup.data);
+  return migrateState(backup.data);
 }
 
 
@@ -661,7 +813,7 @@ function addWordsBatch(state, unitId, pairs) {
     const zh = checkText(pair[1], '中文', 300);
     const id = uid();
     next.words[id] = { id, unitId: unit.id, en, zh, proficiency:'red', bookmarked:false,
-      forgetCount:0, createdAt:new Date().toISOString() };
+      forgetCount:0, hatHistory:[], createdAt:new Date().toISOString() };
     unit.wordIds.push(id);
     original.push(id);
   }
@@ -682,7 +834,7 @@ function copyBookmarkedToNewUnit(state, selectedUnitIds, newName) {
     const id = uid();
     // 新副本的書籤維持已勾選，熟練度、帽子與忘記次數自成一套從新字開始。
     next.words[id] = { id, unitId:targetId, en:word.en, zh:word.zh, proficiency:'red',
-      bookmarked:true, forgetCount:0, createdAt:new Date().toISOString() };
+      bookmarked:true, forgetCount:0, hatHistory:[], createdAt:new Date().toISOString() };
     wordIds.push(id);
   }
   next.units.push({ id:targetId, name, wordIds, originalOrder:[...wordIds], reviewSlots:[], createdAt:new Date().toISOString() });
@@ -729,11 +881,82 @@ function mergeBackup(state, backupText) {
   for (const record of imported.reviewHistory) {
     next.reviewHistory.push({ ...copy(record), id:freshId(), unitId:unitIds.get(record.unitId) });
   }
+  const existingExamples = new Set((next.examples || []).map(q => `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`));
+  for (const q of imported.examples || []) {
+    const key = `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`;
+    if (existingExamples.has(key)) continue;
+    existingExamples.add(key);
+    next.examples.push({ ...copy(q), id:freshId() });
+  }
   // 合併不更動目前偏好設定，避免其他備份覆蓋使用者自己的英美發音選擇。
   if (!validateState(next)) throw new Error('合併後資料驗證失敗，沒有變更現有資料');
   return next;
 }
 
+
+
+/* ─── v1.6：例句 TXT 匯入。每行只允許一組 “答案” 或 "答案"。 ─── */
+function parseExampleTXT(text) {
+  if (typeof text !== 'string' || text.length > 4_000_000) throw new Error('例句檔案過大，請分批匯入');
+  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/);
+  if (lines.length > 20000) throw new Error('一次最多匯入 20,000 行例句');
+  const result = [];
+  lines.forEach((raw, lineIndex) => {
+    const line = raw.trim();
+    if (!line) return;
+    const markers = [...line.matchAll(/“([^”]+)”|"([^"\r\n]+)"/g)];
+    if (markers.length !== 1) throw new Error(`第 ${lineIndex + 1} 行：每行必須剛好有一組 “答案” 引號`);
+    const match = markers[0];
+    const answer = (match[1] ?? match[2]).trim();
+    const remnant = line.slice(0, match.index) + line.slice(match.index + match[0].length);
+    if (/[“”"]/.test(remnant)) throw new Error(`第 ${lineIndex + 1} 行：有多餘或不成對的引號`);
+    if (answer.length > 200 || !answer || /[\r\n]/.test(answer)) throw new Error(`第 ${lineIndex + 1} 行：答案不可為空或超過 200 字`);
+    const sentence = line.slice(0, match.index) + '______' + line.slice(match.index + match[0].length);
+    if (sentence.length > 1000) throw new Error(`第 ${lineIndex + 1} 行：句子不可超過 1000 字`);
+    if (!/[a-zA-Z]/.test(answer)) throw new Error(`第 ${lineIndex + 1} 行：挖空答案必須包含英文字母`);
+    result.push({sentence, answer});
+  });
+  if (!result.length) throw new Error('TXT 沒有可匯入的例句');
+  return result;
+}
+function addExamples(state, entries) {
+  const next = copy(state);
+  if (!Array.isArray(next.examples)) next.examples = [];
+  const seen = new Set(next.examples.map(q => `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`));
+  let added = 0;
+  for (const entry of entries) {
+    const key = `${entry.sentence}\u0000${entry.answer.toLocaleLowerCase()}`;
+    if (seen.has(key)) continue;
+    if (next.examples.length >= 50000) throw new Error('題庫上限為 50,000 題');
+    seen.add(key);
+    next.examples.push({id: uid(), sentence:entry.sentence, answer:entry.answer, createdAt:new Date().toISOString()});
+    added++;
+  }
+  return {state:next, added};
+}
+function exampleAnswerPool(state) {
+  const seen = new Set(), answers = [];
+  for (const text of [...(state.examples || []).map(e => e.answer), ...Object.values(state.words).map(w => w.en)]) {
+    const item = String(text).trim();
+    const key = item.toLocaleLowerCase();
+    if (!item || seen.has(key)) continue;
+    seen.add(key); answers.push(item);
+  }
+  return answers;
+}
+function shuffleArray(values, random = Math.random) {
+  const arr = [...values];
+  for (let i=arr.length-1;i>0;i--) {
+    const j = Math.floor(random() * (i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+function quizOptions(answer, pool) {
+  const others = shuffleArray(pool.filter(v => v.toLocaleLowerCase() !== answer.toLocaleLowerCase()));
+  if (others.length < 3) throw new Error('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗');
+  return shuffleArray([answer, ...others.slice(0,3)]);
+}
 
 /* 主要使用 IndexedDB，部分 file:// 環境改用 localStorage。 */
 function createStorage() {
@@ -821,6 +1044,9 @@ let editingWordId = null;
 let saveSerial = 0;
 let lastToastTimer = null;
 let reviewSession = null;
+let listViewSort = 'default'; // bookmark priority is a view, not a mutation
+let exampleSession = null;
+let exampleViewOpen = false;
 
 function el(tag, className = '', text = null) {
   const node = document.createElement(tag);
@@ -871,9 +1097,15 @@ function selectUnit(unitId) {
   if (reviewSession && !reviewSession.complete && reviewStats(reviewSession).answered > 0 &&
     !confirm('這輪還沒結束。已作答單字的熟練度會保留，但本輪不會計入單元分數。確定離開？')) return;
   reviewSession = null;
+  exampleSession = null;
+  exampleViewOpen = false;
+  listViewSort = 'default';
+  $('sortSelect').value = '';
   selectedUnitId = unitId;
   selectedWordIds.clear();
   render();
+  closeUnitDrawer();
+  window.scrollTo(0, 0);
 }
 
 function renderUnits() {
@@ -904,8 +1136,10 @@ function renderUnits() {
     list.append(wrapper);
   }
 }
-function wordHatLabel(word) {
-  return hatTitle(word.forgetCount) || '尚無帽子';
+function wordHatLabel(word) { return hatTitle(word) || '尚無帽子'; }
+function viewUnitWords(unit) {
+  const words = listWords(state, unit.id);
+  return listViewSort === 'bookmarked' ? words.sort((a,b) => Number(b.bookmarked)-Number(a.bookmarked)) : words;
 }
 function renderHatBoard(unit) {
   const words = listWords(state, unit.id).filter(w => w.forgetCount > 0);
@@ -927,32 +1161,53 @@ function openHatDetails(wordId) {
   const unit = state.units.find(u => u.id === word.unitId);
   detailWordId = wordId;
   $('hatCambridgeLink').href = cambridgeURL(word.en);
-  const current = hatTitle(word.forgetCount);
-  const next = nextHatTitle(word.forgetCount);
+  const history = word.hatHistory || [];
+  const current = hatTitle(word);
   $('hatDialogHeading').textContent = word.en;
   $('hatWordTranslation').textContent = word.zh;
   $('hatCurrentTitle').textContent = current || '尚未戴帽';
   $('hatForgetTotal').textContent = `${word.forgetCount} 次`;
-  $('hatRankLabel').textContent = `${Math.min(word.forgetCount, HAT_TITLES.length)} / ${HAT_TITLES.length}`;
-  $('hatProgressFill').style.width = `${Math.min(word.forgetCount, HAT_TITLES.length) / HAT_TITLES.length * 100}%`;
-  $('hatNextMessage').textContent = next
-    ? `再忘記 1 次，將獲得下一個稱號：「${next}」。`
-    : '已達最後稱號「社會渣滓」；繼續忘記仍會累積次數，但不再升級。';
+  $('hatRankLabel').textContent = `${history.length} / ${HAT_TITLES.length}`;
+  $('hatProgressFill').style.width = `${history.length / HAT_TITLES.length * 100}%`;
+  $('hatNextMessage').textContent = history.length < HAT_TITLES.length
+    ? '下次忘記，將從尚未獲得的稱號中隨機抽一頂新帽子。'
+    : '46 頂帽子已全數收藏！繼續忘記會增加次數，但不會重複抽帽。';
   $('hatWordMeta').textContent = `所在單元：${unit?.name || '未知'} · 熟練度：${{red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]} · ${word.bookmarked ? '已加書籤' : '未加書籤'}`;
+  const recent = $('hatRecentBadges');
+  recent.replaceChildren();
+  if (!history.length) recent.append(el('span', 'hat-badge none', '尚無帽子'));
+  else latestHats(word).forEach((title, i) => recent.append(el('span', 'hat-badge active', `${i === 0 ? '最新 · ' : ''}${title}`)));
   const list = $('hatTitleList');
   list.replaceChildren();
-  HAT_TITLES.forEach((title, i) => {
-    const li = el('li', i + 1 === Math.min(word.forgetCount, HAT_TITLES.length) ? 'current-hat' : (i < word.forgetCount ? 'past-hat' : ''), title);
-    if (i + 1 === Math.min(word.forgetCount, HAT_TITLES.length) && word.forgetCount) li.append(el('span', 'hat-list-marker', '現任'));
+  history.forEach((title, i) => {
+    const li = el('li', i === history.length-1 ? 'current-hat' : 'past-hat', title);
+    if (i === history.length-1) li.append(el('span', 'hat-list-marker', '最新'));
     list.append(li);
   });
-  $('hatDialog').querySelector('details').open = false;
-  openDialog($('hatDialog'));
+  $('hatHistoryDetails').hidden = history.length <= 3;
+  $('hatHistorySummary').textContent = `展開查看全部 ${history.length} 頂帽子（依獲得順序）`;
+  $('hatHistoryDetails').open = false;
+  const order = viewUnitWords(unit);
+  const index = order.findIndex(w => w.id === wordId);
+  $('hatDetailPosition').textContent = `${index+1} / ${order.length}`;
+  $('hatPrevButton').disabled = index <= 0;
+  $('hatNextButton').disabled = index === -1 || index >= order.length-1;
+  if (!$('hatDialog').open) openDialog($('hatDialog'));
+}
+function navigateHatDetail(direction) {
+  if (!detailWordId) return;
+  const w = state.words[detailWordId];
+  if (!w) return;
+  const unit = state.units.find(u => u.id === w.unitId);
+  if (!unit) return;
+  const order = viewUnitWords(unit);
+  const target = order.findIndex(x => x.id === detailWordId) + direction;
+  if (target >= 0 && target < order.length) openHatDetails(order[target].id);
 }
 function renderWords(unit) {
   const list = $('wordList');
   list.replaceChildren();
-  const words = listWords(state, unit.id);
+  const words = viewUnitWords(unit);
   $('wordCount').textContent = words.length;
   $('selectedCount').textContent = selectedWordIds.size;
   $('selectionToolbar').hidden = selectedWordIds.size === 0;
@@ -988,13 +1243,14 @@ function renderWords(unit) {
     englishLine.append(dot, english);
     detail.append(englishLine, el('div', 'word-chinese', word.zh));
     if (word.forgetCount > 0) {
-      detail.append(el('div', 'hat-row-label', `批鬥稱號：${wordHatLabel(word)} · 累計 ${word.forgetCount} 次`));
+      detail.append(el('div', 'hat-row-label', `已得帽子：${hatsInline(word)} · 累計忘記 ${word.forgetCount} 次`));
     }
     const commands = el('div', 'word-actions');
     const upButton = button('↑', 'icon-button', () => runChange(() => reorderWord(state, word.id, -1), null), `將 ${word.en} 上移`);
     const downButton = button('↓', 'icon-button', () => runChange(() => reorderWord(state, word.id, 1), null), `將 ${word.en} 下移`);
-    upButton.disabled = i === 0;
-    downButton.disabled = i === words.length - 1;
+    upButton.disabled = listViewSort === 'bookmarked' || i === 0;
+    downButton.disabled = listViewSort === 'bookmarked' || i === words.length - 1;
+    if (listViewSort === 'bookmarked') { upButton.title = downButton.title = '書籤優先檢視時，請先恢復原始順序再手動移動'; }
     const cambridge = el('a', 'dictionary-link word-dictionary', '字典 ↗');
     cambridge.href = cambridgeURL(word.en);
     cambridge.target = '_blank'; cambridge.rel = 'noopener noreferrer';
@@ -1018,14 +1274,18 @@ function renderWords(unit) {
   });
 }
 function render() {
+  $('voiceSelect').value = state.settings?.voice === 'en-GB' ? 'en-GB' : 'en-US';
   renderUnits();
   renderSearchResults();
+  renderExampleHub();
   const unit = currentUnit();
   $('welcomePanel').hidden = !!unit;
-  $('unitPanel').hidden = !unit || !!reviewSession;
+  $('unitPanel').hidden = !unit || !!reviewSession || exampleViewOpen;
+  $('exampleHub').hidden = !exampleViewOpen;
   $('reviewPanel').hidden = !reviewSession || reviewSession.complete;
   $('resultsPanel').hidden = !reviewSession || !reviewSession.complete;
   if (!unit) return;
+  if (exampleViewOpen) return;
   if (reviewSession) {
     if (reviewSession.complete) renderResults();
     else renderReview();
@@ -1040,8 +1300,8 @@ function render() {
 function refreshReviewEligibility() {
   if (!currentUnit()) return;
   const count = filteredWordIds(state, selectedUnitId, $('reviewModeSelect').value).length;
-  $('reviewEligibleCount').textContent = `(${count} 題)`;
-  $('startReviewButton').disabled = count === 0;
+  $('reviewEligibleCount').textContent = `字卡：符合條件的單字 ${count} 個`;
+  $('startReviewButton').disabled = count === 0 && !(state.examples?.length);
 }
 function startSession(mode, specificIds = null) {
   try {
@@ -1074,7 +1334,7 @@ function renderReview() {
   $('studyProficiency').className = `proficiency-dot ${word.proficiency}`;
   $('studyProficiencyText').textContent = ({red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]) + '熟練度';
   $('studyAnswerState').textContent = answered === null ? '尚未作答' : (answered ? '本輪已選「記得」' : '本輪已選「不記得」');
-  $('studyHatBadge').textContent = wordHatLabel(word);
+  $('studyHatBadge').textContent = hatsInline(word);
   $('studyHatBadge').className = `hat-badge ${word.forgetCount ? 'active' : 'none'}`;
   $('studyForgetCount').textContent = `累積不記得 ${word.forgetCount} 次`;
   $('reviewCambridgeLink').href = cambridgeURL(word.en);
@@ -1102,7 +1362,7 @@ function chooseAnswer(remembered) {
   if (!reviewSession || reviewSession.complete) return;
   try {
     const originalWord = state.words[reviewSession.wordIds[reviewSession.index]];
-    const originalHat = originalWord ? hatTitle(originalWord.forgetCount) : null;
+    const originalHat = originalWord ? hatTitle(originalWord) : null;
     const result = gradeReview(state, reviewSession, remembered);
     if (!result.applied) return;
     const before = reviewSession;
@@ -1110,10 +1370,10 @@ function chooseAnswer(remembered) {
     if (!runChange(() => result.state, null)) { reviewSession = before; render(); }
     else if (!remembered && originalWord) {
       const updated = state.words[originalWord.id];
-      const newHat = hatTitle(updated.forgetCount);
+      const newHat = hatTitle(updated);
       message(originalHat === newHat
-        ? `「${updated.en}」累計忘記 ${updated.forgetCount} 次；仍是「${newHat}」。`
-        : `「${updated.en}」累計忘記 ${updated.forgetCount} 次，戴上「${newHat}」！`);
+        ? `「${updated.en}」累計忘記 ${updated.forgetCount} 次，46 頂帽子已集滿！`
+        : `「${updated.en}」累計忘記 ${updated.forgetCount} 次，抽中「${newHat}」！`);
     }
   } catch (error) { message(error.message, true); }
 }
@@ -1148,7 +1408,7 @@ function pronounce(english) {
   if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
     message('目前裝置或瀏覽器不支援語音朗讀', true); return;
   }
-  const language = 'en-US'; // 固定美式設定；真正聲音由裝置 TTS 決定。
+  const language = state.settings?.voice === 'en-GB' ? 'en-GB' : 'en-US'; // 預設美式；英式可在進階設定選擇。
   const utterance = new SpeechSynthesisUtterance(english);
   utterance.lang = language;
   utterance.rate = 0.86;
@@ -1156,8 +1416,12 @@ function pronounce(english) {
     const voices = window.speechSynthesis.getVoices();
     if (voices.length) {
       const matching = voices.find(v => v.lang.toLowerCase() === language.toLowerCase());
-      const fallback = voices.find(v => v.lang.toLowerCase().startsWith('en'));
-      if (matching || fallback) utterance.voice = matching || fallback;
+      // 英式語音缺席時讓系統根據 utterance.lang 選擇，避免強制套用美式聲音。
+      if (matching) utterance.voice = matching;
+      else if (language === 'en-US') {
+        const fallback = voices.find(v => v.lang.toLowerCase().startsWith('en'));
+        if (fallback) utterance.voice = fallback;
+      }
     }
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
@@ -1178,6 +1442,7 @@ function renderSearchResults() {
   }
   for (const word of results.slice(0, 100)) {
     const item = button('', 'search-result-entry', () => {
+      if ($('searchDialog').open) $('searchDialog').close();
       selectUnit(word.unitId);
       if (selectedUnitId === word.unitId) {
         const node = [...document.querySelectorAll('.word-row')].find(row => row.dataset.wordId === word.id);
@@ -1301,6 +1566,99 @@ function exportJSON() {
   } catch (error) { message(error.message, true); }
 }
 
+
+/* ─── v1.6：獨立例句測驗 UI ─── */
+function renderExampleHub() {
+  const items = state.examples || [];
+  const pool = exampleAnswerPool(state);
+  $('exampleCountLabel').textContent = `題庫共 ${items.length} 題 · 可選答案 ${pool.length} 種`;
+  $('exampleStartButton').disabled = !items.length || pool.length < 4;
+  $('exampleStartButton').title = pool.length < 4 ? '至少需要 4 個不同單字／答案' : '';
+  const pane = $('exampleLibrary');
+  if (!pane.hidden) {
+    const rows = $('exampleLibraryItems');
+    rows.replaceChildren();
+    items.slice(-15).reverse().forEach(q => {
+      const row = el('div','example-row');
+      const text = el('span','',q.sentence.replace('______',`【${q.answer}】`));
+      row.append(text, button('刪除', 'danger-quiet small-button', () => {
+        if (!confirm(`刪除這道例句題？\n${q.sentence.replace('______', q.answer)}`)) return;
+        runChange(() => ({...state, examples:state.examples.filter(item => item.id !== q.id)}), '已刪除例句題');
+      }));
+      rows.append(row);
+    });
+    $('exampleLibraryMore').textContent = items.length > 15 ? `顯示最新 15 題，另有 ${items.length-15} 題已保存。` : items.length ? '' : '題庫尚未匯入例句。';
+  }
+  renderExampleQuiz();
+}
+function startExampleQuiz() {
+  try {
+    const questions = shuffleArray(state.examples || []);
+    const pool = exampleAnswerPool(state);
+    if (!questions.length) throw new Error('請先匯入例句 TXT');
+    if (pool.length < 4) throw new Error('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗');
+    exampleSession = {questions, pool, index:0, answered:null, correct:0};
+    exampleViewOpen = true;
+    render();
+    $('exampleHub').scrollIntoView({behavior:'smooth',block:'start'});
+  } catch (error) { message(error.message,true); }
+}
+function renderExampleQuiz() {
+  const panel = $('exampleQuiz');
+  if (!exampleSession) { panel.hidden=true; return; }
+  panel.hidden = false;
+  const session = exampleSession;
+  const total = session.questions.length;
+  const done = session.index >= total;
+  $('exampleQuizProgress').textContent = done ? '測驗完成' : `第 ${session.index+1} / ${total} 題`;
+  $('exampleProgressFill').style.width = `${100 * (done ? total : session.index+(session.answered ? 1 : 0))/total}%`;
+  $('exampleQuizScore').textContent = `答對 ${session.correct} / ${done ? total : session.index + (session.answered ? 1 : 0)} 題`;
+  $('exampleOptions').replaceChildren();
+  if (done) {
+    $('exampleQuestion').textContent = `完成！本次答對 ${session.correct} / ${total} 題（${Math.round(session.correct/total*100)}%）。`;
+    $('exampleFeedback').textContent = '例句測驗不影響單字卡熟練度及帽子。';
+    $('exampleFeedback').className='example-feedback';
+    $('exampleNextButton').textContent='重新測驗';
+    $('exampleNextButton').disabled=false;
+    return;
+  }
+  const q = session.questions[session.index];
+  if (!session.options) session.options = quizOptions(q.answer,session.pool);
+  $('exampleQuestion').textContent = q.sentence;
+  session.options.forEach((option,i) => {
+    const correct = option.toLocaleLowerCase() === q.answer.toLocaleLowerCase();
+    const chosen = session.answered && session.answered.choice === option;
+    const b = button(`${'ABCD'[i]}. ${option}`, `example-option ${session.answered && correct ? 'correct' : ''} ${session.answered && chosen && !correct ? 'incorrect' : ''}`, () => answerExample(option));
+    b.disabled=!!session.answered;
+    $('exampleOptions').append(b);
+  });
+  $('exampleFeedback').textContent = session.answered ?
+    (session.answered.correct ? `答對！${q.sentence.replace('______', q.answer)}` : `答錯，正確答案是「${q.answer}」。${q.sentence.replace('______', q.answer)}`) : '選出最適合填入空格的英文單字。';
+  $('exampleFeedback').className=`example-feedback ${session.answered ? (session.answered.correct ? 'good':'bad') : ''}`;
+  $('exampleNextButton').disabled = !session.answered;
+  $('exampleNextButton').textContent = session.index===total-1 ? '看測驗結果 →' : '下一題 →';
+}
+function answerExample(choice) {
+  if (!exampleSession || exampleSession.answered) return;
+  const q = exampleSession.questions[exampleSession.index];
+  const correct = choice.toLocaleLowerCase() === q.answer.toLocaleLowerCase();
+  exampleSession.answered = {choice,correct};
+  if (correct) exampleSession.correct++;
+  renderExampleQuiz();
+}
+async function importExampleFile(file) {
+  if (!file) return;
+  try {
+    if (file.size > 4_000_000) throw new Error('TXT 檔案最大為 4 MB');
+    const parsed = parseExampleTXT(await readTextFile(file));
+    const merged = addExamples(state,parsed);
+    if (!merged.added) return message(`檔案含 ${parsed.length} 題，全部已存在，沒有重複匯入`);
+    const done = runChange(() => merged.state, `成功匯入 ${merged.added} 題例句（略過 ${parsed.length-merged.added} 題重複）`);
+    if (done) $('exampleLibrary').hidden = false;
+    if (done) renderExampleHub();
+  } catch (error) { message(`例句匯入失敗：${error.message}`,true); }
+}
+
 // PWA 只在 HTTPS/localhost 能註冊；單檔 file:// 仍可使用原本的單字功能。
 function installHelp() {
   if (location.protocol === 'file:') {
@@ -1342,17 +1700,80 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   });
 }
 
+
+// 單元列表改成原生對話框抽屜，保留 ESC、背景封鎖和鍵盤操作。
+function closeUnitDrawer() {
+  if ($('unitSidebar').open) $('unitSidebar').close();
+}
+function closeTopTools() {
+  $('topToolsMenu').open = false;
+}
+$('openUnitDrawer').addEventListener('click', () => {
+  closeTopTools();
+  $('unitSidebar').showModal();
+  $('openUnitDrawer').setAttribute('aria-expanded','true');
+  $('closeUnitDrawer').focus();
+});
+$('closeUnitDrawer').addEventListener('click', closeUnitDrawer);
+$('unitSidebar').addEventListener('close', () => $('openUnitDrawer').setAttribute('aria-expanded','false'));
+$('unitSidebar').addEventListener('click', event => {
+  if (event.target === $('unitSidebar')) closeUnitDrawer();
+});
+document.addEventListener('pointerdown', event => {
+  if (!$('topToolsMenu').contains(event.target)) closeTopTools();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && $('topToolsMenu').open) closeTopTools();
+});
+// 點選工具後將工具選單收合；進階設定則保留開啟供使用者調整。
+for (const id of ['installAppButton','installationHelpButton','mergeButton','txtButton']) {
+  $(id).addEventListener('click', closeTopTools);
+}
 $('hatDialogClose').addEventListener('click', () => $('hatDialog').close());
+$('hatPrevButton').addEventListener('click', () => navigateHatDetail(-1));
+$('hatNextButton').addEventListener('click', () => navigateHatDetail(1));
 $('hatSpeakButton').addEventListener('click', () => { if (detailWordId && state.words[detailWordId]) pronounce(state.words[detailWordId].en); });
 $('reviewSpeakButton').addEventListener('click', () => { if (reviewSession && !reviewSession.complete) pronounce(state.words[reviewSession.wordIds[reviewSession.index]].en); });
 $('searchInput').addEventListener('input', renderSearchResults);
 $('clearSearchButton').addEventListener('click', () => { $('searchInput').value=''; renderSearchResults(); $('searchInput').focus(); });
+$('voiceSelect').addEventListener('change', event => {
+  const language = event.target.value;
+  if (!['en-US', 'en-GB'].includes(language)) return;
+  runChange(() => ({...state, settings: {...state.settings, voice: language}}), language === 'en-GB' ? '已切換英式發音（依裝置語音支援）' : '已切換美式發音');
+});
 $('sortSelect').addEventListener('change', event => {
   const method = event.target.value;
-  if (method && currentUnit()) runChange(() => sortUnitWords(state, selectedUnitId, method), method === 'input' ? '已恢復原始加入順序' : '已依熟練度排序，同級隨機');
-  event.target.value = '';
+  if (!currentUnit()) return;
+  if (method === 'bookmarked') {
+    listViewSort = 'bookmarked';
+    render();
+    message('正在以書籤優先檢視；原本順序完全沒有更動');
+  } else if (method === 'input' || method === 'proficiency') {
+    listViewSort = 'default';
+    runChange(() => sortUnitWords(state, selectedUnitId, method), method === 'input' ? '已恢復原始加入順序' : '已依熟練度排序，同級隨機');
+    event.target.value = '';
+  } else { listViewSort='default'; render(); }
 });
-$('copyBookmarksButton').addEventListener('click', openCopyDialog);
+$('exampleImportButton').addEventListener('click', () => $('exampleFileInput').click());
+$('exampleFileInput').addEventListener('change', async event => { await importExampleFile(event.target.files?.[0]); event.target.value=''; });
+$('exampleManageButton').addEventListener('click', () => { $('exampleLibrary').hidden = !$('exampleLibrary').hidden; renderExampleHub(); });
+$('exampleClearButton').addEventListener('click', () => {
+  if (!state.examples?.length || !confirm(`確定刪除全部 ${state.examples.length} 道例句題？單字不受影響。建議先備份 JSON。`)) return;
+  exampleSession=null;
+  runChange(() => ({...state,examples:[]}), '例句題庫已清空');
+});
+$('exampleStartButton').addEventListener('click', startExampleQuiz);
+$('exampleQuitButton').addEventListener('click', () => { exampleSession=null; exampleViewOpen=false; render(); });
+$('exampleNextButton').addEventListener('click', () => {
+  if (!exampleSession) return;
+  if (exampleSession.index >= exampleSession.questions.length) { startExampleQuiz(); return; }
+  if (!exampleSession.answered) return;
+  exampleSession.index++;
+  exampleSession.answered=null;
+  exampleSession.options=null;
+  renderExampleQuiz();
+});
+$('copyBookmarksButton').addEventListener('click', () => { closeUnitDrawer(); openCopyDialog(); });
 $('clearUnitsButton').addEventListener('click', () => {selectedUnitIds.clear(); renderUnits();});
 $('bulkImportButton').addEventListener('click', openBulkDialog);
 $('mergeButton').addEventListener('click', () => $('mergeFileInput').click());
@@ -1381,7 +1802,7 @@ $('bulkForm').addEventListener('submit', event => {
     if (ok) $('bulkDialog').close();
   } catch (error) { message(error.message, true); }
 });
-$('newUnitButton').addEventListener('click', openAddUnit);
+$('newUnitButton').addEventListener('click', () => { closeUnitDrawer(); openAddUnit(); });
 $('welcomeAddUnit').addEventListener('click', openAddUnit);
 $('renameUnitButton').addEventListener('click', openRenameUnit);
 $('deleteUnitButton').addEventListener('click', () => {
@@ -1408,7 +1829,22 @@ $('restoreFileInput').addEventListener('change', async event => {
   event.target.value = '';
 });
 $('reviewModeSelect').addEventListener('change', refreshReviewEligibility);
-$('startReviewButton').addEventListener('click', () => startSession($('reviewModeSelect').value));
+$('startReviewButton').addEventListener('click', () => {
+  const cardCount = filteredWordIds(state,selectedUnitId,$('reviewModeSelect').value).length;
+  const quizCount = state.examples?.length || 0;
+  const quizReady = quizCount > 0 && exampleAnswerPool(state).length >= 4;
+  $('reviewChoiceCard').disabled = cardCount === 0;
+  $('reviewChoiceQuiz').disabled = !quizReady;
+  $('reviewChoiceCardDetail').textContent = `${cardCount} 個單字 · 翻面回想中文`;
+  $('reviewChoiceQuizDetail').textContent = `${quizCount} 道例句 · 四選一`;
+  $('reviewChoiceHelp').textContent = !quizReady ? '字彙測驗需要先匯入例句 TXT，並有至少四個不同的英文答案／單字。' : '字彙測驗不影響字卡熟練度、忘記次數或帽子。';
+  $('reviewChoiceDialog').showModal();
+});
+$('reviewChoiceClose').addEventListener('click', () => $('reviewChoiceDialog').close());
+$('reviewChoiceCard').addEventListener('click', () => { $('reviewChoiceDialog').close(); startSession($('reviewModeSelect').value); });
+$('reviewChoiceQuiz').addEventListener('click', () => { $('reviewChoiceDialog').close(); startExampleQuiz(); });
+$('openSearchButton').addEventListener('click', () => { $('searchDialog').showModal(); $('searchInput').focus(); });
+$('searchCloseButton').addEventListener('click', () => $('searchDialog').close());
 $('reviewExitButton').addEventListener('click', abandonSession);
 $('resultExitButton').addEventListener('click', abandonSession);
 $('reviewCard').addEventListener('click', () => {
@@ -1461,7 +1897,12 @@ async function boot() {
   try {
     const loaded = await storage.init();
     if (loaded && !validateState(loaded)) throw new Error('發現不相容或損壞的已儲存資料。為避免覆蓋舊資料，已停止操作。');
-    state = loaded || initialState();
+    state = migrateState(loaded || initialState());
+    // 儲存升級後的新欄位，避免下次打開再次抽取舊版忘記帽子。
+    if (loaded && JSON.stringify(loaded) !== JSON.stringify(state)) {
+      try { await storage.save(state); }
+      catch (error) { throw new Error(`舊資料升級後儲存失敗，請先處理：${error.message}`); }
+    }
     selectedUnitId = state.units[0]?.id || null;
     $('saveStatus').textContent = storage.mode === 'memory' ? '無法持久儲存' : `已連線（${storage.mode === 'indexedDB' ? '本機資料庫' : '本機儲存'}）`;
     if (storage.mode === 'memory') message('瀏覽器拒絕永久儲存資料！請改用一般瀏覽器開啟，或每次匯出備份。', true);

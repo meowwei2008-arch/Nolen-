@@ -2,7 +2,7 @@
   "id": "./index.html",
   "name": "英中單字卡 — 離線背單字",
   "short_name": "英中單字卡",
-  "description": "本機英中單字卡、複習、熟練度和 46 級稱號",
+  "description": "本機英中單字卡、複習、熟練度和 46 頂隨機帽子與離線例句測驗",
   "lang": "zh-Hant",
   "start_url": "./index.html",
   "scope": "./",
