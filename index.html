@@ -332,7 +332,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 @media(max-width:800px){.word-row{grid-template-columns:22px minmax(0,1fr) auto;gap:7px;padding:11px 9px}.word-actions{grid-column:auto;justify-content:flex-end;margin-top:0;gap:2px}.word-actions button{min-width:29px;min-height:34px;padding:3px 4px!important;font-size:17px!important}.word-actions .bookmark{font-size:20px!important;padding:2px 3px!important}.word-english{font-size:16px}.word-chinese{font-size:12px}}
 @media(max-width:385px){.word-row{grid-template-columns:19px minmax(0,1fr) auto;gap:5px;padding:9px 7px}.word-actions{gap:1px}.word-actions button{min-width:27px;padding:3px!important;font-size:16px!important}.word-actions .bookmark{font-size:19px!important}}
 
-/* v1.6.4：獨立例句測驗的題數選擇視窗 */
+/* v1.6.5：多單元聯合例句測驗與題數選擇 */
 .quiz-count-dialog{width:min(450px,calc(100vw - 26px))}
 .quiz-count-form{padding:24px}
 .quiz-count-form h2{margin-bottom:8px}
@@ -346,13 +346,28 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .quiz-count-custom input:disabled{opacity:.43}
 .quiz-count-summary{margin:14px 0 10px;padding:12px 13px;background:#202f4b;border:1px solid #415b84;border-radius:11px;color:#e3e9ff;font-size:13px;line-height:1.6}
 .quiz-count-form .dialog-actions{margin-top:17px}
+.quiz-scope-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:700;margin:12px 0 8px}
+.quiz-scope-actions{display:flex;gap:5px}
+.quiz-scope-actions button{font-size:12px;min-height:30px;padding:4px 9px}
+.quiz-unit-list{display:grid;gap:6px;max-height:190px;overflow-y:auto;overscroll-behavior:contain;border:1px solid #455572;border-radius:12px;padding:8px;background:#111b30}
+.quiz-unit-row{display:flex;gap:10px;align-items:center;min-height:39px;padding:6px 8px;color:#e8ecff;border-radius:8px;cursor:pointer}
+.quiz-unit-row:has(input:checked){background:#29365a}
+.quiz-unit-row input{width:18px;height:18px;accent-color:#a39cff;flex-shrink:0}
+.quiz-unit-row span{min-width:0;flex:1;overflow-wrap:anywhere}
+.quiz-unit-row small{color:#bbc6e3;white-space:nowrap}
+.quiz-count-subheading{font-size:14px;font-weight:700;margin:15px 0 8px}
+.quiz-count-dialog{width:min(480px,calc(100vw - 26px));max-height:calc(100dvh - 24px);overflow:auto}
+.example-row-main{display:grid;gap:7px;min-width:0;flex:1}
+.example-row select{max-width:100%;min-height:34px;background:#222d49;color:#f3f5ff;border:1px solid #58698c;border-radius:8px;padding:4px 8px;font-size:12px}
+.example-bulk-assign{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.example-bulk-assign select{min-width:0;flex:1;max-width:240px;min-height:36px;background:#151f35;color:#fff;border:1px solid #58698c;border-radius:8px;padding:5px}
 @media(max-width:410px){.quiz-count-form{padding:17px}.quiz-count-option{padding:10px 12px}.quiz-count-form .dialog-actions button{flex:1}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.4 · 自選測驗題數</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.5 · 自選聯合測驗</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -404,9 +419,13 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <section class="hat-leaderboard" id="hatLeaderboard" hidden aria-label="本單元批鬥排行榜"><div class="hat-board-heading"><div><span class="eyebrow">批鬥公告欄</span><h3>本單元的重點關照對象</h3></div><span class="section-hint">依忘記次數排名</span></div><div id="hatLeaders" class="hat-board-list"></div></section>
         </div>
     <section class="example-hub" id="exampleHub" hidden aria-label="例句題庫與選擇題">
-      <div class="example-heading"><div><span class="eyebrow">CLOZE QUIZ · 獨立模式</span><h2>字彙測驗 · 例句填空</h2><p>每行一個英文例句，只用一組 <code>“答案”</code> 標記挖空；TXT 匯入後完全離線，不會影響單字熟練度或批鬥帽子。</p></div><div class="example-actions"><button id="exampleStartButton" type="button" class="secondary-button">↻ 重新開始測驗</button></div></div>
+      <div class="example-heading"><div><span class="eyebrow">CLOZE QUIZ · 獨立模式</span><h2>字彙測驗 · 例句填空</h2><p>在單元內匯入例句，測驗可自行勾選一個或多個單元；每行使用一組 <code>“答案”</code> 挖空。例句測驗不影響熟練度或帽子。</p></div><div class="example-actions"><button id="exampleStartButton" type="button" class="secondary-button">↻ 重新開始測驗</button></div></div>
       <div class="example-summary"><span id="exampleCountLabel">題庫共 0 題</span><button id="exampleManageButton" type="button" class="quiet-button small-button">管理題庫</button></div>
-      <div id="exampleLibrary" class="example-library" hidden><div class="example-library-head"><strong>已匯入的例句</strong><button id="exampleClearButton" type="button" class="danger-quiet small-button">清空題庫</button></div><div id="exampleLibraryItems"></div><p id="exampleLibraryMore" class="section-hint"></p></div>
+      <div id="exampleLibrary" class="example-library" hidden>
+        <div class="example-library-head"><strong>已匯入的例句 · 可修改所屬單元</strong><button id="exampleClearButton" type="button" class="danger-quiet small-button">清空題庫</button></div>
+        <div class="example-bulk-assign" id="exampleBulkAssignPanel" hidden><span id="exampleUnsortedCount"></span><select id="exampleBulkAssignTarget" aria-label="未分類題目要歸入的單元"></select><button id="exampleBulkAssignButton" class="secondary-button small-button" type="button">整批歸類</button></div>
+        <div id="exampleLibraryItems"></div><p id="exampleLibraryMore" class="section-hint"></p><button id="exampleLibraryMoreButton" type="button" class="quiet-button small-button" hidden>載入更多舊例句</button>
+      </div>
       <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
     </section>
         <section id="reviewPanel" class="review-screen" hidden aria-label="複習單字卡">
@@ -445,8 +464,11 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
   </dialog>
   <dialog class="dialog quiz-count-dialog" id="exampleCountDialog" aria-labelledby="exampleCountHeading">
     <form id="exampleCountForm" class="quiz-count-form">
-      <h2 id="exampleCountHeading">選擇本次測驗題數</h2>
-      <p>從已匯入例句隨機抽題，同一輪不重複。預設 20 題；題庫不足時自動使用全部現有題目。</p>
+      <h2 id="exampleCountHeading">自選單元聯合測驗</h2>
+      <p>勾選要測驗的單元（可多選），再決定題數；同一輪隨機出題、不重複。未分類的舊例句也可勾選。</p>
+      <div class="quiz-scope-title"><span>測驗單元</span><div class="quiz-scope-actions"><button id="exampleScopeAll" type="button" class="quiet-button small-button">全選</button><button id="exampleScopeNone" type="button" class="quiet-button small-button">清除</button></div></div>
+      <div id="exampleUnitChoices" class="quiz-unit-list" role="group" aria-label="選擇例句測驗的單元"></div>
+      <div class="quiz-count-subheading">本次測驗題數</div>
       <div class="quiz-count-options" role="radiogroup" aria-label="本次測驗題數">
         <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="10"><span>10 題 · 小考</span></label>
         <label class="quiz-count-option"><input type="radio" name="exampleExamCount" value="20" checked><span>20 題 · 一般練習（預設）</span></label>
@@ -507,6 +529,19 @@ function drawUniqueHat(word, random = Math.random) {
 function migrateState(value) {
   const next = copy(value);
   if (!Array.isArray(next.examples)) next.examples = [];
+  // v1.6.4 以前的題目沒有單元 ID。能唯一對上單字的才自動歸類，
+  // 同一英文跨單元或找不到的題目保持「未分類」，絕不猜測來源。
+  const matchedUnits = new Map();
+  for (const word of Object.values(next.words)) {
+    const key = word.en.trim().toLocaleLowerCase();
+    if (!matchedUnits.has(key)) matchedUnits.set(key, new Set());
+    matchedUnits.get(key).add(word.unitId);
+  }
+  for (const example of next.examples) {
+    if (example.unitId !== undefined) continue;
+    const matches = matchedUnits.get(example.answer.trim().toLocaleLowerCase());
+    example.unitId = matches?.size === 1 ? [...matches][0] : null;
+  }
   for (const word of Object.values(next.words)) {
     if (!Array.isArray(word.hatHistory)) word.hatHistory = [];
     const target = Math.min(word.forgetCount, HAT_TITLES.length);
@@ -553,7 +588,8 @@ function validateState(state) {
       if (!item || typeof item.id !== 'string' || !item.id || exampleIds.has(item.id) ||
           typeof item.sentence !== 'string' || item.sentence.length > 1000 || !item.sentence.trim() ||
           typeof item.answer !== 'string' || item.answer.length > 200 || !item.answer.trim() ||
-          !item.sentence.includes('______')) return false;
+          !item.sentence.includes('______') ||
+          (item.unitId !== undefined && item.unitId !== null && typeof item.unitId !== 'string')) return false;
       exampleIds.add(item.id);
     }
   }
@@ -579,6 +615,7 @@ function validateState(state) {
     }
   }
   if (Object.keys(state.words).length !== seen.size) return false;
+  if ((state.examples || []).some(q => q.unitId !== undefined && q.unitId !== null && !unitIds.has(q.unitId))) return false;
   for (const history of state.reviewHistory) {
     // 階段一的備份為空陣列；階段二只產生下列結構。
     if (!history || typeof history.unitId !== 'string' || !unitIds.has(history.unitId) || !Number.isSafeInteger(history.total) || history.total < 1 || !Number.isSafeInteger(history.remembered) || history.remembered < 0 || history.remembered > history.total || !Number.isSafeInteger(history.forgotten) || history.forgotten !== history.total - history.remembered || typeof history.completedAt !== 'string') return false;
@@ -606,6 +643,8 @@ function deleteUnit(state, unitId) {
   const unit = findUnit(next, unitId);
   unit.wordIds.forEach(id => { delete next.words[id]; });
   next.units = next.units.filter(x => x.id !== unitId);
+  // 刪除單元不刪例句：題目轉為未分類，供使用者重新分配。
+  for (const example of next.examples || []) if (example.unitId === unitId) example.unitId = null;
   // 第二階段新增的複習紀錄也必須隨單元刪除。
   next.reviewHistory = (next.reviewHistory || []).filter(x => x.unitId !== unitId);
   return next;
@@ -927,12 +966,14 @@ function mergeBackup(state, backupText) {
   for (const record of imported.reviewHistory) {
     next.reviewHistory.push({ ...copy(record), id:freshId(), unitId:unitIds.get(record.unitId) });
   }
-  const existingExamples = new Set((next.examples || []).map(q => `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`));
+  const exampleKey = q => `${q.unitId ?? ''}\u0000${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`;
+  const existingExamples = new Set((next.examples || []).map(exampleKey));
   for (const q of imported.examples || []) {
-    const key = `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`;
+    const mapped = {...copy(q), id:freshId(), unitId:q.unitId ? (unitIds.get(q.unitId) || null) : null};
+    const key = exampleKey(mapped);
     if (existingExamples.has(key)) continue;
     existingExamples.add(key);
-    next.examples.push({ ...copy(q), id:freshId() });
+    next.examples.push(mapped);
   }
   // 合併不更動目前偏好設定，避免其他備份覆蓋使用者自己的英美發音選擇。
   if (!validateState(next)) throw new Error('合併後資料驗證失敗，沒有變更現有資料');
@@ -965,20 +1006,52 @@ function parseExampleTXT(text) {
   if (!result.length) throw new Error('TXT 沒有可匯入的例句');
   return result;
 }
-function addExamples(state, entries) {
+function addExamples(state, entries, unitId) {
   const next = copy(state);
+  findUnit(next, unitId);
   if (!Array.isArray(next.examples)) next.examples = [];
-  const seen = new Set(next.examples.map(q => `${q.sentence}\u0000${q.answer.toLocaleLowerCase()}`));
-  let added = 0;
+  let added = 0, reassigned = 0;
   for (const entry of entries) {
-    const key = `${entry.sentence}\u0000${entry.answer.toLocaleLowerCase()}`;
-    if (seen.has(key)) continue;
+    const sameText = q => q.sentence === entry.sentence && q.answer.toLocaleLowerCase() === entry.answer.toLocaleLowerCase();
+    if (next.examples.some(q => q.unitId === unitId && sameText(q))) continue;
+    // 舊版無單元題目重新匯入：直接歸類到目前單元，不多複製一題。
+    const legacy = next.examples.find(q => (q.unitId == null) && sameText(q));
+    if (legacy) { legacy.unitId = unitId; reassigned++; continue; }
     if (next.examples.length >= 50000) throw new Error('題庫上限為 50,000 題');
-    seen.add(key);
-    next.examples.push({id: uid(), sentence:entry.sentence, answer:entry.answer, createdAt:new Date().toISOString()});
+    next.examples.push({id:uid(), unitId, sentence:entry.sentence, answer:entry.answer, createdAt:new Date().toISOString()});
     added++;
   }
-  return {state:next, added};
+  return {state:next, added, reassigned};
+}
+function setExampleUnit(state, exampleId, unitId) {
+  const next = copy(state);
+  if (unitId !== null) findUnit(next, unitId);
+  const example = next.examples.find(e => e.id === exampleId);
+  if (!example) throw new Error('找不到例句');
+  example.unitId = unitId;
+  return next;
+}
+function exampleUnitName(unitId) {
+  return state.units.find(u => u.id === unitId)?.name || '未分類';
+}
+const UNSORTED_EXAMPLES_ID = '__uncategorized__';
+function exampleScopeId(example) { return example.unitId ?? UNSORTED_EXAMPLES_ID; }
+function scopedExamples(ids) {
+  const selected = new Set(ids);
+  return (state.examples || []).filter(example => selected.has(exampleScopeId(example)));
+}
+function scopedAnswerPool(ids) {
+  const selected = new Set(ids);
+  const seen = new Set(), answers = [];
+  for (const text of [
+    ...scopedExamples(ids).map(q => q.answer),
+    ...Object.values(state.words).filter(w => selected.has(w.unitId)).map(w => w.en)
+  ]) {
+    const item = String(text).trim();
+    const key = item.toLocaleLowerCase();
+    if (item && !seen.has(key)) { seen.add(key); answers.push(item); }
+  }
+  return answers;
 }
 function exampleAnswerPool(state) {
   const seen = new Set(), answers = [];
@@ -1093,6 +1166,7 @@ let reviewSession = null;
 let listViewSort = 'default'; // bookmark priority is a view, not a mutation
 let exampleSession = null;
 let exampleViewOpen = false;
+let exampleManagementLimit = 30;
 
 function el(tag, className = '', text = null) {
   const node = document.createElement(tag);
@@ -1610,29 +1684,70 @@ function exportJSON() {
 function renderExampleHub() {
   const items = state.examples || [];
   const pool = exampleAnswerPool(state);
-  $('exampleCountLabel').textContent = `題庫共 ${items.length} 題 · 可選答案 ${pool.length} 種`;
-  $('exampleStartButton').disabled = !items.length || pool.length < 4;
-  $('exampleStartButton').title = pool.length < 4 ? '至少需要 4 個不同單字／答案' : '';
+  const unsorted = items.filter(q => q.unitId == null).length;
+  $('exampleCountLabel').textContent = `題庫共 ${items.length} 題 · 可選答案 ${pool.length} 種${unsorted ? ` · 未分類 ${unsorted} 題` : ''}`;
+  $('exampleStartButton').disabled = !items.length;
+  $('exampleStartButton').title = !items.length ? '請先匯入例句' : '';
   const pane = $('exampleLibrary');
   if (!pane.hidden) {
+    $('exampleBulkAssignPanel').hidden = unsorted === 0;
+    $('exampleUnsortedCount').textContent = `${unsorted} 題未分類`;
+    const target = $('exampleBulkAssignTarget');
+    const oldTarget = target.value;
+    target.replaceChildren();
+    target.append(new Option('選擇要歸入的單元', ''));
+    for (const unit of state.units) target.append(new Option(unit.name, unit.id));
+    target.value = state.units.some(u => u.id === oldTarget) ? oldTarget : '';
     const rows = $('exampleLibraryItems');
     rows.replaceChildren();
-    items.slice(-15).reverse().forEach(q => {
+    items.slice(-exampleManagementLimit).reverse().forEach(q => {
       const row = el('div','example-row');
-      const text = el('span','',q.sentence.replace('______',`【${q.answer}】`));
-      row.append(text, button('刪除', 'danger-quiet small-button', () => {
+      const main = el('div', 'example-row-main');
+      const sentence = el('span','',q.sentence.replace('______',`【${q.answer}】`));
+      const select = document.createElement('select');
+      select.setAttribute('aria-label', `例句 ${q.answer} 的所屬單元`);
+      select.append(new Option('未分類', ''));
+      for (const unit of state.units) select.append(new Option(unit.name, unit.id));
+      select.value = q.unitId || '';
+      select.addEventListener('change', () => runChange(() => setExampleUnit(state, q.id, select.value || null), '已調整例句所屬單元'));
+      main.append(sentence,select);
+      row.append(main, button('刪除', 'danger-quiet small-button', () => {
         if (!confirm(`刪除這道例句題？\n${q.sentence.replace('______', q.answer)}`)) return;
         runChange(() => ({...state, examples:state.examples.filter(item => item.id !== q.id)}), '已刪除例句題');
       }));
       rows.append(row);
     });
-    $('exampleLibraryMore').textContent = items.length > 15 ? `顯示最新 15 題，另有 ${items.length-15} 題已保存。` : items.length ? '' : '題庫尚未匯入例句。';
+    $('exampleLibraryMore').textContent = items.length > exampleManagementLimit ? `目前顯示最新 ${exampleManagementLimit} 題，還有 ${items.length-exampleManagementLimit} 題；也能重新匯入舊 TXT 進行歸類。` : items.length ? '' : '題庫尚未匯入例句。';
+    $('exampleLibraryMoreButton').hidden = items.length <= exampleManagementLimit;
   }
   renderExampleQuiz();
 }
+function selectedExampleScope() {
+  return [...document.querySelectorAll('input[name="exampleScopeUnit"]:checked')].map(box => box.value);
+}
+function renderExampleScopeChoices(defaultIds) {
+  const choices = $('exampleUnitChoices');
+  choices.replaceChildren();
+  const counts = new Map();
+  for (const item of state.examples || []) {
+    const id = exampleScopeId(item);
+    counts.set(id, (counts.get(id) || 0) + 1);
+  }
+  function addScope(id, name, count) {
+    const row = el('label','quiz-unit-row');
+    const checkbox = document.createElement('input');
+    checkbox.type='checkbox';checkbox.name='exampleScopeUnit';checkbox.value=id;
+    checkbox.checked=defaultIds.has(id);
+    checkbox.addEventListener('change',updateExampleCountPreview);
+    row.append(checkbox,el('span','',name),el('small','',`${count} 題`));
+    choices.append(row);
+  }
+  for (const unit of state.units) addScope(unit.id,unit.name,counts.get(unit.id) || 0);
+  if (counts.has(UNSORTED_EXAMPLES_ID)) addScope(UNSORTED_EXAMPLES_ID,'未分類（舊例句）',counts.get(UNSORTED_EXAMPLES_ID));
+}
 function requestedExampleCount() {
   const chosen = document.querySelector('input[name="exampleExamCount"]:checked')?.value || '20';
-  if (chosen === 'all') return (state.examples || []).length;
+  if (chosen === 'all') return scopedExamples(selectedExampleScope()).length;
   if (chosen === 'custom') {
     const input = $('exampleCustomCount');
     const n = Number(input.value);
@@ -1641,38 +1756,48 @@ function requestedExampleCount() {
   return Number(chosen);
 }
 function updateExampleCountPreview() {
-  const total = (state.examples || []).length;
+  const ids = selectedExampleScope();
+  const total = scopedExamples(ids).length;
+  const answerCount = scopedAnswerPool(ids).length;
   const customOn = document.querySelector('input[name="exampleExamCount"]:checked')?.value === 'custom';
   $('exampleCustomCount').disabled = !customOn;
+  $('exampleCustomCount').max = String(Math.max(1,total));
   const requested = requestedExampleCount();
-  const valid = Number.isSafeInteger(requested) && requested >= 1 && total > 0;
+  const valid = ids.length > 0 && Number.isSafeInteger(requested) && requested >= 1 && total > 0 && answerCount >= 4;
   const actual = valid ? Math.min(total, requested) : 0;
-  $('exampleCountPreview').textContent = !valid ? '請輸入至少 1 題的有效整數。' :
-    `本次隨機抽 ${actual} / ${total} 題${requested > total ? '（題庫不足，改為全部題目）' : ''}，不重複出題。`;
+  $('exampleCountPreview').textContent = !ids.length ? '請先勾選至少一個單元。' :
+    !total ? '所選單元尚無例句，請換其他單元，或先匯入 TXT。' :
+    answerCount < 4 ? '所選單元的不同英文答案／單字不足 4 個，無法組成四選一測驗。' :
+    !(Number.isSafeInteger(requested) && requested>=1) ? '請輸入至少 1 題的有效整數。' :
+    `已選 ${ids.length} 個範圍，合計 ${total} 題；本次隨機抽 ${actual} 題${requested > total ? '（題庫不足，改為全部）' : ''}，不重複。`;
   $('exampleCountConfirm').disabled = !valid;
   return valid;
 }
-function openExampleCountDialog() {
+function openExampleCountDialog(keepScope = null) {
   const all = state.examples || [];
   if (!all.length) return message('請先匯入例句 TXT',true);
-  if (exampleAnswerPool(state).length < 4) return message('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗',true);
-  const defaultOption = document.querySelector('input[name="exampleExamCount"][value="20"]');
-  defaultOption.checked = true;
+  let defaults;
+  if (keepScope?.length) defaults = new Set(keepScope);
+  else defaults = new Set(currentUnit() ? [currentUnit().id] : []);
+  // 沒選中單元時，選擇第一個有例句的範圍。
+  if (!defaults.size) defaults.add(exampleScopeId(all[0]));
+  renderExampleScopeChoices(defaults);
+  document.querySelector('input[name="exampleExamCount"][value="20"]').checked = true;
   $('exampleCustomCount').value = String(Math.min(30,all.length));
   updateExampleCountPreview();
   $('exampleCountDialog').showModal();
 }
-function startExampleQuiz(requestedCount) {
+function startExampleQuiz(requestedCount, scopeIds) {
   try {
-    const all = state.examples || [];
-    const pool = exampleAnswerPool(state);
-    if (!all.length) throw new Error('請先匯入例句 TXT');
-    if (pool.length < 4) throw new Error('至少需要 4 個不同的單字或例句答案，才能組成四選一測驗');
+    const all = scopedExamples(scopeIds);
+    const pool = scopedAnswerPool(scopeIds);
+    if (!scopeIds.length) throw new Error('請先選取測驗單元');
+    if (!all.length) throw new Error('所選單元沒有例句');
+    if (pool.length < 4) throw new Error('所選單元至少需要 4 個不同英文答案或單字，才能組成四選一測驗');
     if (!Number.isSafeInteger(requestedCount) || requestedCount < 1) throw new Error('請選擇有效的測驗題數');
-    // 不放回抽取；不足指定題數時只出目前題庫總數。
-    const questions = shuffleArray(all).slice(0,Math.min(requestedCount,all.length));
-    exampleSession = {questions, pool, index:0, answered:null, correct:0};
-    exampleViewOpen = true;
+    const questions = shuffleArray(all).slice(0, Math.min(requestedCount,all.length));
+    exampleSession = {questions,pool,scopeIds:[...scopeIds],index:0,answered:null,correct:0};
+    exampleViewOpen=true;
     render();
     $('exampleHub').scrollIntoView({behavior:'smooth',block:'start'});
   } catch (error) { message(error.message,true); }
@@ -1725,9 +1850,9 @@ async function importExampleFile(file) {
   try {
     if (file.size > 4_000_000) throw new Error('TXT 檔案最大為 4 MB');
     const parsed = parseExampleTXT(await readTextFile(file));
-    const merged = addExamples(state,parsed);
-    if (!merged.added) return message(`檔案含 ${parsed.length} 題，全部已存在，沒有重複匯入`);
-    const done = runChange(() => merged.state, `成功匯入 ${merged.added} 題例句（略過 ${parsed.length-merged.added} 題重複）`);
+    const merged = addExamples(state,parsed,selectedUnitId);
+    if (!merged.added && !merged.reassigned) return message(`檔案含 ${parsed.length} 題，全部已存在於目前單元`);
+    const done = runChange(() => merged.state, `新增 ${merged.added} 題、舊題歸類 ${merged.reassigned} 題（略過 ${parsed.length-merged.added-merged.reassigned} 題重複）`);
     if (done) $('exampleLibrary').hidden = false;
     if (done) renderExampleHub();
   } catch (error) { message(`例句匯入失敗：${error.message}`,true); }
@@ -1839,6 +1964,19 @@ $('sortSelect').addEventListener('change', event => {
 $('exampleImportButton').addEventListener('click', () => $('exampleFileInput').click());
 $('exampleFileInput').addEventListener('change', async event => { await importExampleFile(event.target.files?.[0]); event.target.value=''; });
 $('exampleManageButton').addEventListener('click', () => { $('exampleLibrary').hidden = !$('exampleLibrary').hidden; renderExampleHub(); });
+$('exampleLibraryMoreButton').addEventListener('click', () => { exampleManagementLimit += 30; renderExampleHub(); });
+$('exampleBulkAssignButton').addEventListener('click', () => {
+  const unitId = $('exampleBulkAssignTarget').value;
+  if (!unitId) return message('請先選擇目標單元',true);
+  const count = (state.examples || []).filter(q => q.unitId == null).length;
+  if (!count || !confirm(`將所有 ${count} 道「未分類」例句歸入「${exampleUnitName(unitId)}」？\n如有不同單元的舊例句，建議分別重新匯入 TXT 進行歸類。`)) return;
+  runChange(() => {
+    const next = copy(state);
+    findUnit(next,unitId);
+    next.examples.forEach(q => { if (q.unitId == null) q.unitId=unitId; });
+    return next;
+  },`已將 ${count} 道例句歸入「${exampleUnitName(unitId)}」`);
+});
 $('exampleClearButton').addEventListener('click', () => {
   if (!state.examples?.length || !confirm(`確定刪除全部 ${state.examples.length} 道例句題？單字不受影響。建議先備份 JSON。`)) return;
   exampleSession=null;
@@ -1850,16 +1988,25 @@ $('exampleCountForm').addEventListener('submit', event => {
   event.preventDefault();
   if (!updateExampleCountPreview()) return;
   const count = requestedExampleCount();
+  const units = selectedExampleScope();
   $('exampleCountDialog').close();
-  startExampleQuiz(count);
+  startExampleQuiz(count,units);
 });
 document.querySelectorAll('input[name="exampleExamCount"]').forEach(radio => radio.addEventListener('change', updateExampleCountPreview));
 $('exampleCustomCount').addEventListener('input', updateExampleCountPreview);
 $('exampleCustomCount').addEventListener('focus', () => { $('exampleCountCustomRadio').checked = true; updateExampleCountPreview(); });
+$('exampleScopeAll').addEventListener('click', () => {
+  document.querySelectorAll('input[name="exampleScopeUnit"]').forEach(box => {box.checked=true;});
+  updateExampleCountPreview();
+});
+$('exampleScopeNone').addEventListener('click', () => {
+  document.querySelectorAll('input[name="exampleScopeUnit"]').forEach(box => {box.checked=false;});
+  updateExampleCountPreview();
+});
 $('exampleQuitButton').addEventListener('click', () => { exampleSession=null; exampleViewOpen=false; render(); });
 $('exampleNextButton').addEventListener('click', () => {
   if (!exampleSession) return;
-  if (exampleSession.index >= exampleSession.questions.length) { openExampleCountDialog(); return; }
+  if (exampleSession.index >= exampleSession.questions.length) { openExampleCountDialog(exampleSession.scopeIds); return; }
   if (!exampleSession.answered) return;
   exampleSession.index++;
   exampleSession.answered=null;
@@ -1925,12 +2072,12 @@ $('reviewModeSelect').addEventListener('change', refreshReviewEligibility);
 $('startReviewButton').addEventListener('click', () => {
   const cardCount = filteredWordIds(state,selectedUnitId,$('reviewModeSelect').value).length;
   const quizCount = state.examples?.length || 0;
-  const quizReady = quizCount > 0 && exampleAnswerPool(state).length >= 4;
+  const quizReady = quizCount > 0;
   $('reviewChoiceCard').disabled = cardCount === 0;
   $('reviewChoiceQuiz').disabled = !quizReady;
   $('reviewChoiceCardDetail').textContent = `${cardCount} 個單字 · 翻面回想中文`;
-  $('reviewChoiceQuizDetail').textContent = `${quizCount} 道例句 · 四選一`;
-  $('reviewChoiceHelp').textContent = !quizReady ? '字彙測驗需要先匯入例句 TXT，並有至少四個不同的英文答案／單字。' : '字彙測驗不影響字卡熟練度、忘記次數或帽子。';
+  $('reviewChoiceQuizDetail').textContent = `${quizCount} 道例句 · 可自選多個單元`;
+  $('reviewChoiceHelp').textContent = !quizReady ? '請先在任一單元匯入例句 TXT。' : '字彙測驗可以勾選多個單元共同出題，不影響字卡熟練度、忘記次數或帽子。';
   $('reviewChoiceDialog').showModal();
 });
 $('reviewChoiceClose').addEventListener('click', () => $('reviewChoiceDialog').close());

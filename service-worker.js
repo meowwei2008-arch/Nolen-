@@ -1,6 +1,6 @@
 /* 所有本機功能必需的檔案皆先快取；不快取第三方字典。 */
 const CACHE_PREFIX = 'vocab-cards-app-';
-const CACHE_NAME = 'vocab-cards-app-1.6.4';
+const CACHE_NAME = 'vocab-cards-app-1.6.5';
 const ASSETS = ['./index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
