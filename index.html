@@ -375,7 +375,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.7 · 一題多單元</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.9 · 自動分單元</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -427,12 +427,15 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <section class="hat-leaderboard" id="hatLeaderboard" hidden aria-label="本單元批鬥排行榜"><div class="hat-board-heading"><div><span class="eyebrow">批鬥公告欄</span><h3>本單元的重點關照對象</h3></div><span class="section-hint">依忘記次數排名</span></div><div id="hatLeaders" class="hat-board-list"></div></section>
         </div>
     <section class="example-hub" id="exampleHub" hidden aria-label="例句題庫與選擇題">
-      <div class="example-heading"><div><span class="eyebrow">CLOZE QUIZ · 獨立模式</span><h2>字彙測驗 · 例句填空</h2><p>在單元內匯入例句，同一句能歸屬多個單元；聯合測驗不重複出題。每行使用一組 <code>“答案”</code> 挖空。例句測驗不影響熟練度或帽子。</p></div><div class="example-actions"><button id="exampleStartButton" type="button" class="secondary-button">⚙ 自選單元／題數</button><button id="exampleExitButton" type="button" class="quiet-button">← 返回單元</button></div></div>
+      <div class="example-heading"><div><span class="eyebrow">CLOZE QUIZ · 獨立模式</span><h2>字彙測驗 · 例句填空</h2><p>匯入 TXT 時預設依單字表跨單元自動歸類，無法比對的留在未分類；同一句可歸多個單元。聯合測驗不重複出題。每行使用一組 <code>“答案”</code> 挖空。</p></div><div class="example-actions"><button id="exampleStartButton" type="button" class="secondary-button">⚙ 自選單元／題數</button><button id="exampleExitButton" type="button" class="quiet-button">← 返回單元</button></div></div>
       <div class="example-summary"><span id="exampleCountLabel">題庫共 0 題</span><button id="exampleManageButton" type="button" class="quiet-button small-button">管理題庫</button></div>
       <div id="exampleLibrary" class="example-library" hidden>
         <div class="example-library-head"><strong>已匯入的例句 · 可勾選多個所屬單元</strong><button id="exampleClearButton" type="button" class="danger-quiet small-button">清空題庫</button></div>
+        <div class="example-library-filter" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0"><label for="exampleLibraryFilter">目前查看</label><select id="exampleLibraryFilter" aria-label="管理例句的單元範圍"><option value="current">目前單元</option><option value="all">全部單元</option><option value="uncategorized">未分類</option></select><span id="exampleLibraryFilterCount" class="section-hint"></span></div>
         <div class="example-bulk-assign" id="exampleBulkAssignPanel" hidden><span id="exampleUnsortedCount"></span><select id="exampleBulkAssignTarget" aria-label="未分類題目要歸入的單元"></select><button id="exampleBulkAssignButton" class="secondary-button small-button" type="button">整批歸類</button></div>
         <div id="exampleLibraryItems"></div><p id="exampleLibraryMore" class="section-hint"></p><button id="exampleLibraryMoreButton" type="button" class="quiet-button small-button" hidden>載入更多舊例句</button>
+        <div class="example-bulk-assign" style="margin-top:15px"><button id="exampleReclassifyByWords" type="button" class="secondary-button small-button">依單字表重新校正全部例句分類</button><span class="section-hint">預覽後再確認；只調整可比對的題目，找不到對應單字的保持原樣，不刪例句。</span></div>
+        <div class="example-bulk-assign" style="margin-top:15px"><button id="exampleRepairOldAssignments" type="button" class="secondary-button small-button">檢查並修復本單元的舊題目誤歸類</button><span class="section-hint">只檢查建立時間比本單元更早的例句；不刪除題目</span></div>
       </div>
       <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleConfigureButton" type="button" class="secondary-button small-button">⚙ 重選範圍</button><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
     </section>
@@ -486,6 +489,19 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       </div>
       <div id="exampleCountPreview" class="quiz-count-summary" role="status" aria-live="polite">本次隨機抽 20 題</div>
       <div class="dialog-actions"><button id="exampleCountCancel" type="button" class="quiet-button">取消</button><button id="exampleCountConfirm" type="submit" class="primary-button">開始測驗</button></div>
+    </form>
+  </dialog>
+  <dialog class="dialog" id="exampleImportPreviewDialog" aria-labelledby="exampleImportPreviewHeading">
+    <form id="exampleImportPreviewForm">
+      <h2 id="exampleImportPreviewHeading">確認例句匯入範圍</h2>
+      <p>預設依照每句引號中的英文答案，對照所有單元的單字表逐題歸類；同一單字出現在多個單元，就同時歸屬。找不到明確單字的例句保持「未分類」，絕不全部塞進目前單元。</p>
+      <label class="field" for="exampleImportMode">匯入分類方式<select id="exampleImportMode"><option value="auto">依單字自動分單元（建議）</option><option value="manual">整份 TXT 指定到一個單元（手動）</option></select></label>
+      <label class="field" id="exampleImportTargetRow" for="exampleImportTarget" hidden>整份例句指定到<select id="exampleImportTarget"></select></label>
+      <div id="exampleImportPreviewSummary" class="quiz-count-summary" role="status" aria-live="polite"></div>
+      <details style="margin:10px 0"><summary>檢查每句例句會歸到哪個單元</summary><div id="exampleImportAssignments" style="margin-top:10px;max-height:260px;overflow:auto;font-size:0.88rem;line-height:1.8;overflow-wrap:anywhere"></div></details>
+      <label class="checkbox-line" style="margin:14px 0"><input type="checkbox" id="exampleImportShareExisting"> <span id="exampleImportShareLabel">對已存在的同一句，也補上新比對到的單元（保留原歸屬）</span></label>
+      <p class="section-hint">預設不更動既有例句的歸屬；如果單字不存在、拼法不相符，就會列為未分類，之後可在題庫管理手動勾單元。</p>
+      <div class="dialog-actions"><button id="exampleImportCancel" type="button" class="quiet-button">取消</button><button id="exampleImportConfirm" type="submit" class="primary-button">確認匯入</button></div>
     </form>
   </dialog>
   <dialog class="dialog search-dialog" id="searchDialog" aria-labelledby="searchDialogHeading">
@@ -1044,21 +1060,73 @@ function parseExampleTXT(text) {
   return result;
 }
 function exampleKey(example) { return `${example.sentence}\u0000${example.answer.toLocaleLowerCase()}`; }
-function addExamples(state, entries, unitId) {
+// 回傳答案可能對應的英文字原形：先完全相符，再嘗試常見的複數、過去式和進行式。
+// 不使用語意猜測，無法與單字表比對的題目維持未分類。
+function exampleAnswerBases(answer) {
+  const original = answer.normalize('NFKC').trim().toLocaleLowerCase('en');
+  const bases = new Set([original]);
+  if (original.endsWith('ies') && original.length > 4) bases.add(original.slice(0,-3)+'y');
+  if (original.endsWith('es') && original.length > 3) bases.add(original.slice(0,-2));
+  if (original.endsWith('s') && original.length > 3) bases.add(original.slice(0,-1));
+  if (original.endsWith('ied') && original.length > 4) bases.add(original.slice(0,-3)+'y');
+  if (original.endsWith('ed') && original.length > 3) {
+    const stem=original.slice(0,-2);
+    bases.add(stem); bases.add(stem+'e');
+    if (stem.length > 2 && stem.at(-1)===stem.at(-2)) bases.add(stem.slice(0,-1));
+  }
+  if (original.endsWith('ing') && original.length > 5) {
+    const stem=original.slice(0,-3);
+    bases.add(stem);bases.add(stem+'e');
+    if (stem.length > 2 && stem.at(-1)===stem.at(-2)) bases.add(stem.slice(0,-1));
+  }
+  return [original, ...[...bases].filter(x=>x!==original)];
+}
+function buildExampleWordIndex(state) {
+  const byForm=new Map();
+  for (const word of Object.values(state.words)) {
+    const normalized=word.en.normalize('NFKC').trim().toLocaleLowerCase('en');
+    if (!byForm.has(normalized)) byForm.set(normalized,new Set());
+    byForm.get(normalized).add(word.unitId);
+  }
+  return byForm;
+}
+function matchExampleUnitsByAnswer(state, answer, byForm=buildExampleWordIndex(state)) {
+  const forms=exampleAnswerBases(answer);
+  // 完全相符時，絕不因模糊字形額外加入別的單元。
+  const exact=byForm.get(forms[0]);
+  if (exact?.size) return [...exact];
+  const matches=new Set();
+  for (const form of forms.slice(1)) for (const id of byForm.get(form)||[]) matches.add(id);
+  return [...matches];
+}
+function exampleIncomingUnitIds(state, entry, unitId, mode='manual', wordIndex=null) {
+  if (mode==='manual') { findUnit(state,unitId); return [unitId]; }
+  if (mode==='auto') return matchExampleUnitsByAnswer(state,entry.answer,wordIndex||buildExampleWordIndex(state));
+  throw new Error('例句分類模式錯誤');
+}
+function addExamples(state, entries, unitId, shareExisting = false, mode='manual') {
   const next = copy(state);
   findUnit(next, unitId);
   if (!Array.isArray(next.examples)) next.examples = [];
   const lookup = new Map(next.examples.map(q => [exampleKey(q),q]));
   let added = 0, reassigned = 0;
+  const wordIndex=mode==='auto'?buildExampleWordIndex(next):null;
+  const answerCache=new Map();
   for (const entry of entries) {
     const key = exampleKey(entry);
     const existing = lookup.get(key);
+    const normalized=entry.answer.normalize('NFKC').trim().toLocaleLowerCase('en');
+    if(!answerCache.has(normalized)) answerCache.set(normalized,exampleIncomingUnitIds(next,entry,unitId,mode,wordIndex));
+    const destinations=answerCache.get(normalized);
     if (existing) {
-      if (!existing.unitIds.includes(unitId)) { existing.unitIds.push(unitId); reassigned++; }
+      // 只在明確允許共用時添加歸屬，永不清掉舊歸屬。
+      if (shareExisting) {
+        for (const id of destinations) if (!existing.unitIds.includes(id)) { existing.unitIds.push(id); reassigned++; }
+      }
       continue;
     }
     if (next.examples.length >= 50000) throw new Error('題庫上限為 50,000 題');
-    const fresh = {id:uid(), unitIds:[unitId], sentence:entry.sentence, answer:entry.answer, createdAt:new Date().toISOString()};
+    const fresh = {id:uid(), unitIds:destinations, sentence:entry.sentence, answer:entry.answer, createdAt:new Date().toISOString()};
     next.examples.push(fresh);
     lookup.set(key,fresh);
     added++;
@@ -1213,6 +1281,8 @@ let exampleSession = null;
 let exampleViewOpen = false;
 let exampleManagementLimit = 30;
 let lastExampleScopeIds = null;
+let pendingExampleImport = null;
+let exampleManagementScope = 'current';
 
 function el(tag, className = '', text = null) {
   const node = document.createElement(tag);
@@ -1268,6 +1338,8 @@ function selectUnit(unitId) {
   listViewSort = 'default';
   $('sortSelect').value = '';
   selectedUnitId = unitId;
+  exampleManagementScope = 'current';
+  exampleManagementLimit = 30;
   selectedWordIds.clear();
   render();
   closeUnitDrawer();
@@ -1728,15 +1800,20 @@ function exportJSON() {
 
 /* ─── v1.6：獨立例句測驗 UI ─── */
 function renderExampleHub() {
-  const items = state.examples || [];
+  const allItems = state.examples || [];
+  const items = exampleManagementScope === 'all' ? allItems :
+    exampleManagementScope === 'uncategorized' ? allItems.filter(q => !q.unitIds.length) :
+    allItems.filter(q => q.unitIds.includes(selectedUnitId));
   const pool = exampleAnswerPool(state);
-  const unsorted = items.filter(q => !q.unitIds.length).length;
-  $('exampleCountLabel').textContent = `題庫共 ${items.length} 題 · 可選答案 ${pool.length} 種${unsorted ? ` · 未分類 ${unsorted} 題` : ''}`;
-  $('exampleStartButton').disabled = !items.length;
-  $('exampleStartButton').title = !items.length ? '請先匯入例句' : '';
+  const unsorted = allItems.filter(q => !q.unitIds.length).length;
+  $('exampleCountLabel').textContent = `總題庫 ${allItems.length} 題 · 目前單元 ${allItems.filter(q => q.unitIds.includes(selectedUnitId)).length} 題${unsorted ? ` · 未分類 ${unsorted} 題` : ''}`;
+  $('exampleStartButton').disabled = !allItems.length;
+  $('exampleStartButton').title = !allItems.length ? '請先匯入例句' : '';
   const pane = $('exampleLibrary');
   if (!pane.hidden) {
-    $('exampleBulkAssignPanel').hidden = unsorted === 0;
+    $('exampleLibraryFilter').value = exampleManagementScope;
+    $('exampleLibraryFilterCount').textContent = `顯示 ${items.length} / ${allItems.length} 題`;
+    $('exampleBulkAssignPanel').hidden = unsorted === 0 || exampleManagementScope === 'current';
     $('exampleUnsortedCount').textContent = `${unsorted} 題未分類`;
     const target = $('exampleBulkAssignTarget');
     const oldTarget = target.value;
@@ -1777,7 +1854,7 @@ function renderExampleHub() {
       }));
       rows.append(row);
     });
-    $('exampleLibraryMore').textContent = items.length > exampleManagementLimit ? `目前顯示最新 ${exampleManagementLimit} 題，還有 ${items.length-exampleManagementLimit} 題；也能重新匯入舊 TXT 進行歸類。` : items.length ? '' : '題庫尚未匯入例句。';
+    $('exampleLibraryMore').textContent = items.length > exampleManagementLimit ? `目前顯示最新 ${exampleManagementLimit} 題，還有 ${items.length-exampleManagementLimit} 題。` : items.length ? '' : '此範圍目前沒有例句。可切換「全部單元」查看。';
     $('exampleLibraryMoreButton').hidden = items.length <= exampleManagementLimit;
   }
   renderExampleQuiz();
@@ -1907,17 +1984,61 @@ function answerExample(choice) {
   if (correct) exampleSession.correct++;
   renderExampleQuiz();
 }
+function updateExampleImportPreview() {
+  if (!pendingExampleImport) return;
+  const mode=$('exampleImportMode').value;
+  const targetId=$('exampleImportTarget').value;
+  $('exampleImportTargetRow').hidden=mode!=='manual';
+  $('exampleImportShareLabel').textContent= mode==='auto'
+    ? '對已存在的同一句，也補上新比對到的單元（保留原歸屬）'
+    : '把已存在的相同例句也加入指定單元（原單元歸屬保留）';
+  const existing=new Map((state.examples||[]).map(q=>[exampleKey(q),q]));
+  const unique=new Map(pendingExampleImport.map(q=>[exampleKey(q),q]));
+  const wordIndex=mode==='auto'?buildExampleWordIndex(state):null;
+  const answerCache=new Map();
+  const rows=[...unique.values()].map(q=>{
+    const normalized=q.answer.normalize('NFKC').trim().toLocaleLowerCase('en');
+    if(!answerCache.has(normalized)) answerCache.set(normalized,exampleIncomingUnitIds(state,q,targetId,mode,wordIndex));
+    return {q,units:answerCache.get(normalized),old:existing.has(exampleKey(q))};
+  });
+  const duplicates=rows.filter(r=>r.old).length;
+  const unmatched=rows.filter(r=>!r.units.length);
+  const multi=rows.filter(r=>r.units.length>1).length;
+  const share=$('exampleImportShareExisting').checked;
+  const toAddMemberships=rows.filter(r=>r.old && r.units.some(id=>!existing.get(exampleKey(r.q)).unitIds.includes(id))).length;
+  const counts=new Map(state.units.map(u=>[u.id,0]));
+  for(const row of rows) if(!row.old || share) for(const id of row.units) counts.set(id,(counts.get(id)||0)+1);
+  const countsText=[...counts].filter(([,n])=>n).map(([id,n])=>`${exampleUnitName(id)}：${n} 題`).join('；');
+  $('exampleImportPreviewSummary').textContent =
+    `TXT ${pendingExampleImport.length} 行，去重後 ${rows.length} 題；新題 ${rows.length-duplicates}，既有題 ${duplicates}。`+
+    (mode==='auto' ? `依答案對照單字表：${countsText||'沒有對應單元'}；${unmatched.length} 題未分類，${multi} 題可跨單元共用。` : `整份指定「${exampleUnitName(targetId)}」。`)+
+    (share ? `將另外補充 ${toAddMemberships} 道既有題的單元歸屬，不刪原歸屬。` : '已存在例句不更動歸屬。');
+  const listing=$('exampleImportAssignments');listing.replaceChildren();
+  const max=80;
+  for(const row of rows.slice(0,max)) {
+    const div=document.createElement('div');
+    div.textContent=`${row.q.answer} → ${row.units.length?row.units.map(exampleUnitName).join('、'):'⚠ 未分類（找不到對應單字）'}${row.old&&!share?'（舊題保留原分類）':''}`;
+    listing.append(div);
+  }
+  if(rows.length>max) { const div=document.createElement('div');div.textContent=`還有 ${rows.length-max} 題未展開，匯入前可分批檢查。`;listing.append(div); }
+  $('exampleImportConfirm').disabled= mode==='manual'&&!targetId;
+  $('exampleImportConfirm').textContent=unmatched.length&&mode==='auto'?`確認匯入（${unmatched.length} 題未分類）`:'確認匯入';
+}
 async function importExampleFile(file) {
   if (!file) return;
   try {
     if (file.size > 4_000_000) throw new Error('TXT 檔案最大為 4 MB');
     const parsed = parseExampleTXT(await readTextFile(file));
-    const merged = addExamples(state,parsed,selectedUnitId);
-    if (!merged.added && !merged.reassigned) return message(`檔案含 ${parsed.length} 題，全部已歸屬目前單元`);
-    const done = runChange(() => merged.state, `新增 ${merged.added} 題、已存在例句新增單元歸屬 ${merged.reassigned} 題（略過 ${parsed.length-merged.added-merged.reassigned} 題重複）`);
-    if (done) $('exampleLibrary').hidden = false;
-    if (done) renderExampleHub();
-  } catch (error) { message(`例句匯入失敗：${error.message}`,true); }
+    pendingExampleImport = parsed;
+    const target = $('exampleImportTarget');
+    target.replaceChildren();
+    for (const unit of state.units) target.append(new Option(unit.name,unit.id));
+    target.value = selectedUnitId;
+    $('exampleImportMode').value='auto';
+    $('exampleImportShareExisting').checked=false;
+    updateExampleImportPreview();
+    $('exampleImportPreviewDialog').showModal();
+  } catch (error) { pendingExampleImport=null; message(`例句匯入失敗：${error.message}`,true); }
 }
 
 // PWA 只在 HTTPS/localhost 能註冊；單檔 file:// 仍可使用原本的單字功能。
@@ -2041,6 +2162,70 @@ $('exampleExitButton').addEventListener('click', closeExampleView);
 $('exampleFileInput').addEventListener('change', async event => { await importExampleFile(event.target.files?.[0]); event.target.value=''; });
 $('exampleManageButton').addEventListener('click', () => { $('exampleLibrary').hidden = !$('exampleLibrary').hidden; renderExampleHub(); });
 $('exampleLibraryMoreButton').addEventListener('click', () => { exampleManagementLimit += 30; renderExampleHub(); });
+$('exampleLibraryFilter').addEventListener('change', event => {
+  exampleManagementScope = event.target.value;
+  exampleManagementLimit = 30;
+  renderExampleHub();
+});
+$('exampleImportCancel').addEventListener('click', () => { pendingExampleImport = null; $('exampleImportPreviewDialog').close(); });
+$('exampleImportTarget').addEventListener('change', updateExampleImportPreview);
+$('exampleImportMode').addEventListener('change', updateExampleImportPreview);
+$('exampleImportShareExisting').addEventListener('change', updateExampleImportPreview);
+$('exampleImportPreviewForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (!pendingExampleImport) return message('請重新選擇 TXT',true);
+  try {
+    const unitId=$('exampleImportTarget').value;
+    const mode=$('exampleImportMode').value;
+    const share=$('exampleImportShareExisting').checked;
+    const data=addExamples(state,pendingExampleImport,unitId,share,mode);
+    const sourceCount=pendingExampleImport.length;
+    const changed=runChange(()=>data.state, `TXT ${sourceCount} 行：新增 ${data.added} 題，共用舊題新增歸屬 ${data.reassigned} 題，未更動的重複 ${sourceCount-data.added-data.reassigned} 行`);
+    if(changed) {
+      pendingExampleImport=null;
+      $('exampleImportPreviewDialog').close();
+      exampleManagementScope = mode==='auto'?'all':unitId===selectedUnitId?'current':'all';
+      exampleManagementLimit=30;
+      exampleSession=null;
+      exampleViewOpen=true;
+      $('exampleLibrary').hidden=false;
+      render();
+      $('exampleHub').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  } catch(error) { message(`匯入失敗：${error.message}`,true); }
+});
+$('exampleReclassifyByWords').addEventListener('click', () => {
+  if (!(state.examples||[]).length) return message('目前沒有可校正的例句');
+  const index=buildExampleWordIndex(state);
+  const plan=state.examples.map(q=>({q, ids:matchExampleUnitsByAnswer(state,q.answer,index)}));
+  const unknown=plan.filter(item=>!item.ids.length);
+  const different=plan.filter(item=>item.ids.length && (
+    item.ids.length!==item.q.unitIds.length || item.ids.some(id=>!item.q.unitIds.includes(id))));
+  if (!different.length) return message(`已檢查 ${plan.length} 題：目前沒有可確定的分類差異；${unknown.length} 題無法比對而保留原分類`);
+  const sample=different.slice(0,12).map(item=>`${item.q.answer}：${exampleUnitNames(item.q)} → ${item.ids.map(exampleUnitName).join('、')}`).join('\n');
+  if (!confirm(`即將依單字表重新校正全部例句分類：\n\n共 ${plan.length} 題；有 ${different.length} 題需要改變分類。\n${unknown.length} 題找不到對應單字，保持原分類。\n\n改動預覽（前 12 題）：\n${sample}\n\n注意：這會取代可比對題目現在的單元勾選，包括以前手動指定的單元；不刪除任何例句。\n請先匯出 JSON 備份。\n\n確定執行？`)) return;
+  const assignment=new Map(different.map(item=>[item.q.id,item.ids]));
+  const done=runChange(()=>{
+    const next=copy(state);
+    for(const q of next.examples) if(assignment.has(q.id)) q.unitIds=[...assignment.get(q.id)];
+    return next;
+  },`已校正 ${different.length} 題單元歸屬；${unknown.length} 題因無法比對而維持原樣`);
+  if (done) { exampleManagementScope='all';renderExampleHub(); }
+});
+$('exampleRepairOldAssignments').addEventListener('click', () => {
+  const unit=currentUnit();
+  if (!unit) return message('請先選擇單元',true);
+  const created=Date.parse(unit.createdAt);
+  if (!Number.isFinite(created)) return message('此單元沒有可確認的建立日期，無法自動篩選，請逐題修改',true);
+  const candidates=(state.examples||[]).filter(q=>q.unitIds.includes(unit.id) && Number.isFinite(Date.parse(q.createdAt)) && Date.parse(q.createdAt)<created);
+  if (!candidates.length) return message('沒有發現建立時間早於本單元、卻被歸入本單元的題目');
+  if (!confirm(`找到 ${candidates.length} 題在「${unit.name}」建立以前就存在，現在卻也歸入此單元。\n它們可能是你刻意設定共用的題目，也可能是誤歸類。\n\n要「只移除」這 ${candidates.length} 題對「${unit.name}」的歸屬嗎？其他單元歸屬、例句和單字全部保留。\n請先匯出 JSON 備份。`)) return;
+  runChange(()=>{
+    const next=copy(state), ids=new Set(candidates.map(q=>q.id));
+    for(const q of next.examples) if(ids.has(q.id)) q.unitIds=q.unitIds.filter(id=>id!==unit.id);
+    return next;
+  },`已移除 ${candidates.length} 道舊題對「${unit.name}」的歸屬，其他資料未更動`);
+});
 $('exampleBulkAssignButton').addEventListener('click', () => {
   const unitId = $('exampleBulkAssignTarget').value;
   if (!unitId) return message('請先選擇目標單元',true);
