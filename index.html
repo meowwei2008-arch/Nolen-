@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.3 離線版</title>
+  <title>英中單字卡 | v1.6.11 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -370,12 +370,33 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .example-quiz-top{flex-wrap:wrap}.example-quiz-top button{flex-shrink:0}
 @media(max-width:480px){.review-action-buttons{flex-wrap:wrap}.review-action-buttons button{flex:1 1 44%;min-width:0}}
 @media(max-width:410px){.quiz-count-form{padding:17px}.quiz-count-option{padding:10px 12px}.quiz-count-form .dialog-actions button{flex:1}}
+
+/* v1.6.11: 單元排序、英中循環聽力與多單元字卡 */
+.unit-order-controls{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
+.unit-order-controls button{min-width:34px;height:34px;padding:4px 8px;font-weight:700;border-radius:8px;background:#26314a;border:1px solid #53607d;color:#f2f4ff}
+.unit-order-controls button:disabled{opacity:.3;cursor:default}
+.unit-select-row .unit-item{flex:1;min-width:0}
+.listening-panel{margin:12px 0 18px;border:1px solid #46516d;border-radius:16px;background:#17243d;padding:16px}
+.listening-panel h3{font-size:17px;margin:0 0 6px}.listening-panel p{color:var(--muted);font-size:12px;margin:0 0 12px;line-height:1.6}
+.listening-controls{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.listening-controls label{font-size:12px;color:#e3e4fc}
+.listening-controls select{display:block;margin-top:5px;background:#131a34;border:1px solid #636b9a;border-radius:9px;min-height:40px;color:#fff;padding:6px}
+.listening-controls button{min-height:40px}.listening-loop{display:flex;align-items:center;gap:7px;min-height:40px}
+.listening-controls select:disabled{opacity:.4;cursor:not-allowed}.listening-status{color:#d0defd;font-size:12px;line-height:1.6;margin-top:11px;overflow-wrap:anywhere}
+.card-scope-list{max-height:42vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.card-scope-row{display:flex;gap:10px;align-items:center;background:#18243d;border:1px solid #37465f;border-radius:10px;padding:12px;cursor:pointer}
+.card-scope-row input{width:19px;height:19px;accent-color:#aaa3ff;flex-shrink:0}
+.card-scope-row span{flex:1;min-width:0;overflow-wrap:anywhere}.card-scope-row small{color:#aebcd8}
+.card-scope-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.card-scope-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.card-scope-controls label{font-size:12px}.card-scope-controls select{display:block;width:100%;margin-top:5px;background:#131a34;color:white;border:1px solid #636b9a;border-radius:9px;min-height:42px;padding:8px}
+.card-scope-preview{background:#202942;border:1px solid #414e70;border-radius:10px;padding:10px;margin:12px 0;font-size:13px;line-height:1.55}
+@media(max-width:800px){.unit-select-row{flex:0 0 250px;min-width:250px}.unit-order-controls button{height:30px;min-width:30px}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.9 · 自動分單元</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.11 · 英中循環朗讀</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -400,7 +421,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
   </div></header>
   <dialog class="unit-drawer" id="unitSidebar" aria-labelledby="unitDrawerTitle" aria-modal="true">
     <div class="side-top drawer-heading"><h3 id="unitDrawerTitle">單元列表 <span class="drawer-count">(<span id="unitCount">0</span>)</span></h3><button id="closeUnitDrawer" type="button" class="quiet-button small-button" aria-label="關閉單元列表">✕</button></div>
-    <div class="drawer-add"><span class="section-hint">點選單元切換，勾選則可批次複製書籤。</span><button class="primary-button small-button" id="newUnitButton" type="button">＋ 新增</button></div>
+    <div class="drawer-add"><span class="section-hint">點單元切換，右側 ↑↓ 調整排序；左側勾選可批次複製書籤。</span><button class="primary-button small-button" id="newUnitButton" type="button">＋ 新增</button></div>
     <nav id="unitList" class="unit-list" aria-label="切換單元"></nav>
     <div class="multiunit-box"><div class="multiunit-title"><strong>多單元書籤複製</strong><button id="clearUnitsButton" class="quiet-button small-button" type="button">清除</button></div><p>勾選單元，把其中已加入書籤的單字複製成新單元。原字不變。</p><button id="copyBookmarksButton" class="secondary-button" type="button" disabled>複製所選單元書籤（<span id="selectedUnitCount">0</span>）</button></div>
     <div class="side-bottom">所有單元合計：<strong id="totalWords">0</strong> 個單字</div>
@@ -417,6 +438,19 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
             <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
+          </section>
+          <section class="listening-panel" aria-label="單元循環聽力">
+            <h3>▶ 單元單字循環聽力</h3><p>每個單字先朗讀指定次數的英文，再朗讀指定次數的中文（可關閉），然後才進入下一字。可單輪播放或循環，不影響學習紀錄。</p>
+            <div class="listening-controls">
+              <label for="listeningEnglishCount">英文朗讀次數<select id="listeningEnglishCount"><option value="1" selected>1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="4">4 次</option><option value="5">5 次</option><option value="6">6 次</option><option value="7">7 次</option><option value="8">8 次</option><option value="9">9 次</option><option value="10">10 次</option></select></label>
+              <label class="listening-loop" for="listeningWithChinese"><input type="checkbox" id="listeningWithChinese"> 同時朗讀中文</label>
+              <label for="listeningChineseCount">中文朗讀次數<select id="listeningChineseCount" disabled><option value="1" selected>1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="4">4 次</option><option value="5">5 次</option><option value="6">6 次</option><option value="7">7 次</option><option value="8">8 次</option><option value="9">9 次</option><option value="10">10 次</option></select></label>
+              <label for="listeningGap">單字間隔<select id="listeningGap"><option value="500">0.5 秒</option><option value="1200" selected>1.2 秒</option><option value="2500">2.5 秒</option><option value="4000">4 秒</option></select></label>
+              <label class="listening-loop" for="listeningLoop"><input type="checkbox" id="listeningLoop" checked> 播完重新循環</label>
+              <button id="listeningStartButton" class="primary-button" type="button">▶ 開始朗讀</button>
+              <button id="listeningStopButton" class="quiet-button" type="button" disabled>■ 停止</button>
+            </div>
+            <div id="listeningStatus" class="listening-status" role="status" aria-live="polite">尚未播放</div>
           </section>
           <div class="toolbar phase4-toolbar"><h3>單字清單 <small>共 <span id="wordCount">0</span> 個</small></h3><div class="word-toolbar-actions"><label for="sortSelect" class="sort-control">排序
             <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級隨機）</option><option value="bookmarked">★ 書籤優先（不更動原順序）</option></select>
@@ -440,7 +474,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleConfigureButton" type="button" class="secondary-button small-button">⚙ 重選範圍</button><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
     </section>
         <section id="reviewPanel" class="review-screen" hidden aria-label="複習單字卡">
-          <div class="review-top"><button id="reviewExitButton" class="quiet-button">← 返回單元</button><span id="reviewUnitLabel" class="review-unit-label"></span></div>
+          <div class="review-top"><button id="reviewExitButton" class="quiet-button">← 返回單元</button><button id="reviewRechooseButton" type="button" class="secondary-button small-button">⚙ 重選單元</button><span id="reviewUnitLabel" class="review-unit-label"></span></div>
           <div class="review-heading"><div><div class="eyebrow">FLASHCARDS</div><h2>單字複習</h2></div><div class="review-counter" id="reviewProgress">第 1 / 1 張</div></div>
           <div class="progress-track"><div id="reviewProgressFill" class="progress-fill"></div></div>
           <div class="review-statusline"><span id="reviewAnswered">已回答 0 / 0</span><span id="reviewModeLabel"></span></div>
@@ -456,7 +490,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <div class="result-stats"><div><span>總題數</span><strong id="resultTotal">0</strong></div><div><span>記得</span><strong class="good" id="resultRemembered">0</strong></div><div><span>不記得</span><strong class="bad" id="resultForgotten">0</strong></div></div>
           <div id="forgottenSummary" class="forgotten-summary" hidden><h3>本輪批鬥名單（單字 · 現任稱號）</h3><div id="forgottenWords" class="forgotten-words"></div></div>
           <p class="result-note">這輪已計入單元最近五次複習成績；重複點擊不會增加分數。</p>
-          <div class="result-buttons"><button id="reviewForgottenButton" class="secondary-button">再複習不記得的單字</button><button id="reviewRestartButton" class="primary-button">重新開始本模式</button><button id="resultExitButton" class="quiet-button">返回單元</button></div>
+          <div class="result-buttons"><button id="reviewForgottenButton" class="secondary-button">再複習不記得的單字</button><button id="reviewRestartButton" class="primary-button">重選範圍／再考一輪</button><button id="resultExitButton" class="quiet-button">返回單元</button></div>
         </section>
       </section>
     </div>
@@ -472,6 +506,17 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       </div>
       <p id="reviewChoiceHelp" class="mode-choice-help"></p>
     </div>
+  </dialog>
+  <dialog class="dialog quiz-count-dialog" id="cardScopeDialog" aria-labelledby="cardScopeHeading">
+    <form id="cardScopeForm">
+      <h2 id="cardScopeHeading">自選多單元字卡複習</h2>
+      <p>可同時選多個單元；相同英文與中文的字卡在同一輪只出現一次，作答會更新各單元的單字副本。</p>
+      <div class="card-scope-actions"><strong>選擇單元</strong><div><button id="cardScopeAll" class="quiet-button small-button" type="button">全選</button><button id="cardScopeNone" class="quiet-button small-button" type="button">清除</button></div></div>
+      <div id="cardScopeList" class="card-scope-list" role="group" aria-label="選取字卡單元"></div>
+      <div class="card-scope-controls"><label for="cardScopeMode">字卡篩選<select id="cardScopeMode"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><label for="cardScopeOrder">複習順序<select id="cardScopeOrder"><option value="sequential">一單元一單元，照排列順序</option><option value="mixed">所有單元隨機混合</option></select></label></div>
+      <div id="cardScopePreview" class="card-scope-preview" role="status">選擇單元後會顯示題數</div>
+      <div class="dialog-actions"><button class="quiet-button" type="button" id="cardScopeCancel">取消</button><button class="primary-button" type="submit" id="cardScopeSubmit">開始字卡複習</button></div>
+    </form>
   </dialog>
   <dialog class="dialog quiz-count-dialog" id="exampleCountDialog" aria-labelledby="exampleCountHeading">
     <form id="exampleCountForm" class="quiz-count-form">
@@ -683,6 +728,15 @@ function addUnit(state, name) {
   next.units.push({ id: uid(), name: checkText(name, '單元名稱', 80), wordIds: [], reviewSlots: [], createdAt: new Date().toISOString() });
   return next;
 }
+function reorderUnit(state, unitId, offset) {
+  if (offset !== -1 && offset !== 1) throw new Error('單元排序方向錯誤');
+  const next = copy(state);
+  const i = next.units.findIndex(u => u.id === unitId);
+  const j = i + offset;
+  if (i < 0) throw new Error('找不到單元');
+  if (j >= 0 && j < next.units.length) [next.units[i], next.units[j]] = [next.units[j], next.units[i]];
+  return next;
+}
 function renameUnit(state, unitId, name) {
   const next = copy(state);
   findUnit(next, unitId).name = checkText(name, '單元名稱', 80);
@@ -784,17 +838,31 @@ function filteredWordIds(state, unitId, mode = 'all') {
   return words.filter(word => (mode !== 'bookmarked' && mode !== 'bookmarked-red' || word.bookmarked)
     && (mode !== 'red' && mode !== 'bookmarked-red' || word.proficiency === 'red')).map(word => word.id);
 }
-function startReview(state, unitId, mode = 'all', specificIds = null) {
-  findUnit(state, unitId);
-  let ids = filteredWordIds(state, unitId, mode);
-  if (specificIds !== null) {
-    if (!Array.isArray(specificIds) || specificIds.some(id => typeof id !== 'string')) throw new Error('複習單字清單格式錯誤');
-    // 僅包含目前仍在此單元的指定副本；確保題目不重複。
-    const requested = new Set(specificIds);
-    ids = findUnit(state, unitId).wordIds.filter(id => requested.has(id));
+function buildReviewCards(state, scopeIds, mode='all', specificIds=null, shuffle=false) {
+  const uniqueIds = [...new Set(scopeIds)];
+  if (!uniqueIds.length || uniqueIds.some(id => !state.units.some(u => u.id === id))) throw new Error('請至少選一個有效單元');
+  if (specificIds !== null && (!Array.isArray(specificIds) || specificIds.some(id=>typeof id!=='string'))) throw new Error('指定字卡格式錯誤');
+  const chosen = specificIds === null ? null : new Set(specificIds);
+  // 同英＋同中文僅出一張；不同翻譯仍是不同字卡。保留各單元獨立 word ID。
+  const groups = new Map();
+  for (const unitId of uniqueIds) for (const id of filteredWordIds(state,unitId,mode)) {
+    const w = state.words[id];
+    const key = w.en.trim().toLocaleLowerCase()+'\0'+w.zh.trim().toLocaleLowerCase();
+    if (!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(id);
   }
-  if (ids.length === 0) throw new Error('此模式沒有可複習的單字，請調整篩選或新增單字');
-  return { unitId, mode, wordIds: ids, index: 0, flipped: false, answers: ids.map(() => null), complete: false, startedAt: new Date().toISOString() };
+  let cards = [...groups.values()];
+  if (chosen) cards = cards.filter(ids => ids.some(id=>chosen.has(id)));
+  if (shuffle) cards = shuffleArray(cards);
+  return cards;
+}
+function startReview(state, unitId, mode = 'all', specificIds = null, scopeIds = null, shuffle = false) {
+  findUnit(state, unitId);
+  const scopes = [...new Set(scopeIds || [unitId])];
+  const cards = buildReviewCards(state,scopes,mode,specificIds,shuffle);
+  if (!cards.length) throw new Error('所選單元沒有符合條件的單字，請重選範圍');
+  return { unitId, scopeIds: scopes, mode, shuffle, cardGroups: cards, wordIds: cards.map(g=>g[0]),
+    index: 0, flipped: false, answers: cards.map(() => null), complete: false, startedAt: new Date().toISOString() };
 }
 function reviewStats(session) {
   const total = session.wordIds.length;
@@ -816,35 +884,42 @@ function reviewFlip(session) {
 function gradeReview(state, session, remembered) {
   if (typeof remembered !== 'boolean') throw new Error('答案必須是記得或不記得');
   if (session.complete || session.answers[session.index] !== null) return { state, session, applied: false };
-  const wordId = session.wordIds[session.index];
+  const memberIds = session.cardGroups?.[session.index] || [session.wordIds[session.index]];
   const nextState = copy(state);
-  const word = findWord(nextState, wordId);
-  if (word.unitId !== session.unitId) throw new Error('單字已移到其他單元，請重新開始複習');
-  const nextSession = copy(session);
-  const level = PROFICIENCY.indexOf(word.proficiency);
-  word.proficiency = PROFICIENCY[Math.max(0, Math.min(PROFICIENCY.length - 1, level + (remembered ? 1 : -1)))];
-  if (!remembered) { word.forgetCount += 1; drawUniqueHat(word); }
-  nextSession.answers[session.index] = remembered;
-  nextSession.flipped = false;
-  const stats = reviewStats(nextSession);
+  const scope = new Set(session.scopeIds || [session.unitId]);
+  // 同一張卡在多個單元有獨立副本：所有成員同步依同一次回答計分，不丟失忘記紀錄。
+  for (const id of memberIds) {
+    const word = findWord(nextState, id);
+    if (!scope.has(word.unitId)) throw new Error('單字已移到其他單元，請重新開始複習');
+    const level = PROFICIENCY.indexOf(word.proficiency);
+    word.proficiency = PROFICIENCY[Math.max(0, Math.min(PROFICIENCY.length-1,level+(remembered?1:-1)))];
+    if (!remembered) { word.forgetCount+=1; drawUniqueHat(word); }
+  }
+  const nextSession=copy(session);
+  nextSession.answers[session.index]=remembered;
+  nextSession.flipped=false;
+  const stats=reviewStats(nextSession);
   if (stats.answered === stats.total) {
-    nextSession.complete = true;
-    const unit = findUnit(nextState, session.unitId);
-    const slotValue = Math.round(0.2 * (stats.remembered / stats.total) * 1e12) / 1e12;
-    unit.reviewSlots = [...unit.reviewSlots, slotValue].slice(-5);
-    nextState.reviewHistory.push({
-      id: uid(), unitId: session.unitId, mode: session.mode, total: stats.total,
-      remembered: stats.remembered, forgotten: stats.forgotten,
-      percentage: stats.percentage, completedAt: new Date().toISOString()
-    });
+    nextSession.complete=true;
+    // 各單元只計算自己參與的字卡，保留既有複習歷史的 unitId 格式。
+    for (const unitId of nextSession.scopeIds || [nextSession.unitId]) {
+      const indexes=nextSession.cardGroups.map((ids,i)=>ids.some(id=>nextState.words[id]?.unitId===unitId) ? i : -1).filter(i=>i>=0);
+      if (!indexes.length) continue;
+      const r=indexes.filter(i=>nextSession.answers[i]===true).length;
+      const total=indexes.length;
+      const f=total-r;
+      const percent=Math.round(r*1000/total)/10;
+      const unit=findUnit(nextState,unitId);
+      unit.reviewSlots=[...unit.reviewSlots,Math.round(0.2*(r/total)*1e12)/1e12].slice(-5);
+      nextState.reviewHistory.push({ id:uid(),unitId,mode:session.mode,total,remembered:r,forgotten:f,percentage:percent,completedAt:new Date().toISOString() });
+    }
   } else {
-    // 跳過已回答的題目，找下一張未回答的卡片；允許上一張／下一張自由瀏覽。
-    for (let i = 1; i <= nextSession.wordIds.length; i++) {
-      const nextIndex = (session.index + i) % nextSession.wordIds.length;
-      if (nextSession.answers[nextIndex] === null) { nextSession.index = nextIndex; break; }
+    for (let i=1;i<=nextSession.wordIds.length;i++) {
+      const j=(session.index+i)%nextSession.wordIds.length;
+      if (nextSession.answers[j]===null){nextSession.index=j;break;}
     }
   }
-  return { state: nextState, session: nextSession, applied: true };
+  return {state:nextState,session:nextSession,applied:true};
 }
 
 /* 階段二補上保守的完整還原；第四階段另做不覆蓋原資料的合併匯入。 */
@@ -1283,6 +1358,8 @@ let exampleManagementLimit = 30;
 let lastExampleScopeIds = null;
 let pendingExampleImport = null;
 let exampleManagementScope = 'current';
+let lastCardScopeIds = null;
+let listeningPlayback = null;
 
 function el(tag, className = '', text = null) {
   const node = document.createElement(tag);
@@ -1330,8 +1407,10 @@ function runChange(action, success = '已更新') {
 }
 let saving = Promise.resolve();
 function selectUnit(unitId) {
+  // 只在確定切換後中止原單元的聽力。
   if (reviewSession && !reviewSession.complete && reviewStats(reviewSession).answered > 0 &&
     !confirm('這輪還沒結束。已作答單字的熟練度會保留，但本輪不會計入單元分數。確定離開？')) return;
+  stopListening();
   reviewSession = null;
   exampleSession = null;
   exampleViewOpen = false;
@@ -1355,7 +1434,7 @@ function renderUnits() {
   list.replaceChildren();
   $('unitCount').textContent = state.units.length;
   $('totalWords').textContent = Object.keys(state.words).length;
-  for (const unit of state.units) {
+  for (const [unitIndex,unit] of state.units.entries()) {
     const active = unit.id === selectedUnitId;
     const item = button('', `unit-item ${active ? 'active' : ''}`, () => selectUnit(unit.id), `開啟${unit.name}單元`);
     const inner = el('span', 'unit-primary');
@@ -1370,7 +1449,12 @@ function renderUnits() {
       if (checkbox.checked) selectedUnitIds.add(unit.id); else selectedUnitIds.delete(unit.id);
       renderUnits();
     });
-    wrapper.append(checkbox, item);
+    const moves = el('div','unit-order-controls');
+    const up=button('↑','',()=>runChange(()=>reorderUnit(state,unit.id,-1),'單元已上移'),`將${unit.name}上移`);
+    const down=button('↓','',()=>runChange(()=>reorderUnit(state,unit.id,1),'單元已下移'),`將${unit.name}下移`);
+    up.disabled=unitIndex===0; down.disabled=unitIndex===state.units.length-1;
+    moves.append(up,down);
+    wrapper.append(checkbox, item, moves);
     list.append(wrapper);
   }
 }
@@ -1527,16 +1611,19 @@ function render() {
   renderWords(unit);
   renderHatBoard(unit);
   refreshReviewEligibility();
+  renderListeningControls();
 }
 function refreshReviewEligibility() {
   if (!currentUnit()) return;
   const count = filteredWordIds(state, selectedUnitId, $('reviewModeSelect').value).length;
   $('reviewEligibleCount').textContent = `字卡：符合條件的單字 ${count} 個`;
-  $('startReviewButton').disabled = count === 0 && !(state.examples?.length);
+  $('startReviewButton').disabled = state.units.every(u => u.wordIds.length === 0) && !(state.examples?.length);
 }
-function startSession(mode, specificIds = null) {
+function startSession(mode, specificIds = null, scopeIds = null, shuffle = false) {
   try {
-    reviewSession = startReview(state, selectedUnitId, mode, specificIds);
+    const scopes=scopeIds || [selectedUnitId];
+    stopListening();
+    reviewSession = startReview(state, selectedUnitId, mode, specificIds, scopes, shuffle);
     render();
   } catch (error) { message(error.message, true); }
 }
@@ -1553,10 +1640,12 @@ function renderReview() {
   const word = state.words[session.wordIds[session.index]];
   const stats = reviewStats(session);
   const answered = session.answers[session.index];
-  $('reviewUnitLabel').textContent = currentUnit().name;
+  const currentGroup = session.cardGroups?.[session.index] || [session.wordIds[session.index]];
+  const currentUnits = [...new Set(currentGroup.map(id=>state.words[id]?.unitId).filter(Boolean))];
+  $('reviewUnitLabel').textContent = '本張：' + currentUnits.map(id=>state.units.find(u=>u.id===id)?.name||'已刪單元').join(' + ');
   $('reviewProgress').textContent = `第 ${session.index + 1} / ${stats.total} 張`;
   $('reviewAnswered').textContent = `已回答 ${stats.answered} / ${stats.total}`;
-  $('reviewModeLabel').textContent = REVIEW_MODES[session.mode];
+  $('reviewModeLabel').textContent = REVIEW_MODES[session.mode] + (session.shuffle ? ' · 混合出題' : ' · 按單元順序');
   $('reviewProgressFill').style.width = `${100 * stats.answered / stats.total}%`;
   $('cardFaceLabel').textContent = session.flipped ? '中文意思' : 'ENGLISH';
   $('cardText').textContent = session.flipped ? word.zh : word.en;
@@ -1577,7 +1666,7 @@ function renderReview() {
 function renderResults() {
   const session = reviewSession;
   const stats = reviewStats(session);
-  $('resultUnitName').textContent = `${currentUnit().name} · ${REVIEW_MODES[session.mode]}`;
+  $('resultUnitName').textContent = `${(session.scopeIds||[session.unitId]).map(id=>state.units.find(u=>u.id===id)?.name||'?').join(' + ')} · ${REVIEW_MODES[session.mode]}`;
   $('resultPercentage').textContent = `${stats.percentage}%`;
   $('resultTotal').textContent = stats.total;
   $('resultRemembered').textContent = stats.remembered;
@@ -1635,28 +1724,35 @@ async function restoreJSON(file) {
 function cambridgeURL(english) {
   return 'https://dictionary.cambridge.org/dictionary/english/' + encodeURIComponent(english.trim().toLowerCase());
 }
-function pronounce(english) {
-  if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
-    message('目前裝置或瀏覽器不支援語音朗讀', true); return;
+function createEnglishUtterance(english, rate=0.86) {
+  const language=state.settings?.voice==='en-GB'?'en-GB':'en-US';
+  const utterance=new SpeechSynthesisUtterance(english);
+  utterance.lang=language; utterance.rate=rate;
+  const voices=window.speechSynthesis.getVoices?.()||[];
+  const matching=voices.find(v=>v.lang.toLowerCase()===language.toLowerCase());
+  if (matching) utterance.voice=matching;
+  else if (language==='en-US') {
+    const fallback=voices.find(v=>v.lang.toLowerCase().startsWith('en'));
+    if (fallback) utterance.voice=fallback;
   }
-  const language = state.settings?.voice === 'en-GB' ? 'en-GB' : 'en-US'; // 預設美式；英式可在進階設定選擇。
-  const utterance = new SpeechSynthesisUtterance(english);
-  utterance.lang = language;
-  utterance.rate = 0.86;
+  return utterance;
+}
+function createChineseUtterance(chinese) {
+  const utterance=new SpeechSynthesisUtterance(chinese);
+  utterance.lang='zh-TW'; utterance.rate=0.9;
+  const voices=window.speechSynthesis.getVoices?.()||[];
+  const matching=voices.find(v=>v.lang.toLowerCase()==='zh-tw')
+    || voices.find(v=>v.lang.toLowerCase()==='zh-hk')
+    || voices.find(v=>v.lang.toLowerCase().startsWith('zh'));
+  if (matching) { utterance.voice=matching; utterance.lang=matching.lang; }
+  return utterance;
+}
+function pronounce(english) {
+  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance==='undefined') return message('目前裝置或瀏覽器不支援語音朗讀',true);
   try {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      const matching = voices.find(v => v.lang.toLowerCase() === language.toLowerCase());
-      // 英式語音缺席時讓系統根據 utterance.lang 選擇，避免強制套用美式聲音。
-      if (matching) utterance.voice = matching;
-      else if (language === 'en-US') {
-        const fallback = voices.find(v => v.lang.toLowerCase().startsWith('en'));
-        if (fallback) utterance.voice = fallback;
-      }
-    }
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  } catch (error) { message('發音失敗：' + error.message, true); }
+    stopListening();
+    window.speechSynthesis.speak(createEnglishUtterance(english));
+  } catch (error) { message('發音失敗：'+error.message,true); }
 }
 function renderSearchResults() {
   const needle = $('searchInput').value.trim();
@@ -1799,6 +1895,125 @@ function exportJSON() {
 
 
 /* ─── v1.6：獨立例句測驗 UI ─── */
+// v1.6.10 多單元字卡範圍，第二輪可重新勾選，完全不更動單字資料。
+function openCardScopeDialog(keepIds=null) {
+  const remembered=(keepIds || lastCardScopeIds || [selectedUnitId]);
+  const chosen=new Set(remembered.filter(id=>state.units.some(u=>u.id===id)));
+  if (!chosen.size && selectedUnitId) chosen.add(selectedUnitId);
+  const list=$('cardScopeList'); list.replaceChildren();
+  for (const unit of state.units) {
+    const row=el('label','card-scope-row');
+    const check=el('input'); check.type='checkbox'; check.value=unit.id;
+    check.checked=chosen.has(unit.id);
+    const name=el('span','',unit.name); const count=el('small','',`${unit.wordIds.length} 個單字`);
+    row.append(check,name,count); list.append(row);
+    check.addEventListener('change',updateCardScopePreview);
+  }
+  $('cardScopeMode').value=reviewSession?.mode || $('reviewModeSelect').value;
+  $('cardScopeOrder').value=reviewSession?.shuffle ? 'mixed' : 'sequential';
+  updateCardScopePreview();
+  $('cardScopeDialog').showModal();
+}
+function getCardScopeSelection() {
+  return [...$('cardScopeList').querySelectorAll('input:checked')].map(node=>node.value);
+}
+function updateCardScopePreview() {
+  const ids=getCardScopeSelection();
+  const mode=$('cardScopeMode').value;
+  const amount=ids.length ? buildReviewCards(state,ids,mode).length : 0;
+  const orderText=$('cardScopeOrder').value==='mixed' ? '所有選取單元打散出題' : '依單元排列順序逐單元複習';
+  $('cardScopePreview').textContent=`已選 ${ids.length} 個單元，共 ${amount} 張不重複字卡。${orderText}。${amount ? '可以開始複習' : '請勾選有符合篩選條件的單元'}`;
+  $('cardScopeSubmit').disabled=!amount;
+}
+function renderListeningControls() {
+  const unit=currentUnit();
+  if (!unit) return;
+  const playing=!!listeningPlayback && listeningPlayback.unitId===unit.id;
+  $('listeningStartButton').disabled=!unit.wordIds.length;
+  $('listeningStartButton').textContent=playing?'↻ 重新從頭播放':'▶ 開始朗讀';
+  $('listeningStopButton').disabled=!playing;
+  $('listeningWithChinese').disabled=playing;
+  $('listeningEnglishCount').disabled=playing;
+  $('listeningChineseCount').disabled=playing || !$('listeningWithChinese').checked;
+  // 正在播放時鎖定次數設定；可隨時停止、重新選擇後再開始。
+  if (!playing) $('listeningStatus').textContent=unit.wordIds.length ? '尚未播放 · 可自行設定英中次數' : '本單元還沒有單字';
+}
+function stopListening(announce=false) {
+  const wasPlaying=!!listeningPlayback;
+  if (listeningPlayback?.timer) clearTimeout(listeningPlayback.timer);
+  if (listeningPlayback?.watchdog) clearTimeout(listeningPlayback.watchdog);
+  listeningPlayback=null;
+  try { window.speechSynthesis?.cancel(); } catch {}
+  if (currentUnit()) renderListeningControls();
+  if (wasPlaying && $('listeningStatus')) $('listeningStatus').textContent=announce ? '已停止朗讀' : '尚未播放';
+}
+function queueListeningNext(playback) {
+  if (playback !== listeningPlayback) return;
+  playback.index++;
+  playback.phase='en'; playback.repeatIndex=0;
+  if (playback.index>=playback.wordIds.length) {
+    if ($('listeningLoop').checked) playback.index=0;
+    else {stopListening();$('listeningStatus').textContent='本單元已播放完畢';return;}
+  }
+  const gap=Number($('listeningGap').value)||1200;
+  playback.timer=setTimeout(()=>speakListeningCurrent(playback),gap);
+}
+function advanceListeningPart(playback) {
+  if (playback !== listeningPlayback) return;
+  playback.repeatIndex++;
+  if (playback.phase==='en' && playback.repeatIndex>=playback.englishCount) {
+    if (!playback.withChinese) {queueListeningNext(playback);return;}
+    playback.phase='zh'; playback.repeatIndex=0;
+  } else if (playback.phase==='zh' && playback.repeatIndex>=playback.chineseCount) {
+    queueListeningNext(playback);return;
+  }
+  // 朗讀同一個單字時的短暫停頓；單字間隔只套用到下一個單字。
+  playback.timer=setTimeout(()=>speakListeningCurrent(playback),180);
+}
+function speakListeningCurrent(playback) {
+  if (playback !== listeningPlayback) return;
+  const word=state.words[playback.wordIds[playback.index]];
+  if (!word || word.unitId!==playback.unitId){queueListeningNext(playback);return;}
+  try {
+    const chinese=playback.phase==='zh';
+    const utterance=chinese ? createChineseUtterance(word.zh) : createEnglishUtterance(word.en,0.86);
+    const serial=++playback.utteranceSerial;
+    let ended=false;
+    const done=()=>{
+      if (ended || playback!==listeningPlayback || serial!==playback.utteranceSerial) return;
+      ended=true;
+      if (playback.watchdog) {clearTimeout(playback.watchdog);playback.watchdog=null;}
+      advanceListeningPart(playback);
+    };
+    utterance.onend=done;
+    utterance.onerror=event=>{
+      if (event.error==='canceled'||event.error==='interrupted') return;
+      done();
+    };
+    const count=chinese?playback.chineseCount:playback.englishCount;
+    const part=chinese?'中文':'英文';
+    $('listeningStatus').textContent=`第 ${playback.index+1} / ${playback.wordIds.length} 字：${word.en} · ${part} ${playback.repeatIndex+1} / ${count} · ${$('listeningLoop').checked?'循環中':'單次播放'}`;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    playback.watchdog=setTimeout(done,12000); // Android TTS 偶爾漏掉 onend
+  } catch (error) {stopListening();message('循環朗讀失敗：'+error.message,true);}
+}
+function startListening() {
+  const unit=currentUnit();
+  if (!unit || !unit.wordIds.length) return message('本單元沒有可朗讀的單字',true);
+  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance==='undefined') return message('這個瀏覽器不支援裝置語音',true);
+  const englishCount=Math.max(1,Math.min(10,Number($('listeningEnglishCount').value)||1));
+  const chineseCount=Math.max(1,Math.min(10,Number($('listeningChineseCount').value)||1));
+  const withChinese=$('listeningWithChinese').checked;
+  stopListening();
+  const playback={unitId:unit.id,wordIds:[...unit.wordIds],index:0,
+    timer:null,watchdog:null,utteranceSerial:0,phase:'en',repeatIndex:0,
+    englishCount,chineseCount,withChinese};
+  listeningPlayback=playback;
+  renderListeningControls();
+  speakListeningCurrent(playback);
+}
+
 function renderExampleHub() {
   const allItems = state.examples || [];
   const items = exampleManagementScope === 'all' ? allItems :
@@ -2332,18 +2547,18 @@ $('restoreFileInput').addEventListener('change', async event => {
 });
 $('reviewModeSelect').addEventListener('change', refreshReviewEligibility);
 $('startReviewButton').addEventListener('click', () => {
-  const cardCount = filteredWordIds(state,selectedUnitId,$('reviewModeSelect').value).length;
+  const cardCount = state.units.reduce((sum,u)=>sum+filteredWordIds(state,u.id,$('reviewModeSelect').value).length,0);
   const quizCount = state.examples?.length || 0;
   const quizReady = quizCount > 0;
   $('reviewChoiceCard').disabled = cardCount === 0;
   $('reviewChoiceQuiz').disabled = !quizReady;
-  $('reviewChoiceCardDetail').textContent = `${cardCount} 個單字 · 翻面回想中文`;
+  $('reviewChoiceCardDetail').textContent = `${cardCount} 個單字副本 · 可選單元聯合複習`;
   $('reviewChoiceQuizDetail').textContent = `${quizCount} 道例句 · 可自選多個單元`;
   $('reviewChoiceHelp').textContent = !quizReady ? '請先在任一單元匯入例句 TXT。' : '字彙測驗可以勾選多個單元共同出題，不影響字卡熟練度、忘記次數或帽子。';
   $('reviewChoiceDialog').showModal();
 });
 $('reviewChoiceClose').addEventListener('click', () => $('reviewChoiceDialog').close());
-$('reviewChoiceCard').addEventListener('click', () => { $('reviewChoiceDialog').close(); startSession($('reviewModeSelect').value); });
+$('reviewChoiceCard').addEventListener('click', () => { $('reviewChoiceDialog').close(); openCardScopeDialog(); });
 $('reviewChoiceQuiz').addEventListener('click', () => { $('reviewChoiceDialog').close(); openExampleCountDialog(); });
 $('openSearchButton').addEventListener('click', () => { $('searchDialog').showModal(); $('searchInput').focus(); });
 $('searchCloseButton').addEventListener('click', () => $('searchDialog').close());
@@ -2358,13 +2573,46 @@ $('rememberButton').addEventListener('click', () => chooseAnswer(true));
 $('forgetButton').addEventListener('click', () => chooseAnswer(false));
 $('reviewPrevButton').addEventListener('click', () => navigateReview(-1));
 $('reviewNextButton').addEventListener('click', () => navigateReview(1));
+$('reviewRechooseButton').addEventListener('click',()=>{
+  if (!reviewSession) return;
+  const stats=reviewStats(reviewSession);
+  if (stats.answered && !confirm('重選範圍會放棄本輪尚未完成的計分；已作答單字的熟練度會保留。確定？')) return;
+  openCardScopeDialog(reviewSession.scopeIds);
+});
+$('cardScopeMode').addEventListener('change',updateCardScopePreview);
+$('cardScopeOrder').addEventListener('change',updateCardScopePreview);
+$('cardScopeAll').addEventListener('click',()=>{ $('cardScopeList').querySelectorAll('input').forEach(c=>c.checked=true);updateCardScopePreview(); });
+$('cardScopeNone').addEventListener('click',()=>{ $('cardScopeList').querySelectorAll('input').forEach(c=>c.checked=false);updateCardScopePreview(); });
+$('cardScopeCancel').addEventListener('click',()=>$('cardScopeDialog').close());
+$('cardScopeForm').addEventListener('submit',event=>{
+  event.preventDefault();
+  const scope=getCardScopeSelection();
+  if (!scope.length) return message('請先勾選單元',true);
+  const mode=$('cardScopeMode').value;
+  const shuffle=$('cardScopeOrder').value==='mixed';
+  const before=reviewSession;
+  reviewSession=null;
+  try {
+    const next=startReview(state,selectedUnitId,mode,null,scope,shuffle);
+    reviewSession=next;
+    lastCardScopeIds=[...scope];
+    $('reviewModeSelect').value=mode;
+    stopListening();
+    $('cardScopeDialog').close();
+    render();
+  } catch(error){reviewSession=before;message(error.message,true);}
+});
+$('listeningWithChinese').addEventListener('change',renderListeningControls);
+$('listeningStartButton').addEventListener('click',startListening);
+$('listeningStopButton').addEventListener('click',()=>stopListening(true));
+window.addEventListener('pagehide',()=>stopListening());
 $('reviewRestartButton').addEventListener('click', () => {
-  if (reviewSession?.complete) startSession(reviewSession.mode);
+  if (reviewSession?.complete) openCardScopeDialog(reviewSession.scopeIds);
 });
 $('reviewForgottenButton').addEventListener('click', () => {
   if (!reviewSession?.complete) return;
   const ids = reviewSession.wordIds.filter((_, i) => reviewSession.answers[i] === false);
-  if (ids.length) startSession(reviewSession.mode, ids);
+  if (ids.length) startSession(reviewSession.mode, ids, reviewSession.scopeIds, reviewSession.shuffle);
 });
 $('unitForm').addEventListener('submit', event => {
   event.preventDefault();
