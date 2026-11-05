@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.13 離線版</title>
+  <title>英中單字卡 | v1.6.14 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -431,7 +431,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.13 · 中文解釋與隨機例句</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.14 · 跟讀間隔可調</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -475,12 +475,13 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
             <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
           <section class="listening-panel" aria-label="單元循環聽力">
-            <h3>▶ 單元單字循環聽力</h3><p>每個單字先朗讀指定次數的英文，再朗讀指定次數的中文（可關閉），然後才進入下一字。可單輪播放或循環，不影響學習紀錄。</p>
+            <h3>▶ 單元單字循環聽力</h3><p>先念完英文指定次數，再念中文（可關閉）。<strong>每念完一次都會停頓，留時間跟讀</strong>；「每次朗讀間隔」與「下一個單字間隔」可分開調整。可單輪或循環，不影響學習紀錄。</p>
             <div class="listening-controls">
               <label for="listeningEnglishCount">英文朗讀次數<select id="listeningEnglishCount"><option value="1" selected>1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="4">4 次</option><option value="5">5 次</option><option value="6">6 次</option><option value="7">7 次</option><option value="8">8 次</option><option value="9">9 次</option><option value="10">10 次</option></select></label>
               <label class="listening-loop" for="listeningWithChinese"><input type="checkbox" id="listeningWithChinese"> 同時朗讀中文</label>
               <label for="listeningChineseCount">中文朗讀次數<select id="listeningChineseCount" disabled><option value="1" selected>1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="4">4 次</option><option value="5">5 次</option><option value="6">6 次</option><option value="7">7 次</option><option value="8">8 次</option><option value="9">9 次</option><option value="10">10 次</option></select></label>
-              <label for="listeningGap">單字間隔<select id="listeningGap"><option value="500">0.5 秒</option><option value="1200" selected>1.2 秒</option><option value="2500">2.5 秒</option><option value="4000">4 秒</option></select></label>
+              <label for="listeningRepeatGap">每次朗讀間隔（跟讀時間）<select id="listeningRepeatGap"><option value="500">0.5 秒</option><option value="1200">1.2 秒</option><option value="2500" selected>2.5 秒</option><option value="4000">4 秒</option><option value="6000">6 秒</option></select></label>
+              <label for="listeningGap">下一個單字間隔<select id="listeningGap"><option value="500">0.5 秒</option><option value="1200" selected>1.2 秒</option><option value="2500">2.5 秒</option><option value="4000">4 秒</option><option value="6000">6 秒</option></select></label>
               <label class="listening-loop" for="listeningLoop"><input type="checkbox" id="listeningLoop" checked> 播完重新循環</label>
               <button id="listeningStartButton" class="primary-button" type="button">▶ 開始朗讀</button>
               <button id="listeningStopButton" class="quiet-button" type="button" disabled>■ 停止</button>
@@ -2083,8 +2084,9 @@ function advanceListeningPart(playback) {
   } else if (playback.phase==='zh' && playback.repeatIndex>=playback.chineseCount) {
     queueListeningNext(playback);return;
   }
-  // 朗讀同一個單字時的短暫停頓；單字間隔只套用到下一個單字。
-  playback.timer=setTimeout(()=>speakListeningCurrent(playback),180);
+  // 包含英文→英文、英文→中文、中文→中文的每次朗讀停頓；從 onend 才開始計時，留出完整跟讀時間。
+  const repeatGap=Number($('listeningRepeatGap').value)||2500;
+  playback.timer=setTimeout(()=>speakListeningCurrent(playback),repeatGap);
 }
 function speakListeningCurrent(playback) {
   if (playback !== listeningPlayback) return;
