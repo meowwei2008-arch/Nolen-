@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.11 離線版</title>
+  <title>英中單字卡 | v1.6.13 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -371,7 +371,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 @media(max-width:480px){.review-action-buttons{flex-wrap:wrap}.review-action-buttons button{flex:1 1 44%;min-width:0}}
 @media(max-width:410px){.quiz-count-form{padding:17px}.quiz-count-option{padding:10px 12px}.quiz-count-form .dialog-actions button{flex:1}}
 
-/* v1.6.11: 單元排序、英中循環聽力與多單元字卡 */
+/* v1.6.12: 單元排序、英中循環聽力與多單元字卡 */
 .unit-order-controls{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
 .unit-order-controls button{min-width:34px;height:34px;padding:4px 8px;font-weight:700;border-radius:8px;background:#26314a;border:1px solid #53607d;color:#f2f4ff}
 .unit-order-controls button:disabled{opacity:.3;cursor:default}
@@ -391,12 +391,47 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .card-scope-controls label{font-size:12px}.card-scope-controls select{display:block;width:100%;margin-top:5px;background:#131a34;color:white;border:1px solid #636b9a;border-radius:9px;min-height:42px;padding:8px}
 .card-scope-preview{background:#202942;border:1px solid #414e70;border-radius:10px;padding:10px;margin:12px 0;font-size:13px;line-height:1.55}
 @media(max-width:800px){.unit-select-row{flex:0 0 250px;min-width:250px}.unit-order-controls button{height:30px;min-width:30px}}
+/* v1.6.12: 自選字卡數量 */
+#cardScopeDialog{width:min(485px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
+#cardScopeDialog form{padding:18px}
+#cardScopeDialog .card-scope-list{max-height:24vh}
+#cardScopeDialog .quiz-count-option{min-height:43px;padding:9px 11px}
+@media(max-width:410px){#cardScopeDialog form{padding:12px}#cardScopeDialog .card-scope-list{max-height:19vh}}
+
+/* v1.6.13：單字與中文是主角，批鬥紀錄縮成可展開摘要。 */
+.hat-dialog{width:min(560px,calc(100vw - 24px))}
+.hat-detail{padding:23px}
+.hat-detail h2{font-size:clamp(31px,5.4vw,40px);line-height:1.2;margin:3px 0 13px;letter-spacing:-.025em}
+.hat-meaning-card{padding:12px 15px 14px;margin:0 0 14px;background:linear-gradient(110deg,#293653,#202d49);border:1px solid #556a92;border-left:4px solid #b4a7ff;border-radius:13px}
+.hat-meaning-label{font-size:12px;color:#c4caff;font-weight:750;letter-spacing:.04em}
+.hat-detail .hat-translation{color:#fff;font-size:clamp(23px,4.5vw,28px);font-weight:800;line-height:1.45;margin:5px 0 0;overflow-wrap:anywhere}
+.hat-example-box{padding:13px 15px;margin:0 0 14px;background:#151f34;border:1px solid #405474;border-radius:12px}
+.hat-example-head{display:flex;gap:12px;justify-content:space-between;align-items:center;color:#d2dfff;font-size:12px}
+.hat-example-head button{min-height:31px;padding:5px 9px;font-size:12px}
+.hat-detail .hat-example-sentence{font-size:16px;line-height:1.65;font-weight:540;color:#f3f5ff;margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.hat-example-sentence mark{background:#56508f;color:#fff7d1;border-radius:4px;padding:0 3px;font-weight:850}
+.hat-joke-details{margin:0 0 12px;border:1px solid #65465c;background:#251e32;border-radius:12px;overflow:hidden}
+.hat-joke-details>summary{display:flex;align-items:center;justify-content:space-between;gap:7px 12px;flex-wrap:wrap;padding:10px 12px;cursor:pointer;list-style:none;font-size:13px}
+.hat-joke-details>summary::-webkit-details-marker{display:none}
+.hat-joke-headline{display:inline-flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0}
+.hat-joke-label{color:#c6acc6;font-size:12px}
+.hat-joke-headline strong{color:#ffc3d8;font-size:15px;overflow-wrap:anywhere}
+.hat-joke-count{color:#d2bbc9;font-size:12px}
+.hat-joke-count strong{color:#ffe3ec}
+.hat-joke-expanded{border-top:1px solid #5d435c;padding:4px 12px 12px}
+.hat-recent-badges{gap:6px;margin:9px 0}
+.hat-recent-badges .hat-badge{padding:5px 8px;font-size:11px}
+.hat-progress-label{font-size:11px;margin-bottom:5px}
+.hat-detail .hat-next{font-size:11px;line-height:1.45;margin-top:8px}
+.hat-detail .hat-word-meta{margin-top:11px}
+.hat-detail .hat-all-titles{margin-top:12px;padding-top:10px}
+@media(max-width:390px){.hat-detail{padding:16px}.hat-joke-details>summary{padding:9px 10px}.hat-detail .hat-translation{font-size:23px}.hat-detail .hat-example-sentence{font-size:15px}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.11 · 英中循環朗讀</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.13 · 中文解釋與隨機例句</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -510,11 +545,19 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
   <dialog class="dialog quiz-count-dialog" id="cardScopeDialog" aria-labelledby="cardScopeHeading">
     <form id="cardScopeForm">
       <h2 id="cardScopeHeading">自選多單元字卡複習</h2>
-      <p>可同時選多個單元；相同英文與中文的字卡在同一輪只出現一次，作答會更新各單元的單字副本。</p>
+      <p>先選單元，再選本輪字卡數量。相同英文與中文只出一張；依單元複習時會平均分配隨機抽樣，作答仍會更新所選單元的單字副本。</p>
       <div class="card-scope-actions"><strong>選擇單元</strong><div><button id="cardScopeAll" class="quiet-button small-button" type="button">全選</button><button id="cardScopeNone" class="quiet-button small-button" type="button">清除</button></div></div>
       <div id="cardScopeList" class="card-scope-list" role="group" aria-label="選取字卡單元"></div>
       <div class="card-scope-controls"><label for="cardScopeMode">字卡篩選<select id="cardScopeMode"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><label for="cardScopeOrder">複習順序<select id="cardScopeOrder"><option value="sequential">一單元一單元，照排列順序</option><option value="mixed">所有單元隨機混合</option></select></label></div>
-      <div id="cardScopePreview" class="card-scope-preview" role="status">選擇單元後會顯示題數</div>
+      <div class="quiz-count-subheading">本輪複習幾張字卡？</div>
+      <div class="quiz-count-options" role="radiogroup" aria-label="本輪字卡數量">
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="10"><span>10 張 · 快速複習</span></label>
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="20" checked><span>20 張 · 一般練習（預設）</span></label>
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="40"><span>40 張 · 加強練習</span></label>
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="custom"><span class="quiz-count-custom">自訂張數 <input id="cardCustomCount" type="number" inputmode="numeric" min="1" max="99999" step="1" value="30" disabled aria-label="自訂字卡張數"></span></label>
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="all"><span>全部字卡 · 自願接受批鬥</span></label>
+      </div>
+      <div id="cardScopePreview" class="card-scope-preview" role="status" aria-live="polite">選擇單元後會顯示題數</div>
       <div class="dialog-actions"><button class="quiet-button" type="button" id="cardScopeCancel">取消</button><button class="primary-button" type="submit" id="cardScopeSubmit">開始字卡複習</button></div>
     </form>
   </dialog>
@@ -560,13 +603,15 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
   <dialog class="dialog hat-dialog" id="hatDialog" aria-labelledby="hatDialogHeading"><div class="hat-detail">
     <div class="hat-dialog-top"><span class="eyebrow">單字批鬥檔案</span><button id="hatDialogClose" type="button" class="quiet-button small-button" aria-label="關閉單字詳情">✕ 關閉</button></div>
     <nav class="detail-navigation" aria-label="單字詳情切換"><button id="hatPrevButton" type="button" class="quiet-button small-button">← 上一張</button><span id="hatDetailPosition" class="detail-counter">1 / 1</span><button id="hatNextButton" type="button" class="quiet-button small-button">下一張 →</button></nav>
-    <h2 id="hatDialogHeading"></h2><p id="hatWordTranslation" class="hat-translation"></p>
-    <div class="hat-stats"><div><span>最新一頂帽子</span><strong id="hatCurrentTitle">尚未戴帽</strong></div><div><span>累積「不記得」</span><strong id="hatForgetTotal">0 次</strong></div></div><div id="hatRecentBadges" class="hat-recent-badges" aria-label="最近取得的三頂帽子"></div>
+    <h2 id="hatDialogHeading"></h2>
+    <section class="hat-meaning-card" aria-label="中文解釋"><span class="hat-meaning-label">中文解釋</span><p id="hatWordTranslation" class="hat-translation"></p></section>
+    <section id="hatExampleBox" class="hat-example-box" aria-label="單字例句" hidden><div class="hat-example-head"><strong>例句 · 學習重點</strong><button id="hatExampleReroll" type="button" class="quiet-button small-button" hidden>↻ 換一句</button></div><p id="hatExampleSentence" class="hat-example-sentence"></p></section>
+    <details id="hatJokeDetails" class="hat-joke-details"><summary><span class="hat-joke-headline"><span class="hat-joke-label">批鬥紀錄</span><strong id="hatCurrentTitle">尚未戴帽</strong></span><span class="hat-joke-count">忘記 <strong id="hatForgetTotal">0 次</strong> · 查看帽子 ▾</span></summary><div class="hat-joke-expanded"><div id="hatRecentBadges" class="hat-recent-badges" aria-label="最近取得的三頂帽子"></div>
     <div class="hat-progress"><div class="hat-progress-label"><span>稱號進度</span><strong id="hatRankLabel">0 / 46</strong></div><div class="progress-track"><div id="hatProgressFill" class="progress-fill"></div></div></div>
     <p id="hatNextMessage" class="hat-next"></p>
+    <details class="hat-all-titles" id="hatHistoryDetails" hidden><summary id="hatHistorySummary">展開查看全部帽子</summary><ol id="hatTitleList"></ol></details></div></details>
     <p id="hatWordMeta" class="hat-word-meta"></p><div class="hat-tools"><button id="hatSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="hatCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
     <div class="hat-detail-manage"><button type="button" id="hatEditButton" class="quiet-button small-button">✎ 編輯單字</button><button type="button" id="hatDeleteButton" class="danger-quiet small-button">刪除單字</button></div>
-    <details class="hat-all-titles" id="hatHistoryDetails" hidden><summary id="hatHistorySummary">展開查看全部帽子</summary><ol id="hatTitleList"></ol></details>
   </div></dialog>
   <dialog class="dialog" id="copyDialog"><form id="copyForm"><h2>複製書籤到新單元</h2><p id="copySummary">已選來源單元中的書籤單字，會複製為獨立副本。熟練度重設紅色、忘記次數歸零、書籤保留。</p><label class="field" for="copyNameInput">新單元名稱<input id="copyNameInput" maxlength="80" required placeholder="例如：本週重要單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="copyDialog">取消</button><button class="primary-button" type="submit">確認複製</button></div></form></dialog>
   <dialog class="dialog" id="bulkDialog"><form id="bulkForm"><h2>批次貼上單字</h2><p>每行一組：「英文,中文」或用 TAB 分隔；逗號後面的中文會保留。格式有誤時會顯示行號，整批都不會加入。</p><label class="field" for="bulkTextInput">貼上單字<textarea id="bulkTextInput" rows="9" placeholder="crane,鶴；起重機
@@ -856,10 +901,37 @@ function buildReviewCards(state, scopeIds, mode='all', specificIds=null, shuffle
   if (shuffle) cards = shuffleArray(cards);
   return cards;
 }
-function startReview(state, unitId, mode = 'all', specificIds = null, scopeIds = null, shuffle = false) {
+// 逐單元抽樣採用跨單元輪流抽取，避免小份額只落在第一單元。
+// 最終仍以單元排序呈現，同一張卡只會出現一次；完整複習維持原排序。
+function limitReviewCards(cards, state, scopes, count, shuffle) {
+  if (count === null || count === undefined) return cards;
+  if (!Number.isSafeInteger(count) || count < 1) throw new Error('字卡張數請輸入大於零的整數');
+  const take = Math.min(count, cards.length);
+  if (take === cards.length) return cards;
+  if (shuffle) return cards.slice(0,take);
+  const buckets = new Map(scopes.map(id=>[id,[]]));
+  for (const group of cards) {
+    const unitId=state.words[group[0]].unitId;
+    buckets.get(unitId)?.push(group);
+  }
+  const randomBuckets = scopes.map(id=>shuffleArray(buckets.get(id) || []));
+  const taken = scopes.map(()=>[]);
+  let picked=0;
+  while (picked<take) {
+    let added=false;
+    for (let i=0;i<randomBuckets.length && picked<take;i++) {
+      const card=randomBuckets[i].pop();
+      if (card) {taken[i].push(card);picked++;added=true;}
+    }
+    if (!added) break;
+  }
+  return taken.flat();
+}
+function startReview(state, unitId, mode = 'all', specificIds = null, scopeIds = null, shuffle = false, maxCards = null) {
   findUnit(state, unitId);
   const scopes = [...new Set(scopeIds || [unitId])];
-  const cards = buildReviewCards(state,scopes,mode,specificIds,shuffle);
+  const pool = buildReviewCards(state,scopes,mode,specificIds,shuffle);
+  const cards = limitReviewCards(pool,state,scopes,maxCards,shuffle);
   if (!cards.length) throw new Error('所選單元沒有符合條件的單字，請重選範圍');
   return { unitId, scopeIds: scopes, mode, shuffle, cardGroups: cards, wordIds: cards.map(g=>g[0]),
     index: 0, flipped: false, answers: cards.map(() => null), complete: false, startedAt: new Date().toISOString() };
@@ -1477,6 +1549,38 @@ function renderHatBoard(unit) {
     list.append(item);
   });
 }
+// 依原單字比對已匯入例句，支援常見屈折字形（如 murdered → murder）。
+// 先採用本單元與未分類例句；若沒有才借用其他單元的同字例句。
+function examplesForHatWord(word) {
+  const target=word.en.normalize('NFKC').trim().toLocaleLowerCase('en');
+  const matches=(state.examples || []).filter(example => {
+    if (!example || typeof example.answer !== 'string' || typeof example.sentence !== 'string') return false;
+    return exampleAnswerBases(example.answer).includes(target);
+  });
+  const relevant=matches.filter(example => !Array.isArray(example.unitIds) || !example.unitIds.length || example.unitIds.includes(word.unitId));
+  return relevant.length ? relevant : matches;
+}
+let currentHatExampleId=null;
+function renderHatExample(word, excludePrevious=false) {
+  const pool=examplesForHatWord(word);
+  const box=$('hatExampleBox');
+  box.hidden=pool.length===0;
+  $('hatExampleReroll').hidden=pool.length<2;
+  if (!pool.length) {
+    currentHatExampleId=null;
+    $('hatExampleSentence').replaceChildren();
+    return;
+  }
+  const choices=excludePrevious && pool.length>1 ? pool.filter(q=>q.id!==currentHatExampleId) : pool;
+  const chosen=choices[Math.floor(Math.random()*choices.length)];
+  currentHatExampleId=chosen.id;
+  const paragraph=$('hatExampleSentence');
+  const index=chosen.sentence.indexOf('______');
+  if (index<0) { paragraph.textContent=chosen.sentence; return; }
+  const highlighted=el('mark','',chosen.answer);
+  paragraph.replaceChildren(document.createTextNode(chosen.sentence.slice(0,index)), highlighted,
+    document.createTextNode(chosen.sentence.slice(index+'______'.length)));
+}
 function openHatDetails(wordId) {
   const word = state.words[wordId];
   if (!word) return message('找不到指定單字', true);
@@ -1487,6 +1591,7 @@ function openHatDetails(wordId) {
   const current = hatTitle(word);
   $('hatDialogHeading').textContent = word.en;
   $('hatWordTranslation').textContent = word.zh;
+  renderHatExample(word);
   $('hatCurrentTitle').textContent = current || '尚未戴帽';
   $('hatForgetTotal').textContent = `${word.forgetCount} 次`;
   $('hatRankLabel').textContent = `${history.length} / ${HAT_TITLES.length}`;
@@ -1914,6 +2019,13 @@ function openCardScopeDialog(keepIds=null) {
   updateCardScopePreview();
   $('cardScopeDialog').showModal();
 }
+function getCardReviewCount() {
+  const selected=$('cardScopeForm').querySelector('input[name="cardReviewCount"]:checked');
+  if (!selected || selected.value === 'all') return null;
+  const raw=selected.value === 'custom' ? $('cardCustomCount').value.trim() : selected.value;
+  if (!/^[1-9]\d*$/.test(raw) || !Number.isSafeInteger(Number(raw))) return NaN;
+  return Number(raw);
+}
 function getCardScopeSelection() {
   return [...$('cardScopeList').querySelectorAll('input:checked')].map(node=>node.value);
 }
@@ -1921,9 +2033,13 @@ function updateCardScopePreview() {
   const ids=getCardScopeSelection();
   const mode=$('cardScopeMode').value;
   const amount=ids.length ? buildReviewCards(state,ids,mode).length : 0;
-  const orderText=$('cardScopeOrder').value==='mixed' ? '所有選取單元打散出題' : '依單元排列順序逐單元複習';
-  $('cardScopePreview').textContent=`已選 ${ids.length} 個單元，共 ${amount} 張不重複字卡。${orderText}。${amount ? '可以開始複習' : '請勾選有符合篩選條件的單元'}`;
-  $('cardScopeSubmit').disabled=!amount;
+  const orderText=$('cardScopeOrder').value==='mixed' ? '選定範圍隨機抽取、打散出題' : '由各單元輪流隨機抽樣，再依單元排列順序複習';
+  const count=getCardReviewCount();
+  const valid=count===null || (Number.isSafeInteger(count) && count>0);
+  const actual=valid ? Math.min(count===null ? amount:count,amount) : 0;
+  $('cardCustomCount').disabled=$('cardScopeForm').querySelector('input[name="cardReviewCount"]:checked')?.value!=='custom';
+  $('cardScopePreview').textContent=`已選 ${ids.length} 個單元，題庫共 ${amount} 張不重複字卡。${valid ? `本輪抽 ${actual} 張` : '請輸入大於零的整數'}。${orderText}。`;
+  $('cardScopeSubmit').disabled=!amount || !valid;
 }
 function renderListeningControls() {
   const unit=currentUnit();
@@ -2327,6 +2443,8 @@ for (const id of ['installAppButton','installationHelpButton','mergeButton','txt
   $(id).addEventListener('click', closeTopTools);
 }
 $('hatDialogClose').addEventListener('click', () => $('hatDialog').close());
+$('hatExampleReroll').addEventListener('click', () => { if (detailWordId && state.words[detailWordId]) renderHatExample(state.words[detailWordId], true); });
+$('hatDialog').addEventListener('close',()=>{ $('hatJokeDetails').open=false; currentHatExampleId=null; });
 $('hatPrevButton').addEventListener('click', () => navigateHatDetail(-1));
 $('hatNextButton').addEventListener('click', () => navigateHatDetail(1));
 $('hatSpeakButton').addEventListener('click', () => { if (detailWordId && state.words[detailWordId]) pronounce(state.words[detailWordId].en); });
@@ -2581,6 +2699,9 @@ $('reviewRechooseButton').addEventListener('click',()=>{
 });
 $('cardScopeMode').addEventListener('change',updateCardScopePreview);
 $('cardScopeOrder').addEventListener('change',updateCardScopePreview);
+$('cardScopeForm').querySelectorAll('input[name="cardReviewCount"]').forEach(input=>input.addEventListener('change',updateCardScopePreview));
+$('cardCustomCount').addEventListener('input',updateCardScopePreview);
+$('cardCustomCount').addEventListener('focus',()=>{const radio=$('cardScopeForm').querySelector('input[name="cardReviewCount"][value="custom"]');if(!radio.checked){radio.checked=true;updateCardScopePreview();}});
 $('cardScopeAll').addEventListener('click',()=>{ $('cardScopeList').querySelectorAll('input').forEach(c=>c.checked=true);updateCardScopePreview(); });
 $('cardScopeNone').addEventListener('click',()=>{ $('cardScopeList').querySelectorAll('input').forEach(c=>c.checked=false);updateCardScopePreview(); });
 $('cardScopeCancel').addEventListener('click',()=>$('cardScopeDialog').close());
@@ -2590,10 +2711,12 @@ $('cardScopeForm').addEventListener('submit',event=>{
   if (!scope.length) return message('請先勾選單元',true);
   const mode=$('cardScopeMode').value;
   const shuffle=$('cardScopeOrder').value==='mixed';
+  const maxCards=getCardReviewCount();
+  if (maxCards!==null && (!Number.isSafeInteger(maxCards) || maxCards<1)) return message('請輸入有效的字卡張數',true);
   const before=reviewSession;
   reviewSession=null;
   try {
-    const next=startReview(state,selectedUnitId,mode,null,scope,shuffle);
+    const next=startReview(state,selectedUnitId,mode,null,scope,shuffle,maxCards);
     reviewSession=next;
     lastCardScopeIds=[...scope];
     $('reviewModeSelect').value=mode;
