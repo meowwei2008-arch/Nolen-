@@ -477,10 +477,10 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .runner-play{max-width:530px;margin:0 auto;padding:11px;display:grid;gap:9px}
 .runner-header strong{font-size:16px}.runner-stats{display:flex;gap:5px;justify-content:space-between;flex-wrap:wrap;font-size:12px;color:#e7eeff}
 .runner-stats span{border:1px solid #425f84;background:#192f50;border-radius:50px;padding:6px 9px}
-.runner-banner{background:linear-gradient(125deg,#473a9b,#246a9e);border:1px solid #929afb;border-radius:15px;box-shadow:0 6px 22px #1d49a666;text-align:center;padding:12px 10px;display:grid;gap:4px;min-height:86px;align-content:center}
+.runner-banner{background:linear-gradient(120deg,#26216f 0%,#5543bc 45%,#1175bf 100%);border:1px solid #92befd;border-radius:15px;box-shadow:0 6px 22px #1d49a666;text-align:center;padding:12px 10px;display:grid;gap:4px;min-height:86px;align-content:center}
 .runner-banner small{font-size:11px;letter-spacing:.17em;color:#e0eaff;font-weight:750}
 .runner-banner strong{color:#fff;font-size:clamp(23px,6vw,35px);overflow-wrap:anywhere;line-height:1.15}
-.runner-stage{width:100%;height:clamp(300px,53dvh,550px);touch-action:none;display:block;border:1px solid #375c8c;border-radius:14px;background:#5bb1f1;cursor:ew-resize;outline:none}
+.runner-stage{width:100%;height:clamp(300px,53dvh,550px);touch-action:none;display:block;border:2px solid #5bc9f9;border-radius:18px;background:#5bb1f1;box-shadow:0 0 0 3px #183555,0 14px 32px #050c23a8;cursor:ew-resize;outline:none}
 .runner-stage:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
 .runner-message{color:#c7dbed;font-size:12px;text-align:center;min-height:35px;line-height:1.5;padding:0 3px}
 .runner-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.runner-controls button{font-size:17px;font-weight:800;padding:9px;min-height:49px;border:1px solid #6483aa;background:#24426b;color:white;border-radius:13px;touch-action:manipulation}
@@ -498,7 +498,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.17 · 新增選門跑道</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.18 · 跑道加速與美術升級</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -729,7 +729,7 @@ condition	條件"></textarea></label><div class="dialog-actions"><button type="b
       <div id="runnerUnitOptions" class="quiz-unit-list" role="group" aria-label="選擇跑道單元"></div>
       <div class="space-fields">
         <label for="runnerQuestionCount">本輪題數<select id="runnerQuestionCount"><option value="10">10 題 · 短跑</option><option value="20" selected>20 題 · 標準</option><option value="40">40 題 · 長跑</option><option value="all">全部單字</option></select></label>
-        <label for="runnerSpeed">門的前進速度<select id="runnerSpeed"><option value="slow" selected>慢速 · 9 秒／題</option><option value="normal">一般 · 7 秒／題</option><option value="fast">快速 · 5 秒／題</option></select></label>
+        <label for="runnerSpeed">門的前進速度<select id="runnerSpeed"><option value="slow">慢速 · 4.8 秒／題</option><option value="normal" selected>一般 · 3.2 秒／題</option><option value="fast">快速 · 2.2 秒／題</option><option value="turbo">極速 · 1.6 秒／題</option></select></label>
       </div>
       <div id="runnerPreview" class="card-scope-preview" role="status">請選擇單元</div>
       <div class="dialog-actions"><button id="runnerConfigCancel" class="quiet-button" type="button">取消</button><button class="primary-button" type="submit" id="runnerStartButton">開始闖關</button></div>
@@ -3043,7 +3043,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden && spaceSes
 
 
 /* ─── v1.6.17 選門跑道：沿用 spaceVocabulary 單字去重，完全不寫入 state。 ─── */
-const RUNNER_DURATIONS={slow:9000,normal:7000,fast:5000};
+const RUNNER_DURATIONS={slow:4800,normal:3200,fast:2200,turbo:1600};
 let runnerSession=null,runnerPreviousUnits=null;
 const runnerCanvas=$('runnerCanvas');
 const runnerCtx=runnerCanvas.getContext('2d');
@@ -3096,56 +3096,111 @@ function runnerText(text,x,y,maxWidth,size=18,color='#1a416a'){
 function runnerDrawRounded(x,y,w,h,r,color){
   const c=runnerCtx;c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill();
 }
+/* v1.6.18 美術重製：以離線 Canvas 畫出動態海面、透視跑道、玻璃中文門與發光飛船。 */
 function runnerDraw(ts=0){
   const s=runnerSession,ctx=runnerCtx;
   if(!s)return;
   ctx.setTransform(runnerCanvas.width/390,0,0,runnerCanvas.height/540,0,0);
   ctx.clearRect(0,0,390,540);
-  const sky=ctx.createLinearGradient(0,0,0,540);sky.addColorStop(0,'#65b5ff');sky.addColorStop(.4,'#9ddcff');sky.addColorStop(1,'#c7eeff');ctx.fillStyle=sky;ctx.fillRect(0,0,390,540);
-  // 遠景、遠山、水面
-  ctx.fillStyle='#7cbeec';ctx.beginPath();ctx.moveTo(0,175);ctx.lineTo(55,120);ctx.lineTo(127,173);ctx.lineTo(215,127);ctx.lineTo(310,172);ctx.lineTo(390,138);ctx.lineTo(390,235);ctx.lineTo(0,235);ctx.fill();
-  ctx.fillStyle='#78c4f3';ctx.fillRect(0,185,390,355);
-  ctx.strokeStyle='#c6ecff66';ctx.lineWidth=2;
-  for(let y=204;y<540;y+=26){for(let x=((y/26)%2)*-28;x<390;x+=76){ctx.beginPath();ctx.ellipse(x,y,27,5,0,0,Math.PI);ctx.stroke();}}
-  // 透視跑道
-  ctx.fillStyle='#fff2ed';ctx.beginPath();ctx.moveTo(153,118);ctx.lineTo(237,118);ctx.lineTo(436,540);ctx.lineTo(-46,540);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#f6d9da';
-  const ySegments=[120,195,290,398,540];
-  for(let i=0;i<ySegments.length-1;i+=2){const ya=ySegments[i],yb=ySegments[i+1];const halfA=42+(ya-118)*.48,halfB=42+(yb-118)*.48;ctx.beginPath();ctx.moveTo(195-halfA,ya);ctx.lineTo(195+halfA,ya);ctx.lineTo(195+halfB,yb);ctx.lineTo(195-halfB,yb);ctx.fill();}
-  ctx.strokeStyle='#ffffffe0';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(153,118);ctx.lineTo(-46,540);ctx.moveTo(237,118);ctx.lineTo(436,540);ctx.stroke();
-  ctx.strokeStyle='#faf0e3';ctx.lineWidth=3;ctx.setLineDash([15,18]);ctx.beginPath();ctx.moveTo(195,118);ctx.lineTo(195,540);ctx.stroke();ctx.setLineDash([]);
-  // 進度環形和左右底部車道選擇
-  ctx.fillStyle='#ffffff44';ctx.beginPath();ctx.ellipse(s.lane===0?99:290,486,75,24,0,0,Math.PI*2);ctx.fill();
-  // 門由遠及近：p0 在地平線、p1 到飛船
+  const t=ts||0;
+  // 天空：陽光漸層與柔和雲層
+  const sky=ctx.createLinearGradient(0,0,0,275);
+  sky.addColorStop(0,'#358eef');sky.addColorStop(.7,'#83cdff');sky.addColorStop(1,'#cbf4fa');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,390,540);
+  const glow=ctx.createRadialGradient(322,72,5,322,72,145);
+  glow.addColorStop(0,'#fff9dfba');glow.addColorStop(.25,'#fff9df48');glow.addColorStop(1,'#fff9df00');
+  ctx.fillStyle=glow;ctx.fillRect(0,0,390,280);
+  ctx.save();ctx.globalAlpha=.45;ctx.fillStyle='#f7fbff';
+  for(const c of [[60,96,43],[266,119,38],[333,66,22]]){
+    const drift=Math.sin(t/4900+c[0]) * 5;
+    ctx.beginPath();ctx.ellipse(c[0]+drift,c[1],c[2],10,0,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(c[0]+drift-18,c[1]+3,c[2]*.6,8,0,0,Math.PI*2);ctx.fill();
+  }ctx.restore();
+  ctx.fillStyle='#8cc6e9';ctx.beginPath();ctx.moveTo(0,182);ctx.lineTo(47,144);ctx.lineTo(92,183);ctx.lineTo(135,152);ctx.lineTo(192,185);ctx.lineTo(264,150);ctx.lineTo(342,186);ctx.lineTo(390,166);ctx.lineTo(390,205);ctx.lineTo(0,205);ctx.fill();
+  ctx.fillStyle='#5daee0';ctx.beginPath();ctx.moveTo(0,202);ctx.lineTo(38,173);ctx.lineTo(103,199);ctx.lineTo(171,183);ctx.lineTo(249,205);ctx.lineTo(337,175);ctx.lineTo(390,202);ctx.lineTo(390,240);ctx.lineTo(0,240);ctx.fill();
+  // 海面：移動的波紋與光點
+  const sea=ctx.createLinearGradient(0,180,0,540);
+  sea.addColorStop(0,'#48b6f1');sea.addColorStop(1,'#2485d5');ctx.fillStyle=sea;ctx.fillRect(0,199,390,341);
+  for(let i=0;i<62;i++){
+    const y=204+(i*47)%335,side=i%2===0;
+    const x=side?((i*67)%132):258+((i*73)%132);
+    const dx=Math.sin(t/1600+i*2.3)*8;
+    ctx.strokeStyle=i%4===0?'#e1ffff85':'#b6efff4c';ctx.lineWidth=i%4===0?2:1;
+    ctx.beginPath();ctx.ellipse(x+dx,y,9+i%6*2,2.6,0,0,Math.PI);ctx.stroke();
+  }
+  // 遠方立體跑道與陰影；在固定投影座標中增大近景寬度
+  const halfAt=y=>44+(y-120)*.52;
+  const roadPoly=(ya,yb,fill)=>{
+    ctx.fillStyle=fill;ctx.beginPath();ctx.moveTo(195-halfAt(ya),ya);ctx.lineTo(195+halfAt(ya),ya);
+    ctx.lineTo(195+halfAt(yb),yb);ctx.lineTo(195-halfAt(yb),yb);ctx.closePath();ctx.fill();
+  };
+  ctx.save();ctx.shadowColor='#075ca9a0';ctx.shadowBlur=18;ctx.shadowOffsetY=10;
+  roadPoly(123,555,'#de9db3');ctx.restore();
+  const road=ctx.createLinearGradient(0,124,0,540);
+  road.addColorStop(0,'#ffe5e8');road.addColorStop(.6,'#fff4e9');road.addColorStop(1,'#ffdfdd');roadPoly(122,550,road);
+  ctx.save();ctx.beginPath();ctx.moveTo(195-halfAt(122),122);ctx.lineTo(195+halfAt(122),122);
+  ctx.lineTo(195+halfAt(550),550);ctx.lineTo(195-halfAt(550),550);ctx.closePath();ctx.clip();
+  // 地板條紋跟著門的移動產生速度感
+  const phase=s.wave?s.progress:0;
+  for(let i=0;i<7;i++){
+    const y=120+(((i/7+phase*.72)%1)*480);
+    const height=6+(y-120)*.11;
+    roadPoly(y,Math.min(550,y+height),i%2?'#eabcc261':'#ffffff70');
+  }
+  // 中央虛線與邊緣光
+  ctx.strokeStyle='#ffffffc0';ctx.lineWidth=3;ctx.setLineDash([15,22]);ctx.lineDashOffset=-phase*260;
+  ctx.beginPath();ctx.moveTo(195,130);ctx.lineTo(195,540);ctx.stroke();ctx.setLineDash([]);
+  const sheen=ctx.createLinearGradient(0,0,390,0);sheen.addColorStop(0,'#ffffff10');sheen.addColorStop(.5,'#ffffff52');sheen.addColorStop(1,'#ffffff10');
+  ctx.fillStyle=sheen;ctx.fillRect(0,140,390,400);ctx.restore();
+  ctx.lineWidth=5;ctx.strokeStyle='#d6f9ff';ctx.shadowColor='#68d8ff';ctx.shadowBlur=9;
+  ctx.beginPath();ctx.moveTo(195-halfAt(122),122);ctx.lineTo(195-halfAt(540),540);ctx.moveTo(195+halfAt(122),122);ctx.lineTo(195+halfAt(540),540);ctx.stroke();ctx.shadowBlur=0;
+  // 跑道遠方的地平線和旅途進度裝飾
+  ctx.fillStyle='#ffffff8f';ctx.beginPath();ctx.ellipse(195,125,40,6,0,0,Math.PI*2);ctx.fill();
+  // 中文門：大尺寸、可讀的文字、玻璃質感和立柱深度
   if(s.wave){
-    const p=Math.max(0,Math.min(1,s.progress));
-    const y=142+295*p;
-    const wide=41+58*p,high=43+35*p;
-    const centers=[156-59*p,234+59*p];
+    const p=Math.max(0,Math.min(1,s.progress)),ease=Math.pow(p,.86);
+    const y=203+234*ease,w=93+103*ease,h=56+48*ease;
+    const centers=[148-50*ease,242+50*ease];
     for(let lane=0;lane<2;lane++){
-      const x=centers[lane],w=wide*2,h=high;
-      // 先畫門框陰影、柱子、琉璃門板
-      ctx.fillStyle='#183c5766';ctx.fillRect(x-w/2+7,y-h/2+7,w,h);
-      const panel=ctx.createLinearGradient(0,y-h/2,0,y+h/2);panel.addColorStop(0,'#a7faffea');panel.addColorStop(1,'#4bc9f0d9');
-      runnerDrawRounded(x-w/2,y-h/2,w,h,5,panel);
-      ctx.strokeStyle=lane===s.lane?'#ffffff':'#6afaff';ctx.lineWidth=lane===s.lane?3:2;ctx.strokeRect(x-w/2+3,y-h/2+3,w-6,h-6);
-      runnerDrawRounded(x-w/2-5,y-h/2-3,7,h+10,3,'#34577b');runnerDrawRounded(x+w/2-2,y-h/2-3,7,h+10,3,'#34577b');
-      const text=s.wave.options[lane].zh;
-      runnerText(text,x,y,w-16,p<.33?12:(p<.7?15:19),'#173853');
+      const x=centers[lane],left=x-w/2,top=y-h/2,selected=lane===s.lane;
+      ctx.save();ctx.globalAlpha=.25+.5*ease;ctx.fillStyle='#216792';
+      ctx.beginPath();ctx.ellipse(x,y+h/2+15,w*.58,7+9*ease,0,0,Math.PI*2);ctx.fill();ctx.restore();
+      ctx.save();ctx.shadowColor=selected?'#b1f9ff':'#054fb599';ctx.shadowBlur=selected?15:9;ctx.shadowOffsetY=4;
+      const panel=ctx.createLinearGradient(0,top,0,top+h);
+      panel.addColorStop(0,'#eafffff5');panel.addColorStop(.14,'#b4fafff5');panel.addColorStop(.65,'#70dff4f5');panel.addColorStop(1,'#2e9ed7f0');
+      runnerDrawRounded(left,top,w,h,10,panel);
+      ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+      ctx.lineWidth=selected?3:2;ctx.strokeStyle=selected?'#ffffff':'#a4f4ff';
+      ctx.beginPath();ctx.roundRect(left+3,top+3,w-6,h-6,8);ctx.stroke();
+      ctx.fillStyle='#ffffff70';ctx.beginPath();ctx.roundRect(left+9,top+8,w-18,9,5);ctx.fill();
+      // 深色框架及螢光邊線
+      const post=ctx.createLinearGradient(left-7,0,left+5,0);
+      post.addColorStop(0,'#173e6a');post.addColorStop(.7,'#3268a0');post.addColorStop(1,'#9ee9ff');
+      runnerDrawRounded(left-7,top-6,10,h+19,4,post);
+      runnerDrawRounded(left+w-3,top-6,10,h+19,4,post);
+      runnerDrawRounded(left-7,top-8,w+14,8,4,'#325e87');
+      // 高對比白色文字背板，避免藍玻璃上的中文不清楚
+      ctx.fillStyle='#ffffffd8';ctx.beginPath();ctx.roundRect(left+11,top+h*.28,w-22,h*.55,9);ctx.fill();
+      runnerText(s.wave.options[lane].zh,x,top+h*.56,w-32,p<.22?16:(p<.72?18:21),'#154071');
+      ctx.restore();
     }
   }
-  // 飛船：朝指定車道平順移動
-  const px=s.shipX,py=476;
-  ctx.fillStyle='#154a8177';ctx.beginPath();ctx.ellipse(px,508,31,9,0,0,Math.PI*2);ctx.fill();
-  const plume=ctx.createLinearGradient(0,493,0,530);plume.addColorStop(0,'#fdef73');plume.addColorStop(1,'#ffa34b00');ctx.fillStyle=plume;ctx.beginPath();ctx.moveTo(px-11,493);ctx.lineTo(px,530+(Math.sin(ts/110)*3));ctx.lineTo(px+11,493);ctx.fill();
-  ctx.save();ctx.translate(px,py);ctx.shadowColor='#0d66d4';ctx.shadowBlur=14;
-  ctx.fillStyle='#e3f9ff';ctx.beginPath();ctx.moveTo(0,-31);ctx.lineTo(25,18);ctx.lineTo(14,27);ctx.lineTo(-14,27);ctx.lineTo(-25,18);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#2d6cbe';ctx.beginPath();ctx.moveTo(0,-23);ctx.lineTo(11,17);ctx.lineTo(-11,17);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#8cf2ff';ctx.beginPath();ctx.ellipse(0,-2,7,10,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#ffc36d';ctx.fillRect(-21,14,8,10);ctx.fillRect(13,14,8,10);
+  // 自機：有輪廓光、駕駛艙、雙翼與推進火焰
+  const px=s.shipX,py=478,fire=5+Math.sin(t/96)*3;
+  ctx.save();ctx.fillStyle='#164b8e55';ctx.beginPath();ctx.ellipse(px,516,35,9,0,0,Math.PI*2);ctx.fill();
+  for(let i=-1;i<=1;i++){
+    const cx=px+i*8;ctx.fillStyle=i===0?'#ffeaa0a0':'#91eefe6b';ctx.beginPath();ctx.ellipse(cx,510+fire+i*4,3+(2-i),11+fire,0,0,Math.PI*2);ctx.fill();
+  }
+  ctx.translate(px,py);ctx.shadowColor='#5ee8ff';ctx.shadowBlur=21;
+  ctx.fillStyle='#0c3e9a';ctx.beginPath();ctx.moveTo(0,-40);ctx.lineTo(10,-20);ctx.lineTo(32,13);ctx.lineTo(31,24);ctx.lineTo(12,16);ctx.lineTo(9,31);ctx.lineTo(-9,31);ctx.lineTo(-12,16);ctx.lineTo(-31,24);ctx.lineTo(-32,13);ctx.lineTo(-10,-20);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#efffff';ctx.beginPath();ctx.moveTo(0,-35);ctx.lineTo(8,-16);ctx.lineTo(24,17);ctx.lineTo(10,9);ctx.lineTo(6,27);ctx.lineTo(-6,27);ctx.lineTo(-10,9);ctx.lineTo(-24,17);ctx.lineTo(-8,-16);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#45c2ff';ctx.beginPath();ctx.moveTo(0,-28);ctx.lineTo(9,3);ctx.lineTo(0,13);ctx.lineTo(-9,3);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#173c91';ctx.beginPath();ctx.ellipse(0,-9,6,13,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#a7feff';ctx.beginPath();ctx.ellipse(-1,-13,3,7,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ffbd60';ctx.fillRect(-14,20,8,8);ctx.fillRect(6,20,8,8);
   ctx.restore();
-  // 瞬間回饋光暈
-  if(s.flash>0){ctx.globalAlpha=Math.min(.38,s.flash/900*.38);ctx.fillStyle=s.flashGood?'#1df9b7':'#ff4577';ctx.fillRect(0,0,390,540);ctx.globalAlpha=1;}
+  // 撞門的視覺回饋；覆蓋畫面但不遮蔽英文題目橫幅
+  if(s.flash>0){ctx.globalAlpha=Math.min(.29,s.flash/410*.29);ctx.fillStyle=s.flashGood?'#29efb5':'#ff5473';ctx.fillRect(0,0,390,540);ctx.globalAlpha=1;}
 }
 function runnerLoadWave(){
   const s=runnerSession;if(!s||s.done)return;
@@ -3171,7 +3226,7 @@ function runnerResolve(){
     $('runnerMessage').textContent=`❌ 答案是「${word.zh}」，護盾 -1`;
     $('runnerMessage').style.color='#ffadbc';
   }
-  s.flash=680;s.delay=950;s.index++;s.wave=null;
+  s.flash=410;s.delay=520;s.index++;s.wave=null;
   runnerUpdateHUD();
 }
 function runnerFinish(){
@@ -3211,7 +3266,7 @@ function runnerStart(ids,count,speed){
   const all=runnerWords(ids);if(all.length<2)throw new Error('至少需要兩組英中單字');
   const chosen=spaceShuffle(all).slice(0,count==='all'?all.length:Math.min(Number(count),all.length));
   runnerStop();runnerPreviousUnits=[...ids];
-  runnerSession={ids:[...ids],queue:chosen,index:0,correct:0,score:0,combo:0,hp:3,lane:0,shipX:97,progress:0,delay:0,flash:0,flashGood:null,wave:null,duration:RUNNER_DURATIONS[speed]||9000,raf:null,done:false,paused:false,lastTime:performance.now()};
+  runnerSession={ids:[...ids],queue:chosen,index:0,correct:0,score:0,combo:0,hp:3,lane:0,shipX:97,progress:0,delay:0,flash:0,flashGood:null,wave:null,duration:RUNNER_DURATIONS[speed]||3200,raf:null,done:false,paused:false,lastTime:performance.now()};
   $('runnerPlay').hidden=false;$('runnerResult').hidden=true;
   $('runnerMoveLeft').classList.add('active');$('runnerMoveRight').classList.remove('active');$('runnerPause').textContent='⏸ 暫停';
   runnerLoadWave();$('runnerGameDialog').showModal();
