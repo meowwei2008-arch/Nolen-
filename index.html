@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.15 離線版</title>
+  <title>英中單字卡 | v1.6.17 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -465,12 +465,40 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .space-game-dialog [hidden]{display:none!important}
 @media(max-width:520px){.space-config{padding:14px}.space-fields{grid-template-columns:1fr}.space-game-wrap{padding:9px}.space-game-header h2{font-size:17px}.space-field{height:clamp(250px,45dvh,390px)}.space-ammo{grid-template-columns:repeat(2,minmax(0,1fr))}.space-ammo button{min-height:43px}.space-ship{width:40%;min-height:70px;padding:8px 6px;font-size:13px}.space-game-header .quiet-button{font-size:12px;padding:8px}.space-gun{height:55px;width:70px;line-height:38px}}
 
+
+/* v1.6.17 單字選門跑道 — 獨立 Canvas 遊戲，沿用單元字表，資料唯讀 */
+.runner-launch{border-color:#8b73f7!important;background:linear-gradient(110deg,#532e91,#21698b)!important;color:white!important}
+.runner-dialog{width:min(570px,calc(100vw - 12px));max-height:calc(100dvh - 12px);border:1px solid #526d9e;border-radius:18px;background:#101a32;color:#f5f8ff;padding:0;box-shadow:0 27px 90px #000b;overflow:auto}
+.runner-dialog::backdrop{background:#000b;backdrop-filter:blur(5px)}
+.runner-config{padding:19px;display:grid;gap:12px}.runner-config h2{margin:0;font-size:23px}.runner-config p{margin:0;color:#c6d3e8;font-size:13px;line-height:1.7}
+.runner-config-top,.runner-header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.runner-config .quiz-unit-list{max-height:180px}.runner-config .space-fields{grid-template-columns:1fr 1fr}
+.runner-config .space-fields select{font-size:13px}.runner-config button{touch-action:manipulation}
+.runner-play{max-width:530px;margin:0 auto;padding:11px;display:grid;gap:9px}
+.runner-header strong{font-size:16px}.runner-stats{display:flex;gap:5px;justify-content:space-between;flex-wrap:wrap;font-size:12px;color:#e7eeff}
+.runner-stats span{border:1px solid #425f84;background:#192f50;border-radius:50px;padding:6px 9px}
+.runner-banner{background:linear-gradient(125deg,#473a9b,#246a9e);border:1px solid #929afb;border-radius:15px;box-shadow:0 6px 22px #1d49a666;text-align:center;padding:12px 10px;display:grid;gap:4px;min-height:86px;align-content:center}
+.runner-banner small{font-size:11px;letter-spacing:.17em;color:#e0eaff;font-weight:750}
+.runner-banner strong{color:#fff;font-size:clamp(23px,6vw,35px);overflow-wrap:anywhere;line-height:1.15}
+.runner-stage{width:100%;height:clamp(300px,53dvh,550px);touch-action:none;display:block;border:1px solid #375c8c;border-radius:14px;background:#5bb1f1;cursor:ew-resize;outline:none}
+.runner-stage:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+.runner-message{color:#c7dbed;font-size:12px;text-align:center;min-height:35px;line-height:1.5;padding:0 3px}
+.runner-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.runner-controls button{font-size:17px;font-weight:800;padding:9px;min-height:49px;border:1px solid #6483aa;background:#24426b;color:white;border-radius:13px;touch-action:manipulation}
+.runner-controls button.active{background:#176b8c;border-color:#7de8ff;box-shadow:inset 0 0 0 2px #8ceaff}
+.runner-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#abcae3;font-size:11px;line-height:1.5}
+.runner-result{padding:34px 17px;display:grid;gap:15px;justify-items:center;text-align:center}
+.runner-result h2{font-size:26px;margin:0}.runner-big{font-size:clamp(44px,12vw,63px);font-weight:900;color:#a8ffe0}
+.runner-result p{color:#d2e1f6;line-height:1.65;margin:0}
+.runner-result .dialog-actions{justify-content:center;flex-wrap:wrap}
+.runner-dialog [hidden]{display:none!important}
+@media(max-width:390px){.runner-play{padding:7px;gap:7px}.runner-config{padding:12px}.runner-config .space-fields{grid-template-columns:1fr}.runner-stage{height:clamp(290px,46dvh,490px)}.runner-header strong{font-size:14px}.runner-stats span{padding:5px 7px;font-size:11px}.runner-banner{min-height:72px}.runner-footer{font-size:10px}}
+
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.16 · 單字太空防衛戰</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.17 · 新增選門跑道</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -511,7 +539,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           </div>
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
-            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
+            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="runnerLaunchButton" type="button" class="secondary-button runner-launch">🛸 單字選門跑道</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
           <section class="listening-panel" aria-label="單元循環聽力">
             <h3>▶ 單元單字循環聽力</h3><p>先念完英文指定次數，再念中文（可關閉）。<strong>每念完一次都會停頓，留時間跟讀</strong>；「每次朗讀間隔」與「下一個單字間隔」可分開調整。可單輪或循環，不影響學習紀錄。</p>
@@ -689,6 +717,38 @@ condition	條件"></textarea></label><div class="dialog-actions"><button type="b
     <div class="space-game-result" id="spaceGameResult" hidden>
       <div style="font-size:45px">🏁</div><h2 id="spaceFinalTitle">防衛結束</h2><div class="space-final-score" id="spaceFinalScore">0</div>
       <p id="spaceFinalStats"></p><div class="dialog-actions"><button class="secondary-button" id="spaceAgain" type="button">再打一輪</button><button class="primary-button" id="spaceReconfigure" type="button">重選單元／題數</button><button class="quiet-button" id="spaceFinalExit" type="button">返回單字卡</button></div>
+    </div>
+  </dialog>
+
+
+  <dialog class="runner-dialog" id="runnerConfigDialog" aria-labelledby="runnerConfigTitle">
+    <form id="runnerConfigForm" class="runner-config">
+      <div class="runner-config-top"><h2 id="runnerConfigTitle">🛸 單字選門跑道</h2><button type="button" id="runnerConfigClose" class="quiet-button small-button">✕ 關閉</button></div>
+      <p>英文題目固定在上方，<strong>左右操控飛船，穿過正確中文意思的大門。</strong>可直接在跑道左右滑動或點選，也可使用方向按鈕。答錯扣一格護盾，三格耗盡就結束；遊戲不更動學習紀錄。</p>
+      <div class="quiz-scope-title"><span>選擇遊戲單元</span><div class="quiz-scope-actions"><button id="runnerSelectAll" type="button" class="quiet-button small-button">全選</button><button id="runnerSelectNone" type="button" class="quiet-button small-button">清除</button></div></div>
+      <div id="runnerUnitOptions" class="quiz-unit-list" role="group" aria-label="選擇跑道單元"></div>
+      <div class="space-fields">
+        <label for="runnerQuestionCount">本輪題數<select id="runnerQuestionCount"><option value="10">10 題 · 短跑</option><option value="20" selected>20 題 · 標準</option><option value="40">40 題 · 長跑</option><option value="all">全部單字</option></select></label>
+        <label for="runnerSpeed">門的前進速度<select id="runnerSpeed"><option value="slow" selected>慢速 · 9 秒／題</option><option value="normal">一般 · 7 秒／題</option><option value="fast">快速 · 5 秒／題</option></select></label>
+      </div>
+      <div id="runnerPreview" class="card-scope-preview" role="status">請選擇單元</div>
+      <div class="dialog-actions"><button id="runnerConfigCancel" class="quiet-button" type="button">取消</button><button class="primary-button" type="submit" id="runnerStartButton">開始闖關</button></div>
+    </form>
+  </dialog>
+  <dialog class="runner-dialog" id="runnerGameDialog" aria-labelledby="runnerGameTitle">
+    <div id="runnerPlay" class="runner-play">
+      <div class="runner-header"><strong id="runnerGameTitle">🛸 單字選門跑道</strong><button id="runnerGameClose" class="quiet-button small-button" type="button">✕ 離開</button></div>
+      <div class="runner-stats"><span id="runnerProgress">第 1 / 20 題</span><span id="runnerScore">分數 0</span><span id="runnerCombo">連擊 0</span><span id="runnerHealth">護盾 ♥♥♥</span></div>
+      <div class="runner-banner"><small>ENGLISH WORD · 選正確的中文門</small><strong id="runnerWord">apple</strong></div>
+      <canvas id="runnerCanvas" class="runner-stage" width="390" height="540" role="img" aria-label="跑道畫面：左右兩道中文字義大門與可移動的飛船" tabindex="0"></canvas>
+      <div class="runner-message" id="runnerMessage" role="status" aria-live="polite">左右移動，撞上對應中文的門</div>
+      <div class="runner-controls"><button id="runnerMoveLeft" type="button" aria-label="往左移動飛船">◀ 左側</button><button id="runnerMoveRight" type="button" aria-label="往右移動飛船">右側 ▶</button></div>
+      <div class="runner-footer"><span>手指左右滑動／點跑道左右側／鍵盤 ← →</span><button id="runnerPause" class="secondary-button small-button" type="button">⏸ 暫停</button></div>
+    </div>
+    <div id="runnerResult" class="runner-result" hidden>
+      <div style="font-size:46px" aria-hidden="true">🏁</div><h2 id="runnerFinalTitle">闖關完成！</h2>
+      <div class="runner-big" id="runnerFinalScore">0 分</div><p id="runnerFinalStats"></p>
+      <div class="dialog-actions"><button id="runnerAgain" class="secondary-button" type="button">再跑一輪</button><button id="runnerReconfigure" class="primary-button" type="button">重選單元／題數</button><button id="runnerFinalExit" class="quiet-button" type="button">返回單字卡</button></div>
     </div>
   </dialog>
 
@@ -2875,8 +2935,7 @@ function spaceSpawn() {
   ship.append(icon,el('span','',word.zh));
   ship.style.left=`${lanes[lane]}%`;
   $('spaceField').append(ship);
-  const active={word,ship,lane,y:15+lane*42,flightMs:SPACE_SPEED[s.speed]};
-  ship.style.top=`${active.y}px`;
+  const active={word,ship,lane,y:-75,flightMs:SPACE_SPEED[s.speed]};
   s.active.push(active);
   spaceAmmoRefresh();
 }
@@ -2981,6 +3040,213 @@ $('spacePauseButton').addEventListener('click',()=>spacePause(!spaceSession?.pau
 $('spaceGameDialog').addEventListener('cancel',()=>spaceStop());
 $('spaceGameDialog').addEventListener('close',()=>spaceStop());
 document.addEventListener('visibilitychange',()=>{if(document.hidden && spaceSession && !spaceSession.done)spacePause(true);});
+
+
+/* ─── v1.6.17 選門跑道：沿用 spaceVocabulary 單字去重，完全不寫入 state。 ─── */
+const RUNNER_DURATIONS={slow:9000,normal:7000,fast:5000};
+let runnerSession=null,runnerPreviousUnits=null;
+const runnerCanvas=$('runnerCanvas');
+const runnerCtx=runnerCanvas.getContext('2d');
+function runnerWords(ids){return spaceVocabulary(ids);}
+function runnerSelectedIds(){return [...$('runnerUnitOptions').querySelectorAll('input:checked')].map(e=>e.value);}
+function runnerPreview(){
+  const ids=runnerSelectedIds(),available=runnerWords(ids).length,limit=$('runnerQuestionCount').value;
+  const n=limit==='all'?available:Math.min(available,Number(limit));
+  $('runnerPreview').textContent=ids.length?`${ids.length} 個單元 · ${available} 組不重複單字 · 本輪 ${n} 題${available<2?'（至少需要兩組不同中文意思）':''}`:'請先選擇單元';
+  $('runnerStartButton').disabled=ids.length===0||available<2;
+}
+function runnerOpenConfig(ids=null){
+  const selected=new Set(ids||runnerPreviousUnits||[selectedUnitId]);
+  const list=$('runnerUnitOptions');list.replaceChildren();
+  for(const unit of state.units){
+    if(!unit.wordIds.length)continue;
+    const row=el('label','quiz-unit-row'),check=el('input');check.type='checkbox';check.value=unit.id;check.checked=selected.has(unit.id);check.addEventListener('change',runnerPreview);
+    row.append(check,el('span','',unit.name),el('small','',`${unit.wordIds.length} 字`));list.append(row);
+  }
+  runnerPreview();$('runnerConfigDialog').showModal();
+}
+function runnerSetLane(lane){
+  const s=runnerSession;if(!s||s.done||s.paused)return;
+  s.lane=lane;
+  $('runnerMoveLeft').classList.toggle('active',lane===0);
+  $('runnerMoveRight').classList.toggle('active',lane===1);
+}
+function runnerUpdateHUD(){
+  const s=runnerSession;if(!s)return;
+  $('runnerProgress').textContent=`第 ${Math.min(s.index+1,s.queue.length)} / ${s.queue.length} 題`;
+  $('runnerScore').textContent=`分數 ${s.score}`;
+  $('runnerCombo').textContent=`連擊 ${s.combo}`;
+  $('runnerHealth').textContent=`護盾 ${'♥'.repeat(s.hp)}${'♡'.repeat(3-s.hp)}`;
+}
+function runnerText(text,x,y,maxWidth,size=18,color='#1a416a'){
+  const ctx=runnerCtx;
+  ctx.font=`800 ${size}px system-ui, sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=color;
+  const whole=String(text||'');
+  if(ctx.measureText(whole).width<=maxWidth){ctx.fillText(whole,x,y);return;}
+  let lines=[],part='';
+  for(const ch of whole){if(ctx.measureText(part+ch).width>maxWidth&&part){lines.push(part);part=ch;}else part+=ch;}
+  if(part)lines.push(part);
+  // 長中文解釋最多顯示三行，並縮小以免超出門框
+  if(lines.length>3){ctx.font=`800 13px system-ui, sans-serif`;lines=[];part='';for(const ch of whole){if(ctx.measureText(part+ch).width>maxWidth&&part){lines.push(part);part=ch;}else part+=ch;}if(part)lines.push(part);}
+  if(lines.length>3){lines=lines.slice(0,3);lines[2]=lines[2].slice(0,-1)+'…';}
+  const h=lines.length>2?15:19;
+  lines.forEach((line,i)=>ctx.fillText(line,x,y+(i-(lines.length-1)/2)*h));
+}
+function runnerDrawRounded(x,y,w,h,r,color){
+  const c=runnerCtx;c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill();
+}
+function runnerDraw(ts=0){
+  const s=runnerSession,ctx=runnerCtx;
+  if(!s)return;
+  ctx.setTransform(runnerCanvas.width/390,0,0,runnerCanvas.height/540,0,0);
+  ctx.clearRect(0,0,390,540);
+  const sky=ctx.createLinearGradient(0,0,0,540);sky.addColorStop(0,'#65b5ff');sky.addColorStop(.4,'#9ddcff');sky.addColorStop(1,'#c7eeff');ctx.fillStyle=sky;ctx.fillRect(0,0,390,540);
+  // 遠景、遠山、水面
+  ctx.fillStyle='#7cbeec';ctx.beginPath();ctx.moveTo(0,175);ctx.lineTo(55,120);ctx.lineTo(127,173);ctx.lineTo(215,127);ctx.lineTo(310,172);ctx.lineTo(390,138);ctx.lineTo(390,235);ctx.lineTo(0,235);ctx.fill();
+  ctx.fillStyle='#78c4f3';ctx.fillRect(0,185,390,355);
+  ctx.strokeStyle='#c6ecff66';ctx.lineWidth=2;
+  for(let y=204;y<540;y+=26){for(let x=((y/26)%2)*-28;x<390;x+=76){ctx.beginPath();ctx.ellipse(x,y,27,5,0,0,Math.PI);ctx.stroke();}}
+  // 透視跑道
+  ctx.fillStyle='#fff2ed';ctx.beginPath();ctx.moveTo(153,118);ctx.lineTo(237,118);ctx.lineTo(436,540);ctx.lineTo(-46,540);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#f6d9da';
+  const ySegments=[120,195,290,398,540];
+  for(let i=0;i<ySegments.length-1;i+=2){const ya=ySegments[i],yb=ySegments[i+1];const halfA=42+(ya-118)*.48,halfB=42+(yb-118)*.48;ctx.beginPath();ctx.moveTo(195-halfA,ya);ctx.lineTo(195+halfA,ya);ctx.lineTo(195+halfB,yb);ctx.lineTo(195-halfB,yb);ctx.fill();}
+  ctx.strokeStyle='#ffffffe0';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(153,118);ctx.lineTo(-46,540);ctx.moveTo(237,118);ctx.lineTo(436,540);ctx.stroke();
+  ctx.strokeStyle='#faf0e3';ctx.lineWidth=3;ctx.setLineDash([15,18]);ctx.beginPath();ctx.moveTo(195,118);ctx.lineTo(195,540);ctx.stroke();ctx.setLineDash([]);
+  // 進度環形和左右底部車道選擇
+  ctx.fillStyle='#ffffff44';ctx.beginPath();ctx.ellipse(s.lane===0?99:290,486,75,24,0,0,Math.PI*2);ctx.fill();
+  // 門由遠及近：p0 在地平線、p1 到飛船
+  if(s.wave){
+    const p=Math.max(0,Math.min(1,s.progress));
+    const y=142+295*p;
+    const wide=41+58*p,high=43+35*p;
+    const centers=[156-59*p,234+59*p];
+    for(let lane=0;lane<2;lane++){
+      const x=centers[lane],w=wide*2,h=high;
+      // 先畫門框陰影、柱子、琉璃門板
+      ctx.fillStyle='#183c5766';ctx.fillRect(x-w/2+7,y-h/2+7,w,h);
+      const panel=ctx.createLinearGradient(0,y-h/2,0,y+h/2);panel.addColorStop(0,'#a7faffea');panel.addColorStop(1,'#4bc9f0d9');
+      runnerDrawRounded(x-w/2,y-h/2,w,h,5,panel);
+      ctx.strokeStyle=lane===s.lane?'#ffffff':'#6afaff';ctx.lineWidth=lane===s.lane?3:2;ctx.strokeRect(x-w/2+3,y-h/2+3,w-6,h-6);
+      runnerDrawRounded(x-w/2-5,y-h/2-3,7,h+10,3,'#34577b');runnerDrawRounded(x+w/2-2,y-h/2-3,7,h+10,3,'#34577b');
+      const text=s.wave.options[lane].zh;
+      runnerText(text,x,y,w-16,p<.33?12:(p<.7?15:19),'#173853');
+    }
+  }
+  // 飛船：朝指定車道平順移動
+  const px=s.shipX,py=476;
+  ctx.fillStyle='#154a8177';ctx.beginPath();ctx.ellipse(px,508,31,9,0,0,Math.PI*2);ctx.fill();
+  const plume=ctx.createLinearGradient(0,493,0,530);plume.addColorStop(0,'#fdef73');plume.addColorStop(1,'#ffa34b00');ctx.fillStyle=plume;ctx.beginPath();ctx.moveTo(px-11,493);ctx.lineTo(px,530+(Math.sin(ts/110)*3));ctx.lineTo(px+11,493);ctx.fill();
+  ctx.save();ctx.translate(px,py);ctx.shadowColor='#0d66d4';ctx.shadowBlur=14;
+  ctx.fillStyle='#e3f9ff';ctx.beginPath();ctx.moveTo(0,-31);ctx.lineTo(25,18);ctx.lineTo(14,27);ctx.lineTo(-14,27);ctx.lineTo(-25,18);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#2d6cbe';ctx.beginPath();ctx.moveTo(0,-23);ctx.lineTo(11,17);ctx.lineTo(-11,17);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#8cf2ff';ctx.beginPath();ctx.ellipse(0,-2,7,10,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#ffc36d';ctx.fillRect(-21,14,8,10);ctx.fillRect(13,14,8,10);
+  ctx.restore();
+  // 瞬間回饋光暈
+  if(s.flash>0){ctx.globalAlpha=Math.min(.38,s.flash/900*.38);ctx.fillStyle=s.flashGood?'#1df9b7':'#ff4577';ctx.fillRect(0,0,390,540);ctx.globalAlpha=1;}
+}
+function runnerLoadWave(){
+  const s=runnerSession;if(!s||s.done)return;
+  if(s.index>=s.queue.length){runnerFinish();return;}
+  const word=s.queue[s.index];
+  const distractors=runnerWords(s.ids).filter(w=>w.id!==word.id && w.zh!==word.zh && w.en.toLowerCase()!==word.en.toLowerCase());
+  if(!distractors.length){runnerFinish();return;}
+  const second=spaceShuffle(distractors)[0],correctLane=Math.random()<.5?0:1;
+  const options=correctLane===0?[word,second]:[second,word];
+  s.wave={word,options,correctLane};s.progress=0;s.delay=0;s.flash=0;s.flashGood=null;
+  $('runnerWord').textContent=word.en;
+  $('runnerMessage').textContent='把飛船移到正確的中文門！';$('runnerMessage').style.color='#c7dbed';
+  runnerUpdateHUD();runnerDraw();
+}
+function runnerResolve(){
+  const s=runnerSession;if(!s||s.done||!s.wave||s.delay>0)return;
+  const word=s.wave.word;
+  const correct=s.lane===s.wave.correctLane;
+  if(correct){s.correct++;s.combo++;s.score+=100+Math.min(s.combo-1,10)*20;s.flashGood=true;
+    $('runnerMessage').textContent=`✅ 正確！${word.en}＝${word.zh} · ${s.combo} 連擊`;
+    $('runnerMessage').style.color='#a4ffe6';
+  }else{s.hp--;s.combo=0;s.flashGood=false;
+    $('runnerMessage').textContent=`❌ 答案是「${word.zh}」，護盾 -1`;
+    $('runnerMessage').style.color='#ffadbc';
+  }
+  s.flash=680;s.delay=950;s.index++;s.wave=null;
+  runnerUpdateHUD();
+}
+function runnerFinish(){
+  const s=runnerSession;if(!s||s.done)return;
+  s.done=true;if(s.raf)cancelAnimationFrame(s.raf);
+  $('runnerPlay').hidden=true;$('runnerResult').hidden=false;
+  const attempted=s.index,total=s.queue.length;
+  $('runnerFinalTitle').textContent=s.hp<=0?'護盾耗盡，跑道失守！':'跑道闖關完成！';
+  $('runnerFinalScore').textContent=`${s.score} 分`;
+  $('runnerFinalStats').textContent=`答對 ${s.correct} / ${attempted} 題 · 正確率 ${attempted?(s.correct/attempted*100).toFixed(1):'0.0'}% · ${total} 題中已完成 ${attempted} 題。遊戲不修改單字熟練度與批鬥紀錄。`;
+}
+function runnerFrame(ts){
+  const s=runnerSession;if(!s||s.done||s.paused)return;
+  const dt=Math.min(70,Math.max(0,ts-s.lastTime));s.lastTime=ts;
+  const target=s.lane===0?97:293;
+  s.shipX+=(target-s.shipX)*Math.min(1,dt/125);
+  if(s.flash>0)s.flash=Math.max(0,s.flash-dt);
+  if(s.delay>0){s.delay=Math.max(0,s.delay-dt);if(s.delay===0){if(s.hp<=0||s.index>=s.queue.length){runnerFinish();return;}runnerLoadWave();}}
+  else if(s.wave){s.progress=Math.min(1,s.progress+dt/s.duration);if(s.progress>=1)runnerResolve();}
+  runnerDraw(ts);
+  if(!s.done)s.raf=requestAnimationFrame(runnerFrame);
+}
+function runnerPause(yes){
+  const s=runnerSession;if(!s||s.done)return;
+  if(s.raf){cancelAnimationFrame(s.raf);s.raf=null;}
+  s.paused=!!yes;
+  $('runnerPause').textContent=s.paused?'▶ 繼續':'⏸ 暫停';
+  if(yes){$('runnerMessage').textContent='⏸ 已暫停，門不會移動';}
+  else{s.lastTime=performance.now();$('runnerMessage').textContent='繼續選擇對應中文的大門！';s.raf=requestAnimationFrame(runnerFrame);}
+}
+function runnerStop(){
+  if(runnerSession?.raf)cancelAnimationFrame(runnerSession.raf);
+  runnerSession=null;
+}
+function runnerClose(){runnerStop();if($('runnerGameDialog').open)$('runnerGameDialog').close();}
+function runnerStart(ids,count,speed){
+  const all=runnerWords(ids);if(all.length<2)throw new Error('至少需要兩組英中單字');
+  const chosen=spaceShuffle(all).slice(0,count==='all'?all.length:Math.min(Number(count),all.length));
+  runnerStop();runnerPreviousUnits=[...ids];
+  runnerSession={ids:[...ids],queue:chosen,index:0,correct:0,score:0,combo:0,hp:3,lane:0,shipX:97,progress:0,delay:0,flash:0,flashGood:null,wave:null,duration:RUNNER_DURATIONS[speed]||9000,raf:null,done:false,paused:false,lastTime:performance.now()};
+  $('runnerPlay').hidden=false;$('runnerResult').hidden=true;
+  $('runnerMoveLeft').classList.add('active');$('runnerMoveRight').classList.remove('active');$('runnerPause').textContent='⏸ 暫停';
+  runnerLoadWave();$('runnerGameDialog').showModal();
+  runnerSession.lastTime=performance.now();runnerSession.raf=requestAnimationFrame(runnerFrame);
+}
+$('runnerLaunchButton').addEventListener('click',()=>runnerOpenConfig());
+$('runnerSelectAll').addEventListener('click',()=>{$('runnerUnitOptions').querySelectorAll('input').forEach(e=>e.checked=true);runnerPreview();});
+$('runnerSelectNone').addEventListener('click',()=>{$('runnerUnitOptions').querySelectorAll('input').forEach(e=>e.checked=false);runnerPreview();});
+$('runnerQuestionCount').addEventListener('change',runnerPreview);
+$('runnerConfigClose').addEventListener('click',()=>$('runnerConfigDialog').close());
+$('runnerConfigCancel').addEventListener('click',()=>$('runnerConfigDialog').close());
+$('runnerConfigForm').addEventListener('submit',e=>{e.preventDefault();try{
+  const ids=runnerSelectedIds(),n=$('runnerQuestionCount').value,speed=$('runnerSpeed').value;
+  if(!ids.length)throw new Error('請先選擇單元');$('runnerConfigDialog').close();runnerStart(ids,n,speed);
+}catch(error){message(error.message,true);if(!$('runnerConfigDialog').open)$('runnerConfigDialog').showModal();}});
+$('runnerGameClose').addEventListener('click',runnerClose);
+$('runnerFinalExit').addEventListener('click',runnerClose);
+$('runnerAgain').addEventListener('click',()=>{if(!runnerSession)return;const ids=[...runnerPreviousUnits],n=$('runnerQuestionCount').value,speed=$('runnerSpeed').value;runnerClose();runnerStart(ids,n,speed);});
+$('runnerReconfigure').addEventListener('click',()=>{const ids=[...runnerPreviousUnits||[]];runnerClose();runnerOpenConfig(ids);});
+$('runnerPause').addEventListener('click',()=>runnerPause(!runnerSession?.paused));
+$('runnerMoveLeft').addEventListener('click',()=>runnerSetLane(0));
+$('runnerMoveRight').addEventListener('click',()=>runnerSetLane(1));
+let runnerPointerId=null;
+function runnerPointer(e){if(!runnerSession||runnerSession.done||runnerSession.paused)return;const box=runnerCanvas.getBoundingClientRect();runnerSetLane(e.clientX-box.left<box.width/2?0:1);}
+runnerCanvas.addEventListener('pointerdown',e=>{runnerPointerId=e.pointerId;runnerCanvas.setPointerCapture?.(e.pointerId);runnerPointer(e);e.preventDefault();});
+runnerCanvas.addEventListener('pointermove',e=>{if(runnerPointerId===e.pointerId)runnerPointer(e);});
+runnerCanvas.addEventListener('pointerup',e=>{if(runnerPointerId===e.pointerId)runnerPointerId=null;});
+runnerCanvas.addEventListener('pointercancel',()=>runnerPointerId=null);
+document.addEventListener('keydown',e=>{if(!$('runnerGameDialog').open||!runnerSession||runnerSession.done||runnerSession.paused)return;
+  if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a'){runnerSetLane(0);e.preventDefault();}
+  if(e.key==='ArrowRight'||e.key.toLowerCase()==='d'){runnerSetLane(1);e.preventDefault();}
+});
+$('runnerGameDialog').addEventListener('cancel',()=>runnerStop());
+$('runnerGameDialog').addEventListener('close',()=>runnerStop());
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&runnerSession&&!runnerSession.done)runnerPause(true);});
 
 $('startReviewButton').addEventListener('click', () => {
   const cardCount = state.units.reduce((sum,u)=>sum+filteredWordIds(state,u.id,$('reviewModeSelect').value).length,0);
