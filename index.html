@@ -434,12 +434,43 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .result-meme .result-meme-caption{font-size:12px;color:#c6bdcb;margin:9px 0 0}
 .example-result-meme{max-width:460px;margin:20px auto}
 @media(max-width:480px){.result-meme{padding:12px;margin:18px auto}.result-meme img{border-radius:7px}}
+
+/* v1.6.16 — 單字太空防衛戰：遊戲只讀單字，不更動熟練度、紀錄或例句。 */
+.space-launch{border-color:#6b6bef!important;background:linear-gradient(120deg,#3a377b,#254d77)!important;color:white!important}
+.space-game-dialog{width:min(920px,calc(100vw - 12px));max-width:920px;max-height:calc(100dvh - 14px);border:1px solid #596a99;border-radius:18px;background:#0e152b;color:#f3f6ff;padding:0;box-shadow:0 30px 90px #000b;overflow:auto}
+.space-game-dialog::backdrop{background:#02040bdc;backdrop-filter:blur(5px)}
+.space-config{padding:21px;display:grid;gap:13px}.space-config h2{margin:0;font-size:25px}.space-config p{color:#c5cee9;margin:0;line-height:1.65;font-size:13px}
+.space-config-top,.space-game-header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.space-config .quiz-unit-list{max-height:190px}.space-fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.space-fields label{display:block;font-size:13px;color:#dce5ff;font-weight:700}.space-fields select{display:block;width:100%;height:45px;border-radius:10px;background:#16223d;color:#fff;border:1px solid #5e709b;padding:8px;margin-top:6px;font-size:14px}
+.space-game-wrap{padding:14px;display:grid;gap:10px}.space-game-header{flex-wrap:wrap}.space-game-header h2{font-size:19px;margin:0;color:#e6eaff}.space-game-stats{display:flex;gap:7px;flex-wrap:wrap;font-size:12px;color:#cddcff}.space-game-stats span{background:#1b2945;border:1px solid #40577f;border-radius:999px;padding:5px 9px}
+.space-status{font-size:12px;color:#b8caff;min-height:19px;line-height:1.5;text-align:center}
+.space-field{position:relative;height:clamp(260px,49dvh,430px);overflow:hidden;border:1px solid #3b5180;border-radius:15px;background:radial-gradient(circle at 20% 18%,#30326b8c,transparent 30%),radial-gradient(circle at 86% 59%,#1b5f7791,transparent 32%),radial-gradient(circle at 63% 90%,#1d235a 1%,#070f26 70%);isolation:isolate;touch-action:manipulation}
+.space-field:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#e8ecff 1px,transparent 1.5px),radial-gradient(#7ba8ff 1px,transparent 1.5px);background-size:64px 64px,99px 99px;background-position:17px 23px,41px 49px;opacity:.4}
+.space-field:after{content:"防衛線";font-size:10px;letter-spacing:.22em;text-align:right;position:absolute;right:8px;bottom:23px;left:8px;color:#9be2f1a8;border-top:1px dashed #3ad8ee8c;padding-top:3px;pointer-events:none}
+.space-ship{position:absolute;width:min(30%,200px);min-height:76px;padding:10px 8px 11px;background:linear-gradient(155deg,#363268,#252d58);color:#fff;border:1px solid #b4abff;box-shadow:0 5px 18px #050b24ab,0 0 24px #8276ff44;border-radius:18px 18px 24px 24px;transform:translateX(-50%);cursor:crosshair;font-size:clamp(12px,2.7vw,17px);font-weight:800;line-height:1.4;overflow-wrap:anywhere;z-index:2;touch-action:manipulation}
+.space-ship .ship-icon{display:block;color:#c8c2ff;margin-bottom:2px;font-size:22px;line-height:1}.space-ship:focus-visible{outline:3px solid #f6e985;outline-offset:3px}
+.space-ship:after{content:"";position:absolute;width:13px;height:16px;left:calc(50% - 6px);bottom:-11px;background:linear-gradient(#7cf4ff,#5aa0ff00);clip-path:polygon(15% 0,85% 0,50% 100%);opacity:.75;pointer-events:none}
+.space-ship.hit{animation:space-shatter .35s ease-out forwards;pointer-events:none}
+@keyframes space-shatter{to{opacity:0;filter:brightness(3);transform:translateX(-50%) scale(1.5) rotate(12deg)}}
+.space-gun{position:absolute;left:50%;bottom:1px;transform:translateX(-50%);width:88px;height:62px;border-radius:50% 50% 7px 7px;background:linear-gradient(#5bb9de,#234c90);border:2px solid #9edcff;box-shadow:0 0 28px #24bce788;z-index:3;text-align:center;font-size:29px;line-height:45px;pointer-events:none}
+.space-gun:before{content:"";position:absolute;left:calc(50% - 8px);top:-18px;width:16px;height:26px;background:#7fd2ff;border:2px solid #a5e9ff;border-radius:6px}
+.space-bullet{position:absolute;z-index:5;pointer-events:none;padding:5px 9px;border-radius:100px;background:linear-gradient(120deg,#b6fff3,#72dfff);color:#08253d;box-shadow:0 0 18px #76f6ff;font-size:11px;font-weight:900;white-space:nowrap;will-change:transform,opacity;transition:transform .34s ease-in,opacity .34s ease-in}
+.space-ammo-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:#bacbff}.space-ammo-title strong{font-size:14px;color:#dff6ff}
+.space-ammo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.space-ammo button{min-height:54px;min-width:0;padding:8px 5px;border:1px solid #536996;background:#1b2c4b;border-radius:11px;color:#e9f5ff;font-size:clamp(12px,2.9vw,15px);font-weight:800;overflow-wrap:anywhere;line-height:1.3}
+.space-ammo button.selected{background:#216b81;border:2px solid #a7fcff;box-shadow:0 0 0 2px #20d2e244;color:#fff}.space-ammo button:focus-visible{outline:3px solid #f2e886}
+.space-game-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.space-game-actions button{min-height:40px}.space-game-result{text-align:center;padding:35px 17px;display:grid;gap:14px;justify-items:center}.space-game-result h2{font-size:26px;margin:0}.space-game-result .space-final-score{font-size:clamp(40px,8vw,66px);color:#aaffdf;font-weight:900}.space-game-result p{color:#d1dcf3;line-height:1.6;margin:0}
+.space-game-dialog [hidden]{display:none!important}
+@media(max-width:520px){.space-config{padding:14px}.space-fields{grid-template-columns:1fr}.space-game-wrap{padding:9px}.space-game-header h2{font-size:17px}.space-field{height:clamp(250px,45dvh,390px)}.space-ammo{grid-template-columns:repeat(2,minmax(0,1fr))}.space-ammo button{min-height:43px}.space-ship{width:40%;min-height:70px;padding:8px 6px;font-size:13px}.space-game-header .quiet-button{font-size:12px;padding:8px}.space-gun{height:55px;width:70px;line-height:38px}}
+
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.15 · 測驗結果評語</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.16 · 單字太空防衛戰</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -480,7 +511,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           </div>
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
-            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
+            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
           <section class="listening-panel" aria-label="單元循環聽力">
             <h3>▶ 單元單字循環聽力</h3><p>先念完英文指定次數，再念中文（可關閉）。<strong>每念完一次都會停頓，留時間跟讀</strong>；「每次朗讀間隔」與「下一個單字間隔」可分開調整。可單輪或循環，不影響學習紀錄。</p>
@@ -630,6 +661,37 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 alphabet,字母表
 condition	條件"></textarea></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="bulkDialog">取消</button><button class="primary-button" type="submit">全部匯入目前單元</button></div></form></dialog>
   <dialog class="dialog" id="moveDialog"><form id="moveForm"><h2>移動單字</h2><p>將所選 <strong id="moveQuantity">0</strong> 個單字移到另一個單元。原本的熟練度、書籤和忘記次數會保留，目標單元熟練度不變。</p><label class="field" for="targetUnitSelect">目標單元<select id="targetUnitSelect" required></select></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="moveDialog">取消</button><button type="submit" class="primary-button">確認移動</button></div></form></dialog>
+
+  <dialog class="space-game-dialog" id="spaceConfigDialog" aria-labelledby="spaceConfigTitle">
+    <form id="spaceConfigForm" class="space-config">
+      <div class="space-config-top"><h2 id="spaceConfigTitle">🚀 單字太空防衛戰</h2><button id="spaceConfigClose" type="button" class="quiet-button small-button">✕ 關閉</button></div>
+      <p>中文敵艦向防衛線逼近。<strong>先選一顆英文子彈，再點中文意思相符的飛船發射！</strong> 你有三格護盾；誤射或漏掉都會扣血。純遊戲模式，不改變單字熟練度與批鬥紀錄。</p>
+      <div class="quiz-scope-title"><span>要保衛哪些單元？</span><div class="quiz-scope-actions"><button id="spaceSelectAll" type="button" class="quiet-button small-button">全選</button><button id="spaceSelectNone" type="button" class="quiet-button small-button">清除</button></div></div>
+      <div id="spaceUnitOptions" class="quiz-unit-list" role="group" aria-label="選擇遊戲單元"></div>
+      <div class="space-fields">
+        <label for="spaceQuestionCount">本輪單字數<select id="spaceQuestionCount"><option value="10">10 艘 · 快速戰</option><option value="20" selected>20 艘 · 標準戰</option><option value="40">40 艘 · 耐久戰</option><option value="all">全部 · 全面戰爭</option></select></label>
+        <label for="spaceSpeed">敵艦速度<select id="spaceSpeed"><option value="slow" selected>慢速 · 新兵練習</option><option value="normal">一般 · 防衛作戰</option><option value="fast">快速 · 極限作戰</option></select></label>
+      </div>
+      <div class="card-scope-preview" id="spaceConfigSummary" role="status">準備載入題庫…</div>
+      <div class="dialog-actions"><button class="quiet-button" type="button" id="spaceConfigCancel">取消</button><button class="primary-button" type="submit" id="spaceConfigStart">開始防衛</button></div>
+    </form>
+  </dialog>
+  <dialog class="space-game-dialog" id="spaceGameDialog" aria-labelledby="spaceGameTitle">
+    <div class="space-game-wrap" id="spaceGamePlay">
+      <div class="space-game-header"><h2 id="spaceGameTitle">🚀 單字太空防衛戰</h2><button id="spaceGameClose" type="button" class="quiet-button small-button">✕ 離開遊戲</button></div>
+      <div class="space-game-stats"><span id="spaceScore">得分 0</span><span id="spaceCombo">連擊 0</span><span id="spaceShields">護盾 ♥♥♥</span><span id="spaceProgress">0 / 20</span></div>
+      <div id="spaceStatus" class="space-status" role="status" aria-live="polite">選擇英文子彈，再點正確的中文飛船</div>
+      <div class="space-field" id="spaceField" aria-label="中文字義敵艦戰場"><div class="space-gun" aria-hidden="true">⌃</div></div>
+      <div class="space-ammo-title"><strong>英文彈藥庫</strong><span>先點英文，再點目標飛船</span></div>
+      <div class="space-ammo" id="spaceAmmo" role="group" aria-label="選擇英文子彈"></div>
+      <div class="space-game-actions"><button id="spacePauseButton" type="button" class="secondary-button small-button">⏸ 暫停</button><span class="section-hint">答錯／漏掉扣 1 格護盾 · 命中 +10 分</span></div>
+    </div>
+    <div class="space-game-result" id="spaceGameResult" hidden>
+      <div style="font-size:45px">🏁</div><h2 id="spaceFinalTitle">防衛結束</h2><div class="space-final-score" id="spaceFinalScore">0</div>
+      <p id="spaceFinalStats"></p><div class="dialog-actions"><button class="secondary-button" id="spaceAgain" type="button">再打一輪</button><button class="primary-button" id="spaceReconfigure" type="button">重選單元／題數</button><button class="quiet-button" id="spaceFinalExit" type="button">返回單字卡</button></div>
+    </div>
+  </dialog>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script>/* v1.6: 延續舊版 schemaVersion 1，新增可選 hatHistory / examples 欄位。 */
 const SCHEMA_VERSION = 1;
@@ -2703,6 +2765,223 @@ $('restoreFileInput').addEventListener('change', async event => {
   event.target.value = '';
 });
 $('reviewModeSelect').addEventListener('change', refreshReviewEligibility);
+
+/* ── v1.6.16 Vocabulary Space Defense: entirely read-only to existing learner data. ── */
+let spaceSession = null;
+let spaceLastIds = null;
+const SPACE_SPEED = {slow: 33000, normal: 23500, fast: 16500};
+function spaceShuffle(items) {
+  const result = [...items];
+  for (let i=result.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [result[i],result[j]]=[result[j],result[i]]; }
+  return result;
+}
+function spaceVocabulary(ids) {
+  const seenEnglish=new Set(), seenChinese=new Set(), words=[];
+  for (const unit of state.units) if (ids.includes(unit.id)) for (const id of unit.wordIds) {
+    const word=state.words[id];
+    if (!word?.en?.trim() || !word?.zh?.trim()) continue;
+    const en=word.en.normalize('NFKC').trim().toLocaleLowerCase('en');
+    const zh=word.zh.normalize('NFKC').trim();
+    // Avoid unwinnable targets: same meaning on two ships would be ambiguous.
+    if (seenEnglish.has(en) || seenChinese.has(zh)) continue;
+    seenEnglish.add(en); seenChinese.add(zh);
+    words.push({id:word.id,en:word.en.trim(),zh:word.zh.trim(),unitId:unit.id});
+  }
+  return words;
+}
+function spaceGetSelectedIds() {
+  return [...$('spaceUnitOptions').querySelectorAll('input[type="checkbox"]:checked')].map(c=>c.value);
+}
+function spaceUpdatePreview() {
+  const selected=spaceGetSelectedIds(), count=spaceVocabulary(selected).length;
+  const limit=$('spaceQuestionCount').value;
+  const actual=limit==='all'?count:Math.min(count,Number(limit));
+  $('spaceConfigSummary').textContent=selected.length ? `${selected.length} 個單元 · ${count} 組不重複英中單字 · 本輪 ${actual} 艘敵艦${count<2?'（至少需要 2 組不同單字）':''}` : '請至少勾選一個單元';
+  $('spaceConfigStart').disabled=selected.length===0 || count<2;
+}
+function openSpaceConfig(prefill=null) {
+  const selected=prefill || spaceLastIds || [selectedUnitId];
+  const selectedSet=new Set(selected);
+  const list=$('spaceUnitOptions');list.replaceChildren();
+  for (const unit of state.units) {
+    if (!unit.wordIds.length) continue;
+    const row=el('label','quiz-unit-row'); const checkbox=el('input');checkbox.type='checkbox';checkbox.value=unit.id;checkbox.checked=selectedSet.has(unit.id);
+    checkbox.addEventListener('change',spaceUpdatePreview);
+    row.append(checkbox,el('span','',unit.name),el('small','',`${unit.wordIds.length} 字`)); list.append(row);
+  }
+  spaceUpdatePreview();
+  $('spaceConfigDialog').showModal();
+}
+function spaceSetStatus(text,bad=false) {
+  const status=$('spaceStatus'); status.textContent=text;status.style.color=bad?'#ffb7be':'#b8caff';
+}
+function spaceStats() {
+  if (!spaceSession) return;
+  const s=spaceSession;
+  $('spaceScore').textContent=`得分 ${s.score}`;
+  $('spaceCombo').textContent=`連擊 ${s.combo}`;
+  $('spaceShields').textContent=`護盾 ${'♥'.repeat(s.health)}${'♡'.repeat(3-s.health)}`;
+  $('spaceProgress').textContent=`${s.finished} / ${s.goal}`;
+}
+function spacePause(shouldPause=true) {
+  if (!spaceSession || spaceSession.done) return;
+  const s=spaceSession;
+  s.paused=shouldPause;
+  s.lastFrame=performance.now();
+  $('spacePauseButton').textContent=shouldPause?'▶ 繼續':'⏸ 暫停';
+  if (shouldPause) spaceSetStatus('⏸ 已暫停，敵艦不會移動');
+  else {spaceSetStatus('選英文子彈，再點對應的中文飛船');spaceTick();}
+}
+function spaceStop() {
+  if (!spaceSession) return;
+  if (spaceSession.raf) cancelAnimationFrame(spaceSession.raf);
+  spaceSession.done=true;
+  spaceSession=null;
+  $('spaceField').querySelectorAll('.space-ship,.space-bullet').forEach(node=>node.remove());
+  $('spaceAmmo').replaceChildren();
+}
+function spaceClose() {spaceStop();if($('spaceGameDialog').open)$('spaceGameDialog').close();}
+function spaceChooseAmmo(en) {
+  const s=spaceSession;if(!s || s.done || s.paused)return;
+  s.ammo=en;
+  $('spaceAmmo').querySelectorAll('button').forEach(b=>{b.classList.toggle('selected',b.dataset.word===en);b.setAttribute('aria-pressed',String(b.dataset.word===en));});
+  spaceSetStatus(`已裝填「${en}」：點選中文意思相符的飛船！`);
+}
+function spaceAmmoRefresh() {
+  const s=spaceSession;if(!s || s.done)return;
+  const active=s.active.map(a=>a.word);
+  const all=s.deck;
+  const others=spaceShuffle(all.filter(w=>!active.some(a=>a.en.toLowerCase()===w.en.toLowerCase())));
+  const options=spaceShuffle([...active,...others.slice(0,Math.max(0,4-active.length))]).slice(0,4);
+  if (s.ammo && !options.some(w=>w.en===s.ammo)) s.ammo=null;
+  const box=$('spaceAmmo');box.replaceChildren();
+  for(const word of options) {
+    const b=button(word.en, s.ammo===word.en?'selected':'',()=>spaceChooseAmmo(word.en),`裝填英文子彈 ${word.en}`);
+    b.dataset.word=word.en;b.setAttribute('aria-pressed',String(s.ammo===word.en));box.append(b);
+  }
+}
+function spaceLanes() {return window.innerWidth<=520?[29,71]:[20,50,80];}
+function spaceSpawn() {
+  const s=spaceSession;
+  if(!s || s.done)return;
+  const lanes=spaceLanes();
+  if(s.active.length>=lanes.length || !s.queue.length)return;
+  const occupied=new Set(s.active.map(a=>a.lane));
+  const lane=lanes.findIndex((_,i)=>!occupied.has(i));
+  if(lane<0)return;
+  const word=s.queue.shift();
+  const ship=button('', 'space-ship',()=>spaceShoot(word.id),`中文飛船：${word.zh}`);
+  const icon=el('span','ship-icon','◇');icon.setAttribute('aria-hidden','true');
+  ship.append(icon,el('span','',word.zh));
+  ship.style.left=`${lanes[lane]}%`;
+  $('spaceField').append(ship);
+  const active={word,ship,lane,y:15+lane*42,flightMs:SPACE_SPEED[s.speed]};
+  ship.style.top=`${active.y}px`;
+  s.active.push(active);
+  spaceAmmoRefresh();
+}
+function spaceRemove(active,hit) {
+  const s=spaceSession;if(!s||s.done)return;
+  const index=s.active.indexOf(active);if(index===-1)return;
+  s.active.splice(index,1);
+  if(hit) {active.ship.classList.add('hit');setTimeout(()=>active.ship.remove(),380);} else active.ship.remove();
+  s.finished++;
+  if(s.health<=0 || s.finished>=s.goal) {spaceEnd();return;}
+  spaceSpawn();spaceAmmoRefresh();spaceStats();
+}
+function spaceProjectile(ammo,target) {
+  const field=$('spaceField');const rect=field.getBoundingClientRect();
+  const targetRect=target.getBoundingClientRect();
+  const x=rect.width/2,y=rect.height-50;
+  const tx=targetRect.left+targetRect.width/2-rect.left,ty=targetRect.top+targetRect.height/2-rect.top;
+  const bullet=el('span','space-bullet',ammo);bullet.style.left=`${x}px`;bullet.style.top=`${y}px`;
+  bullet.style.transform='translate(-50%,-50%)';field.append(bullet);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{bullet.style.transform=`translate(calc(-50% + ${tx-x}px),calc(-50% + ${ty-y}px))`;bullet.style.opacity='0';}));
+  setTimeout(()=>bullet.remove(),480);
+}
+function spaceShoot(wordId) {
+  const s=spaceSession;if(!s || s.done || s.paused || s.busy)return;
+  const active=s.active.find(a=>a.word.id===wordId);if(!active)return;
+  if(!s.ammo) {spaceSetStatus('先在下方點選一顆英文子彈！',true);return;}
+  const ammo=s.ammo;
+  s.busy=true;
+  spaceProjectile(ammo,active.ship);
+  const correct=ammo.trim().toLocaleLowerCase('en')===active.word.en.trim().toLocaleLowerCase('en');
+  if(correct){s.score+=10+Math.min(10,s.combo)*2;s.combo++;s.hits++;spaceSetStatus(`🎯 命中！${active.word.en} = ${active.word.zh} · 連擊 ${s.combo}`);}
+  else{s.health=Math.max(0,s.health-1);s.combo=0;s.mistakes++;spaceSetStatus(`💥 誤射！「${active.word.zh}」應該用「${active.word.en}」`,true);}
+  s.ammo=null;spaceStats();
+  setTimeout(()=>{
+    if(spaceSession!==s || s.done)return;
+    s.busy=false;
+    if(correct)spaceRemove(active,true);
+    else if(s.health<=0)spaceEnd();
+    else spaceAmmoRefresh();
+  },390);
+}
+function spaceTick(ts=performance.now()) {
+  const s=spaceSession;if(!s || s.done || s.paused)return;
+  if(s.raf) cancelAnimationFrame(s.raf);
+  const dt=Math.min(55,Math.max(0,ts-s.lastFrame));s.lastFrame=ts;
+  if(!s.busy){
+    for(const active of [...s.active]){
+      const field=$('spaceField');
+      const distance=field.clientHeight+80;
+      active.y += dt*distance/active.flightMs;
+      active.ship.style.top=`${active.y}px`;
+      if(active.y>field.clientHeight-95){
+        s.health=Math.max(0,s.health-1);s.combo=0;s.escaped++;
+        spaceSetStatus(`⚠ 防線被突破！${active.word.zh}（${active.word.en}）`,true);
+        spaceRemove(active,false);
+        if(s.done)break;
+      }
+    }
+  }
+  if(!s.done){spaceStats();s.raf=requestAnimationFrame(spaceTick);}
+}
+function spaceEnd() {
+  const s=spaceSession;if(!s || s.done)return;
+  s.done=true;if(s.raf)cancelAnimationFrame(s.raf);
+  $('spaceGamePlay').hidden=true;$('spaceGameResult').hidden=false;
+  $('spaceFinalTitle').textContent=s.health===0?'防衛線失守！':'防衛任務完成！';
+  $('spaceFinalScore').textContent=`${s.score} 分`;
+  $('spaceFinalStats').textContent=`擊落 ${s.hits} / ${s.goal} 艘 · 誤射 ${s.mistakes} 次 · 漏掉 ${s.escaped} 艘 · 剩餘護盾 ${s.health} 格。這輪不會改動你的單字與批鬥紀錄。`;
+}
+function spaceStart(ids,goal,speed) {
+  const all=spaceVocabulary(ids);if(all.length<2)throw new Error('請先準備至少兩組不同的英中單字');
+  spaceStop();
+  const deck=spaceShuffle(all);const chosen=deck.slice(0,goal==='all'?deck.length:Math.min(Number(goal),deck.length));
+  spaceSession={queue:[...chosen],deck:all,active:[],goal:chosen.length,score:0,combo:0,health:3,hits:0,escaped:0,mistakes:0,finished:0,ammo:null,paused:false,done:false,raf:null,lastFrame:performance.now(),speed,busy:false};
+  spaceLastIds=[...ids];
+  $('spaceGamePlay').hidden=false;$('spaceGameResult').hidden=true;
+  $('spaceField').querySelectorAll('.space-ship,.space-bullet').forEach(node=>node.remove());
+  spaceSetStatus('先點英文子彈，再點中文飛船！');
+  spaceSpawn();spaceSpawn();spaceSpawn();spaceStats();
+  $('spacePauseButton').textContent='⏸ 暫停';
+  $('spaceGameDialog').showModal();
+  spaceTick();
+}
+$('spaceLaunchButton').addEventListener('click',()=>openSpaceConfig());
+$('spaceSelectAll').addEventListener('click',()=>{$('spaceUnitOptions').querySelectorAll('input').forEach(e=>e.checked=true);spaceUpdatePreview();});
+$('spaceSelectNone').addEventListener('click',()=>{$('spaceUnitOptions').querySelectorAll('input').forEach(e=>e.checked=false);spaceUpdatePreview();});
+$('spaceQuestionCount').addEventListener('change',spaceUpdatePreview);
+$('spaceConfigClose').addEventListener('click',()=>$('spaceConfigDialog').close());
+$('spaceConfigCancel').addEventListener('click',()=>$('spaceConfigDialog').close());
+$('spaceConfigForm').addEventListener('submit',event=>{
+  event.preventDefault();
+  try{const ids=spaceGetSelectedIds();if(!ids.length)throw new Error('先選擇單元');
+    const n=$('spaceQuestionCount').value, speed=$('spaceSpeed').value;
+    $('spaceConfigDialog').close();spaceStart(ids,n,speed);
+  }catch(error){message(error.message,true);if(!$('spaceConfigDialog').open)$('spaceConfigDialog').showModal();}
+});
+$('spaceGameClose').addEventListener('click',spaceClose);
+$('spaceFinalExit').addEventListener('click',spaceClose);
+$('spaceAgain').addEventListener('click',()=>{const s=spaceSession;if(!s)return;const ids=[...spaceLastIds],goal=$('spaceQuestionCount').value,speed=$('spaceSpeed').value;spaceClose();spaceStart(ids,goal,speed);});
+$('spaceReconfigure').addEventListener('click',()=>{const ids=[...spaceLastIds||[]];spaceClose();openSpaceConfig(ids);});
+$('spacePauseButton').addEventListener('click',()=>spacePause(!spaceSession?.paused));
+$('spaceGameDialog').addEventListener('cancel',()=>spaceStop());
+$('spaceGameDialog').addEventListener('close',()=>spaceStop());
+document.addEventListener('visibilitychange',()=>{if(document.hidden && spaceSession && !spaceSession.done)spacePause(true);});
+
 $('startReviewButton').addEventListener('click', () => {
   const cardCount = state.units.reduce((sum,u)=>sum+filteredWordIds(state,u.id,$('reviewModeSelect').value).length,0);
   const quizCount = state.examples?.length || 0;
