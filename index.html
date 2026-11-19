@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.17 離線版</title>
+  <title>英中單字卡 | v1.6.20 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -191,6 +191,11 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .dictionary-link:hover{background:#2c4264;color:#fff}
 .word-dictionary{min-height:35px;font-size:12px}
 .study-audio-actions,.hat-tools{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 0 16px}
+/* v1.6.20: 翻卡時直接收藏；這是獨立操作，不影響翻面與作答。 */
+.review-bookmark-button{background:#242e47;border-color:#657086;color:#f4e7ad;min-width:126px;white-space:nowrap}
+.review-bookmark-button.is-bookmarked{background:#4a3b25;color:#ffe7a0;border-color:#d6ab5c;box-shadow:0 0 0 1px #d6ab5c30 inset}
+.review-bookmark-button:focus-visible{outline:3px solid #f6cf68;outline-offset:2px}
+@media(max-width:480px){.study-audio-actions{gap:7px}.study-audio-actions>*{flex:1 1 auto;min-width:0;text-align:center}.review-bookmark-button{min-width:0}}
 .hat-tools{justify-content:flex-start;margin:13px 0 0}
 #bulkDialog{width:min(560px,calc(100vw - 28px));max-height:90vh;overflow:auto}
 #bulkTextInput{font-size:15px;line-height:1.55;min-height:220px}
@@ -498,7 +503,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.18 · 跑道加速與美術升級</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.20 · 字卡快速書籤</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -582,7 +587,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <div class="progress-track"><div id="reviewProgressFill" class="progress-fill"></div></div>
           <div class="review-statusline"><span id="reviewAnswered">已回答 0 / 0</span><span id="reviewModeLabel"></span></div>
           <div class="study-card-wrap"><button id="reviewCard" type="button" class="study-card" aria-label="翻轉單字卡"><span id="cardFaceLabel" class="study-face">ENGLISH</span><span id="cardText" class="study-word"></span><span class="study-flip-hint">↻ 點一下翻面</span></button></div>
-          <div class="study-audio-actions"><button id="reviewSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="reviewCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
+          <div class="study-audio-actions"><button id="reviewBookmarkButton" type="button" class="secondary-button small-button review-bookmark-button" aria-pressed="false">☆ 加入書籤</button><button id="reviewSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="reviewCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
           <div class="study-word-meta"><span id="studyProficiency" class="proficiency-dot red"></span><span id="studyProficiencyText">紅色熟練度</span><span class="meta-separator">·</span><span id="studyAnswerState">尚未作答</span></div><div class="study-hat-line"><span id="studyHatBadge" class="hat-badge none">尚無帽子</span><span id="studyForgetCount" class="hat-counter">累積不記得 0 次</span></div>
           <div class="answer-buttons"><button id="forgetButton" class="forget-button">✕ 不記得</button><button id="rememberButton" class="remember-button">✓ 記得</button></div>
           <div class="review-navigation"><button id="reviewPrevButton" class="quiet-button">← 上一張</button><span class="review-nav-note">已回答的單字不能重複計分</span><button id="reviewNextButton" class="quiet-button">下一張 →</button></div>
@@ -962,6 +967,18 @@ function toggleBookmark(state, wordId) {
   const next = copy(state);
   const word = findWord(next, wordId);
   word.bookmarked = !word.bookmarked;
+  return next;
+}
+/* 跨單元去重後的一張字卡可能代表多個原始單字副本。
+   收藏操作應同時寫入所有副本，並且絕不更動熟練度、忘記數或複習進度。 */
+function toggleReviewBookmark(state, session) {
+  if (!session || session.complete) throw new Error('目前沒有進行中的字卡複習');
+  const ids = [...new Set(session.cardGroups?.[session.index] || [session.wordIds[session.index]])];
+  if (!ids.length) throw new Error('找不到目前字卡');
+  const next = copy(state);
+  const cards = ids.map(id => findWord(next, id));
+  const bookmarked = !cards.every(word => word.bookmarked);
+  cards.forEach(word => { word.bookmarked = bookmarked; });
   return next;
 }
 function moveWords(state, wordIds, targetUnitId) {
@@ -1896,6 +1913,13 @@ function renderReview() {
   $('studyHatBadge').textContent = hatsInline(word);
   $('studyHatBadge').className = `hat-badge ${word.forgetCount ? 'active' : 'none'}`;
   $('studyForgetCount').textContent = `累積不記得 ${word.forgetCount} 次`;
+  const allBookmarked = currentGroup.every(id => state.words[id]?.bookmarked === true);
+  const bookmarkButton = $('reviewBookmarkButton');
+  bookmarkButton.textContent = allBookmarked ? '★ 已加書籤' : '☆ 加入書籤';
+  bookmarkButton.classList.toggle('is-bookmarked', allBookmarked);
+  bookmarkButton.setAttribute('aria-pressed', String(allBookmarked));
+  bookmarkButton.setAttribute('aria-label', `${allBookmarked ? '取消' : '加入'}「${word.en}」書籤`);
+  bookmarkButton.title = currentGroup.length > 1 ? `這張字卡同時屬於 ${currentGroup.length} 個單元，會一起更新書籤` : '';
   $('reviewCambridgeLink').href = cambridgeURL(word.en);
   $('rememberButton').disabled = answered !== null;
   $('forgetButton').disabled = answered !== null;
@@ -2617,6 +2641,13 @@ $('hatDeleteButton').addEventListener('click', () => {
   $('hatDialog').close(); selectedWordIds.delete(word.id); detailWordId=null;
   runChange(() => deleteWord(state, word.id), '單字已刪除');
 });
+$('reviewBookmarkButton').addEventListener('click', () => {
+  if (!reviewSession || reviewSession.complete) return;
+  const ids = reviewSession.cardGroups?.[reviewSession.index] || [reviewSession.wordIds[reviewSession.index]];
+  const allBookmarked = ids.every(id => state.words[id]?.bookmarked === true);
+  // 儲存後仍停留在原字卡：不翻面、不判分、不跳下一張。
+  runChange(() => toggleReviewBookmark(state, reviewSession), allBookmarked ? '已取消書籤' : '已加入書籤');
+});
 $('reviewSpeakButton').addEventListener('click', () => { if (reviewSession && !reviewSession.complete) pronounce(state.words[reviewSession.wordIds[reviewSession.index]].en); });
 $('searchInput').addEventListener('input', renderSearchResults);
 $('clearSearchButton').addEventListener('click', () => { $('searchInput').value=''; renderSearchResults(); $('searchInput').focus(); });
@@ -3016,7 +3047,8 @@ function spaceStart(ids,goal,speed) {
   spaceSetStatus('先點英文子彈，再點中文飛船！');
   spaceSpawn();spaceSpawn();spaceSpawn();spaceStats();
   $('spacePauseButton').textContent='⏸ 暫停';
-  $('spaceGameDialog').showModal();
+  // 已在結果頁時原地重開，不關 dialog，避免延遲 close 事件殺掉新工作階段。
+  if (!$('spaceGameDialog').open) $('spaceGameDialog').showModal();
   spaceTick();
 }
 $('spaceLaunchButton').addEventListener('click',()=>openSpaceConfig());
@@ -3034,7 +3066,7 @@ $('spaceConfigForm').addEventListener('submit',event=>{
 });
 $('spaceGameClose').addEventListener('click',spaceClose);
 $('spaceFinalExit').addEventListener('click',spaceClose);
-$('spaceAgain').addEventListener('click',()=>{const s=spaceSession;if(!s)return;const ids=[...spaceLastIds],goal=$('spaceQuestionCount').value,speed=$('spaceSpeed').value;spaceClose();spaceStart(ids,goal,speed);});
+$('spaceAgain').addEventListener('click',()=>{const s=spaceSession;if(!s)return;const ids=[...spaceLastIds],goal=$('spaceQuestionCount').value,speed=$('spaceSpeed').value;spaceStart(ids,goal,speed);});
 $('spaceReconfigure').addEventListener('click',()=>{const ids=[...spaceLastIds||[]];spaceClose();openSpaceConfig(ids);});
 $('spacePauseButton').addEventListener('click',()=>spacePause(!spaceSession?.paused));
 $('spaceGameDialog').addEventListener('cancel',()=>spaceStop());
@@ -3269,7 +3301,7 @@ function runnerStart(ids,count,speed){
   runnerSession={ids:[...ids],queue:chosen,index:0,correct:0,score:0,combo:0,hp:3,lane:0,shipX:97,progress:0,delay:0,flash:0,flashGood:null,wave:null,duration:RUNNER_DURATIONS[speed]||3200,raf:null,done:false,paused:false,lastTime:performance.now()};
   $('runnerPlay').hidden=false;$('runnerResult').hidden=true;
   $('runnerMoveLeft').classList.add('active');$('runnerMoveRight').classList.remove('active');$('runnerPause').textContent='⏸ 暫停';
-  runnerLoadWave();$('runnerGameDialog').showModal();
+  runnerLoadWave();if (!$('runnerGameDialog').open) $('runnerGameDialog').showModal();
   runnerSession.lastTime=performance.now();runnerSession.raf=requestAnimationFrame(runnerFrame);
 }
 $('runnerLaunchButton').addEventListener('click',()=>runnerOpenConfig());
@@ -3284,7 +3316,7 @@ $('runnerConfigForm').addEventListener('submit',e=>{e.preventDefault();try{
 }catch(error){message(error.message,true);if(!$('runnerConfigDialog').open)$('runnerConfigDialog').showModal();}});
 $('runnerGameClose').addEventListener('click',runnerClose);
 $('runnerFinalExit').addEventListener('click',runnerClose);
-$('runnerAgain').addEventListener('click',()=>{if(!runnerSession)return;const ids=[...runnerPreviousUnits],n=$('runnerQuestionCount').value,speed=$('runnerSpeed').value;runnerClose();runnerStart(ids,n,speed);});
+$('runnerAgain').addEventListener('click',()=>{if(!runnerSession)return;const ids=[...runnerPreviousUnits],n=$('runnerQuestionCount').value,speed=$('runnerSpeed').value;runnerStart(ids,n,speed);});
 $('runnerReconfigure').addEventListener('click',()=>{const ids=[...runnerPreviousUnits||[]];runnerClose();runnerOpenConfig(ids);});
 $('runnerPause').addEventListener('click',()=>runnerPause(!runnerSession?.paused));
 $('runnerMoveLeft').addEventListener('click',()=>runnerSetLane(0));
