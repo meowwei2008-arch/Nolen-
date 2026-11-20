@@ -195,6 +195,10 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .review-bookmark-button{background:#242e47;border-color:#657086;color:#f4e7ad;min-width:126px;white-space:nowrap}
 .review-bookmark-button.is-bookmarked{background:#4a3b25;color:#ffe7a0;border-color:#d6ab5c;box-shadow:0 0 0 1px #d6ab5c30 inset}
 .review-bookmark-button:focus-visible{outline:3px solid #f6cf68;outline-offset:2px}
+/* 翻卡例句以獨立區塊顯示，不改動卡片翻面與計分流程。 */
+.review-example-box{max-width:610px;margin:0 auto 15px}
+.review-example-box .hat-example-sentence{font-size:clamp(15px,2.5vw,17px);line-height:1.7;font-weight:540;color:#f3f5ff;margin:9px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.review-example-box .hat-example-sentence mark{background:#56508f;color:#fff7d1;border-radius:4px;padding:0 3px;font-weight:850}
 @media(max-width:480px){.study-audio-actions{gap:7px}.study-audio-actions>*{flex:1 1 auto;min-width:0;text-align:center}.review-bookmark-button{min-width:0}}
 .hat-tools{justify-content:flex-start;margin:13px 0 0}
 #bulkDialog{width:min(560px,calc(100vw - 28px));max-height:90vh;overflow:auto}
@@ -334,6 +338,8 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .word-chinese{margin-top:3px}
 .hat-row-label{font-size:11px;line-height:1.4}
 .hat-detail-manage{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.hat-detail-manage #hatBookmarkButton.is-bookmarked{color:#f6d87f;border-color:#967c48;background:#302a3d}
+.hat-detail-manage #hatBookmarkButton{min-height:38px}
 @media(max-width:800px){.word-row{grid-template-columns:22px minmax(0,1fr) auto;gap:7px;padding:11px 9px}.word-actions{grid-column:auto;justify-content:flex-end;margin-top:0;gap:2px}.word-actions button{min-width:29px;min-height:34px;padding:3px 4px!important;font-size:17px!important}.word-actions .bookmark{font-size:20px!important;padding:2px 3px!important}.word-english{font-size:16px}.word-chinese{font-size:12px}}
 @media(max-width:385px){.word-row{grid-template-columns:19px minmax(0,1fr) auto;gap:5px;padding:9px 7px}.word-actions{gap:1px}.word-actions button{min-width:27px;padding:3px!important;font-size:16px!important}.word-actions .bookmark{font-size:19px!important}}
 
@@ -506,7 +512,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 @media(max-width:390px){.runner-play{padding:7px;gap:7px}.runner-config{padding:12px}.runner-config .space-fields{grid-template-columns:1fr}.runner-stage{height:clamp(290px,46dvh,490px)}.runner-header strong{font-size:14px}.runner-stats span{padding:5px 7px;font-size:11px}.runner-banner{min-height:72px}.runner-footer{font-size:10px}}
 
 
-/* v1.6.26: 將兩個遊戲與字卡、例句測驗並列於同一個複習模式選單 */
+/* v1.6.29: 單字詳情中新增即時書籤切換；翻卡例句功能保留 */
 .mode-choice-tile--game .mode-choice-icon{font-size:26px;background:#264467}
 .mode-choice-grid .mode-choice-tile{min-height:139px;gap:9px}
 @media(max-width:390px){.mode-choice-grid .mode-choice-tile{min-height:126px;padding:11px 7px}.mode-choice-grid .mode-choice-tile strong{font-size:16px}.mode-choice-grid .mode-choice-description{font-size:11px}}
@@ -515,7 +521,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.26 · 複習模式整合</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.29 · 詳情書籤</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -599,7 +605,11 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <div class="progress-track"><div id="reviewProgressFill" class="progress-fill"></div></div>
           <div class="review-statusline"><span id="reviewAnswered">已回答 0 / 0</span><span id="reviewModeLabel"></span></div>
           <div class="study-card-wrap"><button id="reviewCard" type="button" class="study-card" aria-label="翻轉單字卡"><span id="cardFaceLabel" class="study-face">ENGLISH</span><span id="cardText" class="study-word"></span><span class="study-flip-hint">↻ 點一下翻面</span></button></div>
-          <div class="study-audio-actions"><button id="reviewBookmarkButton" type="button" class="secondary-button small-button review-bookmark-button" aria-pressed="false">☆ 加入書籤</button><button id="reviewSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="reviewCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
+          <div class="study-audio-actions"><button id="reviewBookmarkButton" type="button" class="secondary-button small-button review-bookmark-button" aria-pressed="false">☆ 加入書籤</button><button id="reviewSpeakButton" class="secondary-button small-button">▶ 英文發音</button><button id="reviewExampleButton" type="button" class="secondary-button small-button" aria-expanded="false" aria-controls="reviewExampleBox">▸ 顯示例句</button></div>
+          <section id="reviewExampleBox" class="hat-example-box review-example-box" aria-label="目前單字的例句" hidden>
+            <div class="hat-example-head"><strong>英文例句</strong><button id="reviewExampleReroll" type="button" class="quiet-button small-button" hidden>↻ 換一句</button></div>
+            <p id="reviewExampleSentence" class="hat-example-sentence" aria-live="polite"></p>
+          </section>
           <div class="study-word-meta"><span id="studyProficiency" class="proficiency-dot red"></span><span id="studyProficiencyText">紅色熟練度</span><span class="meta-separator">·</span><span id="studyAnswerState">尚未作答</span></div><div class="study-hat-line"><span id="studyHatBadge" class="hat-badge none">尚無帽子</span><span id="studyForgetCount" class="hat-counter">累積不記得 0 次</span></div>
           <div class="answer-buttons"><button id="forgetButton" class="forget-button">✕ 不記得</button><button id="rememberButton" class="remember-button">✓ 記得</button></div>
           <div class="review-navigation"><button id="reviewPrevButton" class="quiet-button">← 上一張</button><span class="review-nav-note">已回答的單字不能重複計分</span><button id="reviewNextButton" class="quiet-button">下一張 →</button></div>
@@ -648,7 +658,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
         <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="20" checked><span>20 張 · 一般練習（預設）</span></label>
         <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="40"><span>40 張 · 加強練習</span></label>
         <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="custom"><span class="quiz-count-custom">自訂張數 <input id="cardCustomCount" type="number" inputmode="numeric" min="1" max="99999" step="1" value="30" disabled aria-label="自訂字卡張數"></span></label>
-        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="all"><span>全部字卡 · 自願接受批鬥</span></label>
+        <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="all"><span>全部字卡</span></label>
       </div>
       
       <div class="dialog-actions"><button class="quiet-button" type="button" id="cardScopeCancel">取消</button><button class="primary-button" type="submit" id="cardScopeSubmit">開始字卡複習</button></div>
@@ -704,7 +714,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
     <p id="hatNextMessage" class="hat-next"></p>
     <details class="hat-all-titles" id="hatHistoryDetails" hidden><summary id="hatHistorySummary">展開查看全部帽子</summary><ol id="hatTitleList"></ol></details></div></details>
     <p id="hatWordMeta" class="hat-word-meta"></p><div class="hat-tools"><button id="hatSpeakButton" class="secondary-button small-button">▶ 英文發音</button><a id="hatCambridgeLink" class="dictionary-link" target="_blank" rel="noopener noreferrer">Cambridge 字典 ↗</a></div>
-    <div class="hat-detail-manage"><button type="button" id="hatEditButton" class="quiet-button small-button">✎ 編輯單字</button><button type="button" id="hatDeleteButton" class="danger-quiet small-button">刪除單字</button></div>
+    <div class="hat-detail-manage"><button type="button" id="hatEditButton" class="quiet-button small-button">✎ 編輯單字</button><button type="button" id="hatBookmarkButton" class="quiet-button small-button" aria-pressed="false">☆ 加入書籤</button><button type="button" id="hatDeleteButton" class="danger-quiet small-button">刪除單字</button></div>
   </div></dialog>
   <dialog class="dialog" id="copyDialog"><form id="copyForm"><h2>複製書籤到新單元</h2><p id="copySummary">已選來源單元中的書籤單字，會複製為獨立副本。熟練度重設紅色、忘記次數歸零、書籤保留。</p><label class="field" for="copyNameInput">新單元名稱<input id="copyNameInput" maxlength="80" required placeholder="例如：本週重要單字"></label><div class="dialog-actions"><button type="button" class="quiet-button" data-close-dialog="copyDialog">取消</button><button class="primary-button" type="submit">確認複製</button></div></form></dialog>
   <dialog class="dialog" id="bulkDialog"><form id="bulkForm"><h2>批次貼上單字</h2><p>每行一組：「英文,中文」或用 TAB 分隔；逗號後面的中文會保留。格式有誤時會顯示行號，整批都不會加入。</p><label class="field" for="bulkTextInput">貼上單字<textarea id="bulkTextInput" rows="9" placeholder="crane,鶴；起重機
@@ -1629,6 +1639,7 @@ let editingWordId = null;
 let saveSerial = 0;
 let lastToastTimer = null;
 let reviewSession = null;
+let reviewExampleUI = {key:null,visible:false,exampleId:null};
 let listViewSort = 'default'; // bookmark priority is a view, not a mutation
 let exampleSession = null;
 let exampleViewOpen = false;
@@ -1806,6 +1817,10 @@ function openHatDetails(wordId) {
     ? '下次忘記，將從尚未獲得的稱號中隨機抽一頂新帽子。'
     : '46 頂帽子已全數收藏！繼續忘記會增加次數，但不會重複抽帽。';
   $('hatWordMeta').textContent = `所在單元：${unit?.name || '未知'} · 熟練度：${{red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]} · ${word.bookmarked ? '已加書籤' : '未加書籤'}`;
+  const detailBookmarkButton = $('hatBookmarkButton');
+  detailBookmarkButton.textContent = word.bookmarked ? '★ 取消書籤' : '☆ 加入書籤';
+  detailBookmarkButton.setAttribute('aria-pressed', word.bookmarked ? 'true' : 'false');
+  detailBookmarkButton.classList.toggle('is-bookmarked', !!word.bookmarked);
   const recent = $('hatRecentBadges');
   recent.replaceChildren();
   if (!history.length) recent.append(el('span', 'hat-badge none', '尚無帽子'));
@@ -1935,6 +1950,7 @@ function startSession(mode, specificIds = null, scopeIds = null, shuffle = false
     const scopes=scopeIds || [selectedUnitId];
     stopListening();
     reviewSession = startReview(state, selectedUnitId, mode, specificIds, scopes, shuffle);
+    reviewExampleUI={key:null,visible:false,exampleId:null};
     render();
   } catch (error) { message(error.message, true); }
 }
@@ -1945,6 +1961,40 @@ function abandonSession() {
       !confirm('這輪還沒結束。已作答單字的熟練度會保留，但本輪不會計入單元分數。確定離開？')) return;
   reviewSession = null;
   render();
+}
+function renderReviewExample(word) {
+  const key=reviewSession ? `${reviewSession.index}:${word.id}` : null;
+  if (reviewExampleUI.key !== key) reviewExampleUI={key,visible:false,exampleId:null};
+  const toggle=$('reviewExampleButton');
+  const box=$('reviewExampleBox');
+  toggle.textContent=reviewExampleUI.visible ? '▾ 收起例句' : '▸ 顯示例句';
+  toggle.setAttribute('aria-expanded',String(reviewExampleUI.visible));
+  box.hidden=!reviewExampleUI.visible;
+  if (!reviewExampleUI.visible) return;
+  const pool=examplesForHatWord(word);
+  $('reviewExampleReroll').hidden=pool.length<2;
+  const paragraph=$('reviewExampleSentence');
+  if (!pool.length) {
+    paragraph.textContent='目前沒有這個單字的例句。';
+    reviewExampleUI.exampleId=null;
+    return;
+  }
+  const chosen=pool.find(q=>q.id===reviewExampleUI.exampleId) || pool[Math.floor(Math.random()*pool.length)];
+  reviewExampleUI.exampleId=chosen.id;
+  const index=chosen.sentence.indexOf('______');
+  if (index<0) { paragraph.textContent=chosen.sentence; return; }
+  paragraph.replaceChildren(document.createTextNode(chosen.sentence.slice(0,index)),
+    el('mark','',chosen.answer),
+    document.createTextNode(chosen.sentence.slice(index+6)));
+}
+function rerollReviewExample() {
+  if (!reviewSession || reviewSession.complete || !reviewExampleUI.visible) return;
+  const word=state.words[reviewSession.wordIds[reviewSession.index]];
+  if (!word) return;
+  const options=examplesForHatWord(word).filter(q=>q.id!==reviewExampleUI.exampleId);
+  if (!options.length) return;
+  reviewExampleUI.exampleId=options[Math.floor(Math.random()*options.length)].id;
+  renderReviewExample(word);
 }
 function renderReview() {
   const session = reviewSession;
@@ -1975,7 +2025,7 @@ function renderReview() {
   bookmarkButton.setAttribute('aria-pressed', String(allBookmarked));
   bookmarkButton.setAttribute('aria-label', `${allBookmarked ? '取消' : '加入'}「${word.en}」書籤`);
   bookmarkButton.title = currentGroup.length > 1 ? `這張字卡同時屬於 ${currentGroup.length} 個單元，會一起更新書籤` : '';
-  $('reviewCambridgeLink').href = cambridgeURL(word.en);
+  renderReviewExample(word);
   $('rememberButton').disabled = answered !== null;
   $('forgetButton').disabled = answered !== null;
   $('reviewPrevButton').disabled = stats.total === 1;
@@ -2710,6 +2760,20 @@ $('hatPrevButton').addEventListener('click', () => navigateHatDetail(-1));
 $('hatNextButton').addEventListener('click', () => navigateHatDetail(1));
 $('hatSpeakButton').addEventListener('click', () => { if (detailWordId && state.words[detailWordId]) pronounce(state.words[detailWordId].en); });
 $('hatEditButton').addEventListener('click', () => { if (!detailWordId || !state.words[detailWordId]) return; const id=detailWordId; $('hatDialog').close(); openEditWord(id); });
+$('hatBookmarkButton').addEventListener('click', () => {
+  if (!detailWordId || !state.words[detailWordId]) return;
+  const id = detailWordId;
+  const wasBookmarked = !!state.words[id].bookmarked;
+  // 只更新此單字的書籤；不關閉詳情、不翻卡、不改變學習評分。
+  if (!runChange(() => toggleBookmark(state, id), wasBookmarked ? '已取消書籤' : '已加入書籤')) return;
+  const word = state.words[id];
+  const button = $('hatBookmarkButton');
+  button.textContent = word.bookmarked ? '★ 取消書籤' : '☆ 加入書籤';
+  button.setAttribute('aria-pressed', word.bookmarked ? 'true' : 'false');
+  button.classList.toggle('is-bookmarked', !!word.bookmarked);
+  const unit = state.units.find(u => u.id === word.unitId);
+  $('hatWordMeta').textContent = `所在單元：${unit?.name || '未知'} · 熟練度：${{red:'紅色',yellow:'黃色',blue:'藍色'}[word.proficiency]} · ${word.bookmarked ? '已加書籤' : '未加書籤'}`;
+});
 $('hatDeleteButton').addEventListener('click', () => {
   if (!detailWordId || !state.words[detailWordId]) return;
   const word=state.words[detailWordId];
@@ -2725,6 +2789,13 @@ $('reviewBookmarkButton').addEventListener('click', () => {
   runChange(() => toggleReviewBookmark(state, reviewSession), allBookmarked ? '已取消書籤' : '已加入書籤');
 });
 $('reviewSpeakButton').addEventListener('click', () => { if (reviewSession && !reviewSession.complete) pronounce(state.words[reviewSession.wordIds[reviewSession.index]].en); });
+$('reviewExampleButton').addEventListener('click', () => {
+  if (!reviewSession || reviewSession.complete) return;
+  reviewExampleUI.visible=!reviewExampleUI.visible;
+  const word=state.words[reviewSession.wordIds[reviewSession.index]];
+  if (word) renderReviewExample(word);
+});
+$('reviewExampleReroll').addEventListener('click',rerollReviewExample);
 $('searchInput').addEventListener('input', renderSearchResults);
 $('clearSearchButton').addEventListener('click', () => { $('searchInput').value=''; renderSearchResults(); $('searchInput').focus(); });
 $('voiceSelect').addEventListener('change', event => {
@@ -3467,6 +3538,7 @@ $('cardScopeForm').addEventListener('submit',event=>{
   try {
     const next=startReview(state,selectedUnitId,mode,null,scope,shuffle,maxCards);
     reviewSession=next;
+    reviewExampleUI={key:null,visible:false,exampleId:null};
     lastCardScopeIds=[...scope];
     $('reviewModeSelect').value=mode;
     stopListening();
