@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.24 離線版</title>
+  <title>英中單字卡 | v1.6.25 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -244,7 +244,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 /* v1.6.3 layout: top-right global-search icon, two-way review chooser and adjacent TXT import. */
 .top-actions{gap:9px}.icon-search-button{width:41px;height:41px;min-width:41px;display:grid;place-items:center;padding:0;border-radius:12px;border:1px solid #4b5979;color:#e1e5ff;background:#222b42}.icon-search-button:hover{background:#354166;border-color:#8883f0}
 .review-controls{width:315px}.review-action-buttons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.review-action-buttons button{min-width:0;font-size:13px;padding:10px 7px;white-space:normal;line-height:1.3}.review-eligible-note{color:#b9c9e8;font-size:11px;line-height:1.4}
-.mode-choice-dialog{width:min(530px,calc(100vw - 26px))}.mode-choice-content{padding:23px}.mode-choice-heading,.search-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.mode-choice-heading h2,.search-dialog-heading h2{margin:0;font-size:21px}.mode-choice-content>p{color:#b7c6e1;font-size:13px;line-height:1.6;margin:12px 0 20px}.mode-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mode-choice-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;min-width:0;min-height:162px;padding:16px 10px;border:1px solid #515d83;border-radius:15px;background:linear-gradient(160deg,#283654,#1a2641);color:#f0f3ff;transition:background .15s,border-color .15s,transform .15s}.mode-choice-tile:not(:disabled):hover{background:#343c71;border-color:#b6acff;transform:translateY(-1px)}.mode-choice-tile strong{font-size:20px}.mode-choice-icon{width:64px;height:52px;display:grid;place-items:center;border-radius:12px;background:#4d487b;color:#efecff;font-size:19px;font-weight:800;letter-spacing:.02em}.mode-choice-tile:last-child .mode-choice-icon{background:#214f60;color:#c9f8ff;font-size:13px;white-space:nowrap}.mode-choice-description{color:#c1cce2;font-size:12px;line-height:1.55;overflow-wrap:anywhere}.mode-choice-tile:disabled{opacity:.42}.mode-choice-content>p.mode-choice-help{margin:14px 0 0;font-size:12px}
+.mode-choice-dialog{width:min(530px,calc(100vw - 26px))}.mode-choice-content{padding:23px}.mode-choice-heading,.search-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.mode-choice-heading h2,.search-dialog-heading h2{margin:0;font-size:21px}.mode-choice-content>p{color:#b7c6e1;font-size:13px;line-height:1.6;margin:12px 0 20px}.mode-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mode-choice-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;min-width:0;min-height:162px;padding:16px 10px;border:1px solid #515d83;border-radius:15px;background:linear-gradient(160deg,#283654,#1a2641);color:#f0f3ff;transition:background .15s,border-color .15s,transform .15s}.mode-choice-tile:not(:disabled):hover{background:#343c71;border-color:#b6acff;transform:translateY(-1px)}.mode-choice-tile strong{font-size:20px}.mode-choice-icon{width:64px;height:52px;display:grid;place-items:center;border-radius:12px;background:#4d487b;color:#efecff;font-size:19px;font-weight:800;letter-spacing:.02em}.mode-choice-icon--quiz{background:#214f60;color:#c9f8ff;font-size:14px;white-space:nowrap}.mode-choice-description{color:#c1cce2;font-size:12px;line-height:1.55;overflow-wrap:anywhere}.mode-choice-tile:disabled{opacity:.42}.mode-choice-content>p.mode-choice-help{margin:14px 0 0;font-size:12px}
 .search-dialog{width:min(620px,calc(100vw - 24px));max-height:min(88vh,820px);overflow-y:auto}.search-dialog-content{padding:22px}.search-dialog .search-field{margin:20px 0 0;color:#d2daec}.search-dialog input[type="search"]{width:100%;min-height:48px;border:1px solid #51607f;background:#0e182c;border-radius:11px;color:var(--text);padding:12px 14px}.search-dialog .search-results-panel{margin-top:16px}.search-dialog .search-result-list{max-height:min(50vh,420px)}
 .example-hub{padding:0;margin:3px 0 15px}.example-quiz{margin-top:20px}
 @media(max-width:800px){.topbar-inner{position:relative}.top-actions{gap:6px}.top-actions .icon-search-button{position:absolute;top:12px;right:14px}.brand{max-width:calc(100% - 48px)}.icon-search-button{width:39px;height:39px;min-width:39px}.review-controls{width:100%}.review-action-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.example-hub{padding:0}.search-dialog-content{padding:16px}}
@@ -505,12 +505,17 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .runner-dialog [hidden]{display:none!important}
 @media(max-width:390px){.runner-play{padding:7px;gap:7px}.runner-config{padding:12px}.runner-config .space-fields{grid-template-columns:1fr}.runner-stage{height:clamp(290px,46dvh,490px)}.runner-header strong{font-size:14px}.runner-stats span{padding:5px 7px;font-size:11px}.runner-banner{min-height:72px}.runner-footer{font-size:10px}}
 
+
+/* v1.6.26: 將兩個遊戲與字卡、例句測驗並列於同一個複習模式選單 */
+.mode-choice-tile--game .mode-choice-icon{font-size:26px;background:#264467}
+.mode-choice-grid .mode-choice-tile{min-height:139px;gap:9px}
+@media(max-width:390px){.mode-choice-grid .mode-choice-tile{min-height:126px;padding:11px 7px}.mode-choice-grid .mode-choice-tile strong{font-size:16px}.mode-choice-grid .mode-choice-description{font-size:11px}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.24 · 熟練度排序優化</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.26 · 複習模式整合</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -551,10 +556,10 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           </div>
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
-            <div class="review-controls"><label hidden for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="runnerLaunchButton" type="button" class="secondary-button runner-launch">🛸 單字選門跑道</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
+            <div class="review-controls"><label hidden for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
           <section class="listening-panel" aria-label="單元循環聽力">
-            <h3>▶ 單元單字循環聽力</h3><p>先念完英文指定次數，再念中文（可關閉）。<strong>每念完一次都會停頓，留時間跟讀</strong>；「每次朗讀間隔」與「下一個單字間隔」可分開調整。可單輪或循環，不影響學習紀錄。</p>
+            <h3>▶ 單元單字循環聽力</h3>
             <div class="listening-controls">
               <label for="listeningEnglishCount">英文朗讀次數<select id="listeningEnglishCount"><option value="1" selected>1 次</option><option value="2">2 次</option><option value="3">3 次</option><option value="4">4 次</option><option value="5">5 次</option><option value="6">6 次</option><option value="7">7 次</option><option value="8">8 次</option><option value="9">9 次</option><option value="10">10 次</option></select></label>
               <label class="listening-loop" for="listeningWithChinese"><input type="checkbox" id="listeningWithChinese"> 同時朗讀中文</label>
@@ -617,14 +622,15 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
       </section>
     </div>
     <div id="offlineNote" class="offline-note" role="status" aria-live="polite" hidden>目前沒有網路：本機單字、複習和資料管理仍可使用；線上字典及部分語音可能無法使用。</div>
-    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用上方「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」以單元名稱配對、同單元英文去重，現有詞條優先，僅補缺少的單元與單字。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音預設 en-US，可在進階設定選擇 en-GB；實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
   </main>
   <dialog class="dialog mode-choice-dialog" id="reviewChoiceDialog" aria-labelledby="reviewChoiceHeading">
     <div class="mode-choice-content"><div class="mode-choice-heading"><h2 id="reviewChoiceHeading">選擇複習方式</h2><button id="reviewChoiceClose" type="button" class="quiet-button small-button" aria-label="關閉複習選單">✕</button></div>
-      <p>左邊是字卡，右邊是例句四選一。兩種模式互不影響成績。</p>
+      <p>選擇練習方式；四種模式均可使用你已建立的單元與單字。</p>
       <div class="mode-choice-grid">
-        <button id="reviewChoiceCard" type="button" class="mode-choice-tile"><span class="mode-choice-icon" aria-hidden="true">Aa</span><strong>字卡</strong><span id="reviewChoiceCardDetail" class="mode-choice-description">翻面回想中文意思</span></button>
-        <button id="reviewChoiceQuiz" type="button" class="mode-choice-tile"><span class="mode-choice-icon" aria-hidden="true">A B C D</span><strong>字彙測驗</strong><span id="reviewChoiceQuizDetail" class="mode-choice-description">例句挖空 · 四選一</span></button>
+        <button id="reviewChoiceCard" type="button" class="mode-choice-tile"><span class="mode-choice-icon" aria-hidden="true">Aa</span><strong>翻卡複習</strong><span id="reviewChoiceCardDetail" class="mode-choice-description">翻面回想中文意思</span></button>
+        <button id="reviewChoiceQuiz" type="button" class="mode-choice-tile"><span class="mode-choice-icon mode-choice-icon--quiz" aria-hidden="true">ABCD</span><strong>例句測驗</strong><span id="reviewChoiceQuizDetail" class="mode-choice-description">例句挖空 · 四選一</span></button>
+        <button id="spaceLaunchButton" type="button" class="mode-choice-tile mode-choice-tile--game"><span class="mode-choice-icon" aria-hidden="true">🚀</span><strong>單字太空戰</strong><span class="mode-choice-description">英文子彈擊落中文飛船</span></button>
+        <button id="runnerLaunchButton" type="button" class="mode-choice-tile mode-choice-tile--game"><span class="mode-choice-icon" aria-hidden="true">🛸</span><strong>單字選門跑道</strong><span class="mode-choice-description">左右移動，選對中文</span></button>
       </div>
       <p id="reviewChoiceHelp" class="mode-choice-help"></p>
     </div>
@@ -644,7 +650,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
         <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="custom"><span class="quiz-count-custom">自訂張數 <input id="cardCustomCount" type="number" inputmode="numeric" min="1" max="99999" step="1" value="30" disabled aria-label="自訂字卡張數"></span></label>
         <label class="quiz-count-option"><input type="radio" name="cardReviewCount" value="all"><span>全部字卡 · 自願接受批鬥</span></label>
       </div>
-      <div id="cardScopePreview" class="card-scope-preview" role="status" aria-live="polite">選擇單元後會顯示題數</div>
+      
       <div class="dialog-actions"><button class="quiet-button" type="button" id="cardScopeCancel">取消</button><button class="primary-button" type="submit" id="cardScopeSubmit">開始字卡複習</button></div>
     </form>
   </dialog>
@@ -2288,12 +2294,9 @@ function updateCardScopePreview() {
   const ids=getCardScopeSelection();
   const mode=$('cardScopeMode').value;
   const amount=ids.length ? buildReviewCards(state,ids,mode).length : 0;
-  const orderText=$('cardScopeOrder').value==='mixed' ? '選定範圍隨機抽取、打散出題' : '由各單元輪流隨機抽樣，再依單元排列順序複習';
   const count=getCardReviewCount();
   const valid=count===null || (Number.isSafeInteger(count) && count>0);
-  const actual=valid ? Math.min(count===null ? amount:count,amount) : 0;
   $('cardCustomCount').disabled=$('cardScopeForm').querySelector('input[name="cardReviewCount"]:checked')?.value!=='custom';
-  $('cardScopePreview').textContent=`已選 ${ids.length} 個單元，題庫共 ${amount} 張不重複字卡。${valid ? `本輪抽 ${actual} 張` : '請輸入大於零的整數'}。${orderText}。`;
   $('cardScopeSubmit').disabled=!amount || !valid;
 }
 function renderListeningControls() {
@@ -3124,7 +3127,7 @@ function spaceStart(ids,goal,speed) {
   if (!$('spaceGameDialog').open) $('spaceGameDialog').showModal();
   spaceTick();
 }
-$('spaceLaunchButton').addEventListener('click',()=>openSpaceConfig());
+$('spaceLaunchButton').addEventListener('click',()=>{$('reviewChoiceDialog').close();openSpaceConfig();});
 $('spaceSelectAll').addEventListener('click',()=>{$('spaceUnitOptions').querySelectorAll('input').forEach(e=>e.checked=true);spaceUpdatePreview();});
 $('spaceSelectNone').addEventListener('click',()=>{$('spaceUnitOptions').querySelectorAll('input').forEach(e=>e.checked=false);spaceUpdatePreview();});
 $('spaceQuestionCount').addEventListener('change',spaceUpdatePreview);
@@ -3377,7 +3380,7 @@ function runnerStart(ids,count,speed){
   runnerLoadWave();if (!$('runnerGameDialog').open) $('runnerGameDialog').showModal();
   runnerSession.lastTime=performance.now();runnerSession.raf=requestAnimationFrame(runnerFrame);
 }
-$('runnerLaunchButton').addEventListener('click',()=>runnerOpenConfig());
+$('runnerLaunchButton').addEventListener('click',()=>{$('reviewChoiceDialog').close();runnerOpenConfig();});
 $('runnerSelectAll').addEventListener('click',()=>{$('runnerUnitOptions').querySelectorAll('input').forEach(e=>e.checked=true);runnerPreview();});
 $('runnerSelectNone').addEventListener('click',()=>{$('runnerUnitOptions').querySelectorAll('input').forEach(e=>e.checked=false);runnerPreview();});
 $('runnerQuestionCount').addEventListener('change',runnerPreview);
@@ -3414,9 +3417,11 @@ $('startReviewButton').addEventListener('click', () => {
   const quizReady = quizCount > 0;
   $('reviewChoiceCard').disabled = cardCount === 0;
   $('reviewChoiceQuiz').disabled = !quizReady;
+  $('spaceLaunchButton').disabled = cardCount === 0;
+  $('runnerLaunchButton').disabled = cardCount === 0;
   $('reviewChoiceCardDetail').textContent = `${cardCount} 個單字副本 · 可選單元聯合複習`;
   $('reviewChoiceQuizDetail').textContent = `${quizCount} 道例句 · 可自選多個單元`;
-  $('reviewChoiceHelp').textContent = !quizReady ? '請先在任一單元匯入例句 TXT。' : '字彙測驗可以勾選多個單元共同出題，不影響字卡熟練度、忘記次數或帽子。';
+  $('reviewChoiceHelp').textContent = !quizReady ? '例句測驗需先匯入 TXT；其他模式可直接使用單字表。' : '字卡、例句測驗與兩款遊戲都能選擇單元；遊戲不影響熟練度與帽子紀錄。';
   $('reviewChoiceDialog').showModal();
 });
 $('reviewChoiceClose').addEventListener('click', () => $('reviewChoiceDialog').close());
