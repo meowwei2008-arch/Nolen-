@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.20 離線版</title>
+  <title>英中單字卡 | v1.6.24 離線版</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -191,7 +191,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .dictionary-link:hover{background:#2c4264;color:#fff}
 .word-dictionary{min-height:35px;font-size:12px}
 .study-audio-actions,.hat-tools{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 0 16px}
-/* v1.6.20: 翻卡時直接收藏；這是獨立操作，不影響翻面與作答。 */
+/* v1.6.23: 翻卡時直接收藏；這是獨立操作，不影響翻面與作答。 */
 .review-bookmark-button{background:#242e47;border-color:#657086;color:#f4e7ad;min-width:126px;white-space:nowrap}
 .review-bookmark-button.is-bookmarked{background:#4a3b25;color:#ffe7a0;border-color:#d6ab5c;box-shadow:0 0 0 1px #d6ab5c30 inset}
 .review-bookmark-button:focus-visible{outline:3px solid #f6cf68;outline-offset:2px}
@@ -437,6 +437,13 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 .result-meme .result-meme-label{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.11em;color:#ecc2d2}
 .result-meme img{display:block;width:100%;max-width:475px;height:auto;aspect-ratio:4 / 3;object-fit:contain;border-radius:10px;margin:0 auto}
 .result-meme .result-meme-caption{font-size:12px;color:#c6bdcb;margin:9px 0 0}
+/* v1.6.23: 家庭式成績評語，只顯示於完成的複習／例句測驗。 */
+.family-grade{max-width:560px;margin:18px auto 20px;padding:17px 20px;border:1px solid #55547c;border-radius:16px;background:linear-gradient(120deg,#20253c,#171f34);text-align:left}
+.family-grade-eyebrow{color:#c7c2eb;font-size:11px;font-weight:800;letter-spacing:.09em;margin-bottom:9px}
+.family-grade-line{display:flex;align-items:center;gap:14px;min-width:0}
+.family-grade-letter{font-size:clamp(42px,10vw,62px);font-weight:900;line-height:1;color:#efdcaa;flex:0 0 auto}
+.family-grade-text{font-size:clamp(17px,4.5vw,23px);font-weight:800;line-height:1.35;overflow-wrap:anywhere;color:#f5f0ff}
+.family-grade-example{max-width:460px;margin:16px auto 18px}
 .example-result-meme{max-width:460px;margin:20px auto}
 @media(max-width:480px){.result-meme{padding:12px;margin:18px auto}.result-meme img{border-radius:7px}}
 
@@ -503,7 +510,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.20 · 字卡快速書籤</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.24 · 熟練度排序優化</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -544,7 +551,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           </div>
           <section class="review-launch" aria-label="複習選項">
             <div class="review-launch-copy"><div class="eyebrow">STUDY MODE</div><h3>開始複習單字</h3><p>看到英文，回想中文；點卡片翻面，再選記得或不記得。<span class="legend"><span class="proficiency-dot red"></span>紅 → <span class="proficiency-dot yellow"></span>黃 → <span class="proficiency-dot blue"></span>藍</span></p></div>
-            <div class="review-controls"><label for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="runnerLaunchButton" type="button" class="secondary-button runner-launch">🛸 單字選門跑道</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
+            <div class="review-controls"><label hidden for="reviewModeSelect">字卡複習範圍<select id="reviewModeSelect"><option value="all">全部單字</option><option value="bookmarked">僅書籤</option><option value="red">僅紅色</option><option value="bookmarked-red">書籤且紅色</option></select></label><div class="review-action-buttons"><button id="startReviewButton" type="button" class="primary-button">開始複習</button><button id="spaceLaunchButton" type="button" class="secondary-button space-launch">🚀 單字太空戰</button><button id="runnerLaunchButton" type="button" class="secondary-button runner-launch">🛸 單字選門跑道</button><button id="exampleImportButton" type="button" class="secondary-button">↑ 匯入例句 TXT</button><button id="exampleLibraryOpenButton" type="button" class="quiet-button">管理例句題庫</button><input id="exampleFileInput" type="file" accept=".txt,text/plain" hidden></div><span id="reviewEligibleCount" class="review-eligible-note"></span></div>
           </section>
           <section class="listening-panel" aria-label="單元循環聽力">
             <h3>▶ 單元單字循環聽力</h3><p>先念完英文指定次數，再念中文（可關閉）。<strong>每念完一次都會停頓，留時間跟讀</strong>；「每次朗讀間隔」與「下一個單字間隔」可分開調整。可單輪或循環，不影響學習紀錄。</p>
@@ -561,7 +568,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
             <div id="listeningStatus" class="listening-status" role="status" aria-live="polite">尚未播放</div>
           </section>
           <div class="toolbar phase4-toolbar"><h3>單字清單 <small>共 <span id="wordCount">0</span> 個</small></h3><div class="word-toolbar-actions"><label for="sortSelect" class="sort-control">排序
-            <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級隨機）</option><option value="bookmarked">★ 書籤優先（不更動原順序）</option></select>
+            <select id="sortSelect"><option value="">選擇排序方式…</option><option value="input">原始加入順序</option><option value="proficiency">熟練度：藍 → 黃 → 紅（同級依加入順序）</option><option value="bookmarked">★ 書籤優先（不更動原順序）</option></select>
           </label><button id="bulkImportButton" class="secondary-button">批次貼上匯入</button><button id="addWordButton" class="primary-button">＋ 新增單字</button></div></div>
           <label class="checkbox-line" style="margin-top:14px"><input id="selectAll" type="checkbox"> 全選本單元</label><div class="selection-bar" id="selectionToolbar" hidden><span>已選取 <span id="selectedCount">0</span> 個</span><button id="moveButton" class="secondary-button small-button">移動到其他單元</button><button id="clearSelectionButton" class="quiet-button small-button">取消選取</button></div>
           <div id="wordList" class="word-list"></div>
@@ -579,7 +586,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
         <div class="example-bulk-assign" style="margin-top:15px"><button id="exampleReclassifyByWords" type="button" class="secondary-button small-button">依單字表重新校正全部例句分類</button><span class="section-hint">預覽後再確認；只調整可比對的題目，找不到對應單字的保持原樣，不刪例句。</span></div>
         <div class="example-bulk-assign" style="margin-top:15px"><button id="exampleRepairOldAssignments" type="button" class="secondary-button small-button">檢查並修復本單元的舊題目誤歸類</button><span class="section-hint">只檢查建立時間比本單元更早的例句；不刪除題目</span></div>
       </div>
-      <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleConfigureButton" type="button" class="secondary-button small-button">⚙ 重選範圍</button><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><figure id="exampleResultMeme" class="result-meme example-result-meme" aria-label="例句測驗成績評語" hidden><figcaption class="result-meme-label">本輪成績評語</figcaption><img id="exampleResultMemeImage" alt="" decoding="async" width="1536" height="1152"><p id="exampleResultMemeCaption" class="result-meme-caption"></p></figure><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
+      <div id="exampleQuiz" class="example-quiz" hidden><div class="example-quiz-top"><strong id="exampleQuizProgress">第 1 / 1 題</strong><button id="exampleConfigureButton" type="button" class="secondary-button small-button">⚙ 重選範圍</button><button id="exampleQuitButton" type="button" class="quiet-button small-button">← 返回單元</button></div><div class="progress-track"><div id="exampleProgressFill" class="progress-fill"></div></div><p id="exampleQuestion" class="example-question"></p><div id="exampleOptions" class="example-options"></div><p id="exampleFeedback" class="example-feedback" role="status" aria-live="polite"></p><figure id="exampleResultMeme" class="result-meme example-result-meme" aria-label="例句測驗成績評語" hidden><figcaption class="result-meme-label">本輪成績評語</figcaption><img id="exampleResultMemeImage" alt="" decoding="async" width="1536" height="1152"><p id="exampleResultMemeCaption" class="result-meme-caption"></p></figure><div id="exampleResultGrade" class="family-grade family-grade-example" role="status" aria-label="例句測驗成績等級" hidden><div class="family-grade-eyebrow">家庭成績單 · FAMILY REPORT</div><div class="family-grade-line"><strong id="exampleGradeLetter" class="family-grade-letter">A</strong><span id="exampleGradeText" class="family-grade-text">Average</span></div></div><div class="example-quiz-footer"><span id="exampleQuizScore">目前答對 0 題</span><button id="exampleNextButton" type="button" class="primary-button" disabled>下一題 →</button></div></div>
     </section>
         <section id="reviewPanel" class="review-screen" hidden aria-label="複習單字卡">
           <div class="review-top"><button id="reviewExitButton" class="quiet-button">← 返回單元</button><button id="reviewRechooseButton" type="button" class="secondary-button small-button">⚙ 重選單元</button><span id="reviewUnitLabel" class="review-unit-label"></span></div>
@@ -600,13 +607,17 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
           <figure id="reviewResultMeme" class="result-meme" aria-label="本輪成績評語" hidden>
             <figcaption class="result-meme-label">本輪成績評語</figcaption><img id="reviewResultMemeImage" alt="" decoding="async" width="1536" height="1152"><p id="reviewResultMemeCaption" class="result-meme-caption"></p>
           </figure>
+          <div id="reviewResultGrade" class="family-grade" role="status" aria-label="本輪成績等級" hidden>
+            <div class="family-grade-eyebrow">家庭成績單 · FAMILY REPORT</div>
+            <div class="family-grade-line"><strong id="reviewGradeLetter" class="family-grade-letter">A</strong><span id="reviewGradeText" class="family-grade-text">Average</span></div>
+          </div>
           <p class="result-note">這輪已計入單元最近五次複習成績；重複點擊不會增加分數。</p>
           <div class="result-buttons"><button id="reviewForgottenButton" class="secondary-button">再複習不記得的單字</button><button id="reviewRestartButton" class="primary-button">重選範圍／再考一輪</button><button id="resultExitButton" class="quiet-button">返回單元</button></div>
         </section>
       </section>
     </div>
     <div id="offlineNote" class="offline-note" role="status" aria-live="polite" hidden>目前沒有網路：本機單字、複習和資料管理仍可使用；線上字典及部分語音可能無法使用。</div>
-    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用上方「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」不覆蓋、不去重、重新產生單字與單元 ID。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音預設 en-US，可在進階設定選擇 en-GB；實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
+    <div class="footnote">資料預設只存在目前的瀏覽器與裝置內。清除瀏覽資料、無痕模式或解除安裝可能造成資料消失，請定期使用上方「JSON 備份」。「還原備份」會覆蓋目前資料；「JSON 合併匯入」以單元名稱配對、同單元英文去重，現有詞條優先，僅補缺少的單元與單字。從本機 HTML 切換到 HTTPS/PWA/Android APK 時，各自的儲存空間可能不同；升級前請匯出 JSON，再在新版本還原。發音預設 en-US，可在進階設定選擇 en-GB；實際口音及離線發音依賴裝置語音引擎；Cambridge 字典需要網路。PWA 安裝須透過 HTTPS（或開發用 localhost），直接開啟本機 HTML 無法完成 PWA 安裝。</div>
   </main>
   <dialog class="dialog mode-choice-dialog" id="reviewChoiceDialog" aria-labelledby="reviewChoiceHeading">
     <div class="mode-choice-content"><div class="mode-choice-heading"><h2 id="reviewChoiceHeading">選擇複習方式</h2><button id="reviewChoiceClose" type="button" class="quiet-button small-button" aria-label="關閉複習選單">✕</button></div>
@@ -1170,8 +1181,8 @@ function searchWords(state, query) {
   }
   return matches;
 }
-/** 排序是一次性操作；同級單字每次觸發時才洗牌。 */
-function sortUnitWords(state, unitId, method, random = Math.random) {
+/** 排序是一次性操作；同熟練度依 originalOrder 中記錄的原始加入順序排列。 */
+function sortUnitWords(state, unitId, method) {
   if (!['input', 'proficiency'].includes(method)) throw new Error('不支援的排序方式');
   const next = copy(state);
   const unit = findUnit(next, unitId);
@@ -1180,15 +1191,12 @@ function sortUnitWords(state, unitId, method, random = Math.random) {
     unit.wordIds = [...original];
   } else {
     const ranks = {blue: 0, yellow: 1, red: 2};
-    // Fisher–Yates 先洗牌，再穩定依熟練度排序，僅同級相對順序隨機。
-    const shuffled = [...unit.wordIds];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const r = random();
-      if (!Number.isFinite(r) || r < 0 || r >= 1) throw new Error('排序亂數來源無效');
-      const j = Math.floor(r * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    unit.wordIds = shuffled.sort((a, b) => ranks[next.words[a].proficiency] - ranks[next.words[b].proficiency]);
+    // 每次都以最初加入的順序作為同級比較基準，不沿用舊版同級隨機後的排列。
+    const joinOrder = new Map(original.map((id, index) => [id, index]));
+    unit.wordIds = [...original].sort((a, b) =>
+      ranks[next.words[a].proficiency] - ranks[next.words[b].proficiency] ||
+      joinOrder.get(a) - joinOrder.get(b)
+    );
   }
   return next;
 }
@@ -1285,52 +1293,93 @@ function exportTXT(state) {
     return `${quotedTXT(word.en)},${quotedTXT(word.zh)}`;
   })).join('\n');
 }
-/** 合併匯入會完整保留既有資料；所有匯入單元/單字/紀錄都建立全新 ID。 */
-function mergeBackup(state, backupText) {
+/** JSON 合併：以「單元名稱」配對，再以該單元內的英文單字配對；現有詞條永遠優先。
+ *   新增單元及缺少的單字；不覆蓋現有中文、書籤、熟練度、帽子或單字順序。
+ *   例句依既有的句子去重邏輯合併單元歸屬；已存在單元的歷史統計不合併，避免重複計算。 */
+function mergeBackup(state, backupText, withStats = false) {
   if (!validateState(state)) throw new Error('現有資料異常，無法合併');
   const imported = parseBackupForRestore(backupText);
   const next = copy(state);
+  if (!Array.isArray(next.examples)) next.examples = [];
+  const nameKey = name => String(name).normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+  const englishKey = en => String(en).normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+  const destinationByName = new Map();
   const unitIds = new Map();
-  const wordIds = new Map();
-  const occupied = new Set([...next.units.map(u => u.id), ...Object.keys(next.words), ...next.reviewHistory.map(h => h.id)].filter(Boolean));
+  const newUnitIds = new Set();
+  const importedNames = new Set();
+  const stats = { newUnits:0, matchingUnits:0, newWords:0, skippedWords:0, newHistory:0, newExamples:0 };
+  // 同名單元若在目前資料中出現兩次，不能擅自猜測要匯入哪一個。
+  for (const unit of next.units) {
+    const key = nameKey(unit.name);
+    if (destinationByName.has(key)) throw new Error(`目前有多個同名單元「${unit.name}」，請先重新命名後再合併，避免混錯單元`);
+    destinationByName.set(key,unit);
+  }
+  const occupied = new Set([
+    ...next.units.map(u=>u.id), ...Object.keys(next.words),
+    ...next.reviewHistory.map(h=>h.id), ...(next.examples || []).map(q=>q.id)
+  ].filter(Boolean));
   const freshId = () => { let id; do { id = uid(); } while(occupied.has(id)); occupied.add(id); return id; };
+  // 先建立來源 -> 目的單元對照；只有名稱不存在才新建單元。
   for (const unit of imported.units) {
-    const newid = freshId();
-    unitIds.set(unit.id, newid);
-    next.units.push({ ...copy(unit), id:newid, wordIds:[], originalOrder:[] });
-  }
-  for (const unit of imported.units) {
-    const destination = next.units.find(u => u.id === unitIds.get(unit.id));
-    for (const oldId of unit.wordIds) {
-      const newId = freshId();
-      wordIds.set(oldId, newId);
-      const oldWord = imported.words[oldId];
-      next.words[newId] = {...copy(oldWord), id:newId, unitId:destination.id};
-      destination.wordIds.push(newId);
+    const key = nameKey(unit.name);
+    if (importedNames.has(key)) throw new Error(`匯入檔含多個同名單元「${unit.name}」，請先整理備份避免合併錯誤`);
+    importedNames.add(key);
+    let destination = destinationByName.get(key);
+    if (!destination) {
+      destination = { ...copy(unit), id:freshId(), wordIds:[], originalOrder:[] };
+      next.units.push(destination);
+      destinationByName.set(key,destination);
+      newUnitIds.add(destination.id);
+      stats.newUnits++;
+    } else {
+      stats.matchingUnits++;
     }
-    const oldOrder = unit.originalOrder || unit.wordIds;
-    destination.originalOrder = oldOrder.map(oldId => wordIds.get(oldId));
+    unitIds.set(unit.id,destination.id);
   }
+  for (const source of imported.units) {
+    const destination = findUnit(next,unitIds.get(source.id));
+    const destinationOrder = originalOrder(destination); // 先建立舊排序，避免第一次補字時重複 ID
+    const knownEnglish = new Set(destination.wordIds.map(id=>englishKey(next.words[id].en)));
+    const newIdByOldId = new Map();
+    for (const oldId of source.wordIds) {
+      const word = imported.words[oldId];
+      const key = englishKey(word.en);
+      if (knownEnglish.has(key)) { stats.skippedWords++; continue; }
+      knownEnglish.add(key);
+      const id = freshId();
+      next.words[id] = { ...copy(word), id, unitId:destination.id };
+      destination.wordIds.push(id);
+      newIdByOldId.set(oldId,id);
+      stats.newWords++;
+    }
+    // 既有單元的排序完全保留；新增詞條排在末端，順序依備份的原始排列。
+    const order = source.originalOrder || source.wordIds;
+    destinationOrder.push(...order.map(oldId=>newIdByOldId.get(oldId)).filter(Boolean));
+  }
+  // 舊單元的複習統計不可用匯入檔重蓋或重複堆入；新單元才能帶入原歷史。
   for (const record of imported.reviewHistory) {
-    next.reviewHistory.push({ ...copy(record), id:freshId(), unitId:unitIds.get(record.unitId) });
+    const destinationId = unitIds.get(record.unitId);
+    if (!newUnitIds.has(destinationId)) continue;
+    next.reviewHistory.push({ ...copy(record), id:freshId(), unitId:destinationId });
+    stats.newHistory++;
   }
-  const existingExamples = new Map((next.examples || []).map(q => [exampleKey(q),q]));
+  const existingExamples = new Map((next.examples || []).map(q=>[exampleKey(q),q]));
   for (const q of imported.examples || []) {
-    const mapped = {...copy(q), id:freshId(), unitIds:q.unitIds.map(id => unitIds.get(id)).filter(Boolean)};
+    const mapped = { ...copy(q), id:freshId(), unitIds:q.unitIds.map(id=>unitIds.get(id)).filter(Boolean) };
     const key = exampleKey(mapped);
     const existing = existingExamples.get(key);
     if (existing) {
-      existing.unitIds = [...new Set([...existing.unitIds, ...mapped.unitIds])];
+      existing.unitIds = [...new Set([...existing.unitIds,...mapped.unitIds])];
     } else {
-      existingExamples.set(key, mapped);
+      existingExamples.set(key,mapped);
       next.examples.push(mapped);
+      stats.newExamples++;
     }
   }
-  // 合併不更動目前偏好設定，避免其他備份覆蓋使用者自己的英美發音選擇。
+  // 合併不更動設定、既有單字、原單元排序及學習紀錄。
   if (!validateState(next)) throw new Error('合併後資料驗證失敗，沒有變更現有資料');
-  return next;
+  return withStats ? { state:next, stats } : next;
 }
-
 
 
 /* ─── v1.6：例句 TXT 匯入。每行只允許一組 “答案” 或 "答案"。 ─── */
@@ -1950,6 +1999,27 @@ function renderScoreMeme(sectionId,imageId,captionId,correct,total) {
   $(captionId).textContent=type==='failure' ? '正確率未滿 50% · FAILURE' : '正確率未滿 70% · STOOPID';
 }
 
+// 使用未四捨五入的整數比例判斷：A ≥90、B ≥80、C ≥70、D ≥60、E ≥50，否則 F。
+// E = Evicted（逐出家門）；沿用迷因既有 70%／50% 門檻，兩者互不干擾。
+function scoreFamilyGrade(correct,total) {
+  if (!Number.isSafeInteger(correct) || !Number.isSafeInteger(total) || total<=0 || correct<0 || correct>total) return null;
+  const grades=[
+    ['A','Average',90],
+    ['B','Below average',80],
+    ['C',"Can't eat dinner",70],
+    ['D',"Don't come home",60],
+    ['E','Evicted',50],
+    ['F','Find a new family',0],
+  ];
+  const found=grades.find(([, , min]) => correct*100 >= total*min);
+  return {letter:found[0],text:found[1]};
+}
+function renderFamilyGrade(panelId,letterId,textId,correct,total) {
+  const grade=scoreFamilyGrade(correct,total);
+  $(panelId).hidden=!grade;
+  $(letterId).textContent=grade?.letter ?? '';
+  $(textId).textContent=grade?.text ?? '';
+}
 function renderResults() {
   const session = reviewSession;
   const stats = reviewStats(session);
@@ -1964,6 +2034,7 @@ function renderResults() {
   forgotten.slice(0, 30).forEach(word => $('forgottenWords').append(el('span', 'forgotten-chip', `${word.en} · ${wordHatLabel(word)}（${word.forgetCount}）`)));
   if (forgotten.length > 30) $('forgottenWords').append(el('span', 'forgotten-chip', `還有 ${forgotten.length - 30} 個`));
   renderScoreMeme('reviewResultMeme','reviewResultMemeImage','reviewResultMemeCaption',stats.remembered,stats.total);
+  renderFamilyGrade('reviewResultGrade','reviewGradeLetter','reviewGradeText',stats.remembered,stats.total);
   $('reviewForgottenButton').disabled = forgotten.length === 0;
 }
 function chooseAnswer(remembered) {
@@ -2077,9 +2148,10 @@ async function mergeJSON(file) {
   try {
     if (file.size > 20 * 1024 * 1024) throw new Error('檔案不可超過 20 MB');
     const text = await readTextFile(file);
-    const incoming = parseBackupForRestore(text);
-    if (!confirm(`確認合併 JSON？\n將新增 ${incoming.units.length} 個單元、${Object.keys(incoming.words).length} 個獨立單字副本。\n即使名稱相同也全部保留，不覆蓋既有資料。\n仍建議先下載一份 JSON 備份。`)) return;
-    if (runChange(() => mergeBackup(state, text), `合併成功：加入 ${incoming.units.length} 個單元、${Object.keys(incoming.words).length} 個單字`)) {
+    // 先完整試算並驗證，使用者按「取消」時不寫入任何資料。
+    const { state:merged, stats } = mergeBackup(state,text,true);
+    if (!confirm(`確認以「現有資料優先」合併 JSON？\n\n新增單元：${stats.newUnits} 個\n已有同名單元：${stats.matchingUnits} 個（只補缺少的單字）\n新增英文單字：${stats.newWords} 個\n跳過同單元重複英文：${stats.skippedWords} 個\n新增例句：${stats.newExamples} 句\n\n注意：相同單元、相同英文時，即使中文翻譯不同，也完全保留目前 App 的單字、書籤和學習紀錄。已存在單元的統計不重複匯入。\n\n建議先下載目前的 JSON 備份。`)) return;
+    if (runChange(() => merged, `合併成功：新增 ${stats.newUnits} 單元、${stats.newWords} 單字，略過 ${stats.skippedWords} 筆重複單字`)) {
       selectedUnitIds.clear(); selectedWordIds.clear(); render();
     }
   } catch (error) { message('合併失敗：' + error.message, true); }
@@ -2467,6 +2539,7 @@ function renderExampleQuiz() {
   $('exampleQuizScore').textContent = `答對 ${session.correct} / ${done ? total : session.index + (session.answered ? 1 : 0)} 題`;
   $('exampleOptions').replaceChildren();
   renderScoreMeme('exampleResultMeme','exampleResultMemeImage','exampleResultMemeCaption',done ? session.correct : 0,done ? total : 0);
+  renderFamilyGrade('exampleResultGrade','exampleGradeLetter','exampleGradeText',done ? session.correct : 0,done ? total : 0);
   if (done) {
     $('exampleQuestion').textContent = `完成！本次答對 ${session.correct} / ${total} 題（${scoreDisplayPercent(session.correct,total)}%）。`;
     $('exampleFeedback').textContent = '例句測驗不影響單字卡熟練度及帽子。';
@@ -2665,7 +2738,7 @@ $('sortSelect').addEventListener('change', event => {
     message('正在以書籤優先檢視；原本順序完全沒有更動');
   } else if (method === 'input' || method === 'proficiency') {
     listViewSort = 'default';
-    runChange(() => sortUnitWords(state, selectedUnitId, method), method === 'input' ? '已恢復原始加入順序' : '已依熟練度排序，同級隨機');
+    runChange(() => sortUnitWords(state, selectedUnitId, method), method === 'input' ? '已恢復原始加入順序' : '已依熟練度排序，同級依加入順序');
     event.target.value = '';
   } else { listViewSort='default'; render(); }
 });
