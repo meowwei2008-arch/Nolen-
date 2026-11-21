@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1020">
-  <title>英中單字卡 | v1.6.25 離線版</title>
+  <title>英中單字卡 | v1.6.31 多圖評語</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -441,7 +441,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 /* v1.6.15：成績評語迷因（分數必須未達 70% 才顯示） */
 .result-meme{max-width:560px;margin:22px auto 15px;padding:16px;border:1px solid #5e465c;border-radius:17px;background:#211c30;text-align:center}
 .result-meme .result-meme-label{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.11em;color:#ecc2d2}
-.result-meme img{display:block;width:100%;max-width:475px;height:auto;aspect-ratio:4 / 3;object-fit:contain;border-radius:10px;margin:0 auto}
+.result-meme img{display:block;width:100%;max-width:475px;height:auto;max-height:360px;aspect-ratio:auto;object-fit:contain;border-radius:10px;margin:0 auto}
 .result-meme .result-meme-caption{font-size:12px;color:#c6bdcb;margin:9px 0 0}
 /* v1.6.23: 家庭式成績評語，只顯示於完成的複習／例句測驗。 */
 .family-grade{max-width:560px;margin:18px auto 20px;padding:17px 20px;border:1px solid #55547c;border-radius:16px;background:linear-gradient(120deg,#20253c,#171f34);text-align:left}
@@ -512,7 +512,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 @media(max-width:390px){.runner-play{padding:7px;gap:7px}.runner-config{padding:12px}.runner-config .space-fields{grid-template-columns:1fr}.runner-stage{height:clamp(290px,46dvh,490px)}.runner-header strong{font-size:14px}.runner-stats span{padding:5px 7px;font-size:11px}.runner-banner{min-height:72px}.runner-footer{font-size:10px}}
 
 
-/* v1.6.29: 單字詳情中新增即時書籤切換；翻卡例句功能保留 */
+/* v1.6.31: 多圖成績迷因，70% 以上維持不顯示；保留 G 級與既有功能 */
 .mode-choice-tile--game .mode-choice-icon{font-size:26px;background:#264467}
 .mode-choice-grid .mode-choice-tile{min-height:139px;gap:9px}
 @media(max-width:390px){.mode-choice-grid .mode-choice-tile{min-height:126px;padding:11px 7px}.mode-choice-grid .mode-choice-tile strong{font-size:16px}.mode-choice-grid .mode-choice-description{font-size:11px}}
@@ -521,7 +521,7 @@ textarea{font:inherit;resize:vertical}input[type="search"]{appearance:none}
 <body>
   <header class="topbar"><div class="container topbar-inner">
     <button id="openUnitDrawer" class="nav-menu-button" type="button" aria-label="開啟單元列表" title="單元列表" aria-haspopup="dialog" aria-controls="unitSidebar" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.29 · 詳情書籤</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">Aa</span><div><h1>英中單字卡 <span class="pill">v1.6.31 · 多圖評語</span></h1><p>離線背單字 · 隨機帽子 · 例句測驗</p></div></div>
     <div class="top-actions"><span id="saveStatus" role="status" class="status">載入中…</span><button id="restoreButton" class="secondary-button" type="button">↑ 還原備份</button><input id="restoreFileInput" type="file" accept=".json,application/json" hidden><button id="backupButton" class="secondary-button" type="button">↓ JSON 備份</button>
       <details class="top-tools-menu" id="topToolsMenu"><summary class="secondary-button" aria-label="開啟資料工具與進階設定">工具 ▾</summary>
         <div class="top-tools-content" aria-label="資料工具及進階設定">
@@ -2031,31 +2031,74 @@ function renderReview() {
   $('reviewPrevButton').disabled = stats.total === 1;
   $('reviewNextButton').disabled = stats.total === 1;
 }
-// 由答對/總題數原始整數判斷：70.0% 不顯示；50.0% 顯示 STOOPID；未達 50.0% 顯示 FAILURE。
+// v1.6.31: 成績迷因圖池（原有 2 張 + 使用者上傳原圖 10 張）。
+// 仍維持 70% 起不顯示；每輪完成只隨機抽一張，同一輪重新繪製不會換圖。
+const SCORE_MEME_POOLS = {
+  D: [
+    {file:'feedback-stoopid.jpg',name:'STOOPID'},
+    {file:'meme-disappointment.jpg',name:'Disappointment'},
+    {file:'meme-what-da-hail.jpg',name:'What da hail'},
+    {file:'meme-aminus.jpg',name:'Got an A-（反諷）'}
+  ],
+  E: [
+    {file:'feedback-stoopid.jpg',name:'STOOPID'},
+    {file:'meme-unemployment.jpg',name:'Smells like unemployment'},
+    {file:'meme-skidrow.jpg',name:'Skid Row sounds nice'},
+    {file:'meme-aminus.jpg',name:'Got an A-（反諷）'}
+  ],
+  F: [
+    {file:'feedback-failure.jpg',name:'FAILURE'},
+    {file:'meme-monkey.jpg',name:'無限猴子打字機'},
+    {file:'meme-stay.jpg',name:'Did I say you can leave?'},
+    {file:'meme-slipper.jpg',name:'I will send you to Jesus'},
+    {file:'meme-skidrow.jpg',name:'Skid Row sounds nice'}
+  ],
+  G: [
+    {file:'feedback-failure.jpg',name:'FAILURE'},
+    {file:'meme-jesus.jpg',name:'I will send you to Jesus'},
+    {file:'meme-dishes.jpg',name:'Go do the dishes'},
+    {file:'meme-slipper.jpg',name:'I will send you to Jesus'},
+    {file:'meme-monkey.jpg',name:'無限猴子打字機'}
+  ]
+};
+const scoreMemeSessionCache = new WeakMap();
 function scoreMemeType(correct,total) {
   if (!Number.isSafeInteger(correct) || !Number.isSafeInteger(total) || total <= 0 || correct < 0 || correct > total) return null;
-  if (correct * 2 < total) return 'failure';
-  if (correct * 10 < total * 7) return 'stoopid';
-  return null;
+  if (correct * 10 >= total * 7) return null; // 70.0% 完全不顯示
+  if (correct * 100 < total * 20) return 'G';
+  if (correct * 2 < total) return 'F';
+  if (correct * 100 < total * 60) return 'E';
+  return 'D';
 }
 function scoreDisplayPercent(correct,total) {
   if (!total) return '0';
-  // 向下截取 1 位，避免例如真實 69.96% 卻顯示「70.0%」及 STOOPID 的矛盾。
+  // 向下截取 1 位，避免例如真實 69.96% 卻顯示「70.0%」及迷因的矛盾。
   return (Math.floor((correct * 1000) / total) / 10).toFixed(1);
 }
-function renderScoreMeme(sectionId,imageId,captionId,correct,total) {
-  const type=scoreMemeType(correct,total);
+function renderScoreMeme(sectionId,imageId,captionId,correct,total,session) {
+  const grade=scoreMemeType(correct,total);
   const section=$(sectionId);
-  section.hidden=!type;
-  if (!type) { $(imageId).removeAttribute('src'); $(captionId).textContent=''; return; }
+  section.hidden=!grade;
   const img=$(imageId);
-  const file=type==='failure' ? './feedback-failure.jpg' : './feedback-stoopid.jpg';
+  if (!grade) {
+    img.removeAttribute('src');
+    $(captionId).textContent='';
+    return;
+  }
+  const pool=SCORE_MEME_POOLS[grade];
+  let selection=session && scoreMemeSessionCache.get(session);
+  if (!selection || selection.grade!==grade) {
+    selection={grade,entry:pool[Math.floor(Math.random()*pool.length)]};
+    if (session) scoreMemeSessionCache.set(session,selection);
+  }
+  const file='./'+selection.entry.file;
   if (img.getAttribute('src')!==file) img.setAttribute('src',file);
-  img.alt=type==='failure' ? 'FAILURE 成績評語迷因' : 'STOOPID 成績評語迷因';
-  $(captionId).textContent=type==='failure' ? '正確率未滿 50% · FAILURE' : '正確率未滿 70% · STOOPID';
+  // 保留圖片自己的字幕：不覆蓋，不拉伸成固定 4:3。
+  img.alt=selection.entry.name+' 成績反應圖片';
+  $(captionId).textContent=selection.entry.name;
 }
 
-// 使用未四捨五入的整數比例判斷：A ≥90、B ≥80、C ≥70、D ≥60、E ≥50，否則 F。
+// 使用未四捨五入的整數比例判斷：A ≥90、B ≥80、C ≥70、D ≥60、E ≥50、F ≥20、G <20。
 // E = Evicted（逐出家門）；沿用迷因既有 70%／50% 門檻，兩者互不干擾。
 function scoreFamilyGrade(correct,total) {
   if (!Number.isSafeInteger(correct) || !Number.isSafeInteger(total) || total<=0 || correct<0 || correct>total) return null;
@@ -2065,7 +2108,8 @@ function scoreFamilyGrade(correct,total) {
     ['C',"Can't eat dinner",70],
     ['D',"Don't come home",60],
     ['E','Evicted',50],
-    ['F','Find a new family',0],
+    ['F','Find a new family',20],
+    ['G','Go do the dishes',0],
   ];
   const found=grades.find(([, , min]) => correct*100 >= total*min);
   return {letter:found[0],text:found[1]};
@@ -2089,7 +2133,7 @@ function renderResults() {
   $('forgottenWords').replaceChildren();
   forgotten.slice(0, 30).forEach(word => $('forgottenWords').append(el('span', 'forgotten-chip', `${word.en} · ${wordHatLabel(word)}（${word.forgetCount}）`)));
   if (forgotten.length > 30) $('forgottenWords').append(el('span', 'forgotten-chip', `還有 ${forgotten.length - 30} 個`));
-  renderScoreMeme('reviewResultMeme','reviewResultMemeImage','reviewResultMemeCaption',stats.remembered,stats.total);
+  renderScoreMeme('reviewResultMeme','reviewResultMemeImage','reviewResultMemeCaption',stats.remembered,stats.total,session);
   renderFamilyGrade('reviewResultGrade','reviewGradeLetter','reviewGradeText',stats.remembered,stats.total);
   $('reviewForgottenButton').disabled = forgotten.length === 0;
 }
@@ -2591,7 +2635,7 @@ function renderExampleQuiz() {
   $('exampleProgressFill').style.width = `${100 * (done ? total : session.index+(session.answered ? 1 : 0))/total}%`;
   $('exampleQuizScore').textContent = `答對 ${session.correct} / ${done ? total : session.index + (session.answered ? 1 : 0)} 題`;
   $('exampleOptions').replaceChildren();
-  renderScoreMeme('exampleResultMeme','exampleResultMemeImage','exampleResultMemeCaption',done ? session.correct : 0,done ? total : 0);
+  renderScoreMeme('exampleResultMeme','exampleResultMemeImage','exampleResultMemeCaption',done ? session.correct : 0,done ? total : 0,session);
   renderFamilyGrade('exampleResultGrade','exampleGradeLetter','exampleGradeText',done ? session.correct : 0,done ? total : 0);
   if (done) {
     $('exampleQuestion').textContent = `完成！本次答對 ${session.correct} / ${total} 題（${scoreDisplayPercent(session.correct,total)}%）。`;
